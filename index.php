@@ -36,15 +36,15 @@ $sql="SELECT COUNT(*) FROM people p, ministry_people mp WHERE mp.ministry_id=$mi
 $count=$db->getOne($sql);
 echo $count;
 
-$sql="SELECT COUNT(*) FROM students people p, ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.people_id=p.people_id AND (p.category_id=1 OR p.category_id=2) AND p.receive_emails=1";
+$sql="SELECT COUNT(*) FROM people p, ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.people_id=p.people_id AND (p.category_id=1 OR p.category_id=2) AND p.receive_email=1";
 $count=$db->getOne($sql);
-echo  " ($count receive emails)";
+echo  " ($count receive email)";
 ?>
 <br/>
 
 How Many Have Shown Up:
 <?php
-$sql="SELECT COUNT(DISTINCT ea.people_id) FROM event_attendance ea,people p, ministry_people mp WHERE mp.people_id=p.people_id AND ea.people_id=p.people_id AND (p.category_id=1 OR p.category_id=2)";
+$sql="SELECT COUNT(*) FROM event_attendance ea,people p, ministry_people mp WHERE mp.people_id=p.people_id AND ea.people_id=p.people_id AND (p.category_id=1 OR p.category_id=2)";
 $visitors=$db->getOne($sql);
 echo $visitors;
 ?>
@@ -52,19 +52,18 @@ echo $visitors;
 
 Have Come 3+ Times:
 <?php
-$sql="SELECT COUNT(student_id) FROM event_attendance ea, ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.people_id=ea.people_id GROUP BY ea.people_id HAVING COUNT(ea.people_id)>=3";
+$sql="SELECT COUNT(ea.people_id) FROM event_attendance ea, ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.people_id=ea.people_id GROUP BY ea.people_id HAVING COUNT(ea.people_id)>=3";
 $result=$db->query($sql);
-//testQueryResult($result);
 $attenders=$result->numRows();
 echo $attenders. ' <em><a href="subforms/view.attenders.php?threshold=3">see them</a></em>';
 ?>
+<br/>
 
 7 Most Recent Guests: <br/>
 <ol>
 <?php
-$sql="SELECT DISTINCT p.people_id FROM people p,event_attendance ea, ministry_people mp WHERE mp.ministry_id=$ministry_id AND p.people_id=ea.people_id ORDER BY p.date_added DESC LIMIT 7";
+$sql="SELECT DISTINCT p.people_id FROM people p,event_attendance ea, ministry_people mp WHERE mp.ministry_id=$ministry_id AND p.people_id=ea.people_id ORDER BY p.created_on DESC LIMIT 7";
 $result=$db->query($sql);
-//testQueryResult($result);
 while ($row=$result->fetchRow()) {
     echo '<li><a href="people.php?id='.$row['people_id'].'">'.getName($row['people_id']).'</a></li>';
 }
