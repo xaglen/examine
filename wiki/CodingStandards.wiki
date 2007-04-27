@@ -15,7 +15,7 @@ _This is a proposed standard. Nothing is written in stone. Let me know what you 
 
 = PHP =
   * use the [http://pear.php.net/manual/en/standards.php PEAR coding standards]
-  * two exceptions: we don't need to follow their commenting specs for functions and we don't need to throw exceptions the same way that they do
+  * three exceptions: we don't need to follow their commenting specs for functions and we don't need to throw exceptions the same way that they do and we will use function opening braces on the same line
   * we will validate this using [http://pear.php.net/manual/en/package.php.php-codesniffer.php CodeSniffer]
 
 = MySQL =
@@ -25,6 +25,5 @@ _This is a proposed standard. Nothing is written in stone. Let me know what you 
   * primary keys are table_name_id (ie, people_id) instead of just id
   * foreign keys are always the same name as the primary key being referenced
   * UPPERCASE reserved words in queries (`SELECT * FROM people`)
-
 
 
