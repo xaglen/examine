@@ -1,6 +1,8 @@
 #summary Our current database schema.
 #labels Featured,Phase-Design
 
+_the tables are (hopefully) laid out in compliance with our CodingStandards _
+
 = The Schema =
 
 {{{
@@ -215,4 +217,5 @@ CREATE TABLE IF NOT EXISTS users (
   UNIQUE KEY username (username,student_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 }}}
+
 
