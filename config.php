@@ -18,31 +18,31 @@ function dumpArgs($arguments=null) {
     foreach ($arguments as $a) {
         $args .= "\n\t";
         switch (gettype($a)) {
-        case 'integer':
-        case 'double':
-            $args .= $a;
-            break;
-        case 'string':
-            $a = htmlspecialchars(substr($a, 0, 64)).((strlen($a) > 64) ? '...' : '');
-            $args .= "\"$a\"";
-            break;
-        case 'array':
-            $args .= 'Array('.count($a).')';
-            break;
-        case 'object':
-            $args .= 'Object('.get_class($a).')';
-            break;
-        case 'resource':
-            $args .= 'Resource('.strstr($a, '#').')';
-            break;
-        case 'boolean':
-            $args .= $a ? 'True' : 'False';
-            break;
-        case 'NULL':
-            $args .= 'Null';
-            break;
-        default:
-            $args .= 'Unknown';
+            case 'integer':
+            case 'double':
+                $args .= $a;
+                break;
+            case 'string':
+                $a = htmlspecialchars(substr($a, 0, 64)).((strlen($a) > 64) ? '...' : '');
+                $args .= "\"$a\"";
+                break;
+            case 'array':
+                $args .= 'Array('.count($a).')';
+                break;
+            case 'object':
+                $args .= 'Object('.get_class($a).')';
+                break;
+            case 'resource':
+                $args .= 'Resource('.strstr($a, '#').')';
+                break;
+            case 'boolean':
+                $args .= $a ? 'True' : 'False';
+                break;
+            case 'NULL':
+                $args .= 'Null';
+                break;
+            default:
+                $args .= 'Unknown';
         }
     }
     return $args;
@@ -96,7 +96,7 @@ function logError($message='non-PEAR Error',$defined_vars=null) {
     if (isset($defined_vars) && is_array($defined_vars)) {
         $message.="Variables\n";
         $defined_vars=stripSensitiveVariables($defined_vars);
-        $message.=print_r($defined_vars,true)."\n\n";
+        $message.=print_r($defined_vars, true)."\n\n";
     }
     $message.="Call Stack\n";
     $callstack=debug_backtrace();
@@ -106,8 +106,8 @@ function logError($message='non-PEAR Error',$defined_vars=null) {
         $message.= $call['file'].' line '.$call['line'].' (function '.$call['function'].")";
         if (isset($call['args'])) $message.=dumpArgs($call['args'])."\n\n";
     }
-    dumpError($message,'non-PEAR Error');
+    dumpError($message, 'non-PEAR Error');
 }
 
-PEAR::setErrorHandling(PEAR_ERROR_CALLBACK,'handleError');
+PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'handleError');
 ?>
