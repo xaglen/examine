@@ -1,0 +1,80 @@
+#main {
+		border:1px solid #000; 
+		background:#fff;
+}
+
+/* Looks like you have to specify the width of #menu
+or IE5 Mac stretches it all the way across the div, and 
+Opera streches it half way. */
+
+#main #sidebar {
+		border-left:1px solid #000; 
+		border-bottom:1px solid #000;
+		float:right;
+		width:230px;
+		background:#eee;
+		margin:0px 0px 10px 10px;
+}
+		
+label,input,select {
+	display: block;
+	width: 150px;
+	float: left;
+	margin-bottom: 10px;
+}
+
+input[type=radio],
+input[type=checkbox] {
+	text-align: left;
+	width: 1em;
+}
+
+input[type=hidden] {
+	width:0;
+}
+
+label {
+	text-align: right;
+	width: 150px;
+	padding-right: 20px;
+}
+
+label.radio {
+	display: block;
+	float: left;
+	text-align:left;
+	border: 1px white solid;
+	padding-right: 0px;
+	width: .75em;
+}
+
+br {
+	clear: left;
+}
+
+input,select,textarea {
+	background-color: #EBF1FA;
+	color: #222222;
+}
+
+input[type=submit], 
+input[type=reset], 
+input[type=button],
+button {
+	background-color: #B2B9C6;
+	color: #000000;
+}
+
+input:focus, 
+select:focus, 
+textarea:focus {
+	background-color: #ffffff;
+}
+
+.hidden {
+	display: none;
+}
+
+.visible {
+	display: block;
+}
