@@ -1,5 +1,5 @@
 <?php 
-require_once 'config.php';
+require_once 'includes/functions.php';
 $db=createDB();
 $ministry_id=1; // for testing purposes only - later we will get this from the id of the person logged in
 ?>
@@ -36,7 +36,7 @@ $sql="SELECT COUNT(*) FROM people p, ministry_people mp WHERE mp.ministry_id=$mi
 $count=$db->getOne($sql);
 echo $count;
 
-$sql="SELECT COUNT(DISTINCT p.people_id) FROM people p, ministry_people mp,email_addresses ea WHERE mp.ministry_id=$ministry_id AND mp.people_id=p.people_id AND (p.category_id=1 OR p.category_id=2) ea.people_id=p.people_id AND ea.receive_emails=1";
+$sql="SELECT COUNT(DISTINCT p.people_id) FROM people p, ministry_people mp, email_addresses ea WHERE mp.ministry_id=$ministry_id AND mp.people_id=p.people_id AND (p.category_id=1 OR p.category_id=2) AND ea.people_id=p.people_id AND ea.receive_emails=1";
 $count=$db->getOne($sql);
 echo  " ($count receive email)";
 ?>

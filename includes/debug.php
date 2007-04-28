@@ -1,6 +1,13 @@
 <?php
 require_once 'PEAR.php';
 
+/**
+ * Renders the error message
+ *
+ * @param string $message the error message
+ * @param string $subject subject line if the report is being emailed
+ * @return void
+ */
 function dumpError($message='An unknown error occurred',$subject='Website PEAR Error') {
     global $_SERVER;
     $message .="\n\n\n";
@@ -11,8 +18,13 @@ function dumpError($message='An unknown error occurred',$subject='Website PEAR E
     echo "<pre>$message</pre>";
 }
 
+/**
+ * Creates a text dump of all the arguments
+ *
+ * @param array $arguments array of all the arguments to a function
+ * @return string 
+ */
 function dumpArgs($arguments=null) {
-    //takes an array
 	$args = '';
     foreach ($arguments as $a) {
         $args .= "\n\t";
@@ -46,6 +58,13 @@ function dumpArgs($arguments=null) {
     }
     return $args;
 }
+
+/**
+ * Error handler replacement for PEAR
+ *
+ * @param object &$obj an error object
+ * @return void
+ */
 function handleError(&$obj) {
     $message = 'Standard Message: ' . $obj->getMessage() . "\n";
     $message.= 'Standard Code: ' . $obj->getCode() . "\n";
@@ -63,6 +82,12 @@ function handleError(&$obj) {
     dumpError($message);
 }
 
+/**
+ * remove variables with security implications before dumping the data
+ *
+ * @param array $defined_vars all the variables in the scope of the calling function
+ * @return array
+ */
 function stripSensitiveVariables($defined_vars=null) {
     if (!isset($defined_vars) || !is_array($defined_vars)) {
         return null;
@@ -90,6 +115,13 @@ function stripSensitiveVariables($defined_vars=null) {
     return $defined_vars;
 }
 
+/**
+ * for putting non-PEAR errors through the same process - useful for debug-type statements
+ *
+ * @param string$message a description of the error
+ * @param array $defined_vars the variables in scope at the time of the error
+ * @return void
+ */
 function logError($message='non-PEAR Error',$defined_vars=null) {
     $message.="\n\n";
     if (isset($defined_vars) && is_array($defined_vars)) {

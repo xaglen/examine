@@ -1,7 +1,22 @@
 <?php
-require_once 'config.php';
+/**
+ * @package examine
+ */
+
+/**
+ * provides $dsn global
+ */
+require_once '../config.php';
 require_once 'functions.php';
 
+/**
+ * Creates a dropdown of all the people in a ministry
+ *
+ * @param int $ministry_id primary key to table ministries
+ * @param string $name desired name of the dropdown
+ * @param int $default the people_id of the person who is to be the default value in the dropdown
+ * @return string 
+ */
 function generatePeopleDropdown($ministry_id=NULL,$name='people_id',$default=NULL) {
 	$dropdown="<select ID='$name' NAME='$name'>";
 	$db=createDB();
@@ -24,7 +39,15 @@ function generatePeopleDropdown($ministry_id=NULL,$name='people_id',$default=NUL
 	return $dropdown;
 }
 
-function generateSchoolDropdown($ministry_id=NULL,$name="",$default=NULL) {
+/**
+ * Creates a dropdown of all the schools associated with a ministry
+ *
+ * @param int $ministry_id primary key of table ministries
+ * @param string $name desired name of the dropdown
+ * @param int $default the school_id of the school that is to be the default value in the dropdown
+ * @return string 
+ */
+function generateSchoolDropdown($ministry_id=NULL,$name='school_id',$default=NULL) {
 	$dropdown="<select ID='$name' NAME='$name'>";
 	$db=createDB();
 	$sql="select s.school_id,s.name FROM schools s, people p, ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.people_id=p.people_id AND p.school_id=s.school_id ORDER BY s.name";
@@ -88,6 +111,12 @@ function generateSubgroupDropdown($ministry_id=NULL,$name='subgroup_id',$default
 	return $dropdown;
 }
 
+/**
+ * creates the javascript necessary for an Ajax textbox
+ *
+ * @param int $ministry_id primary key to table ministries
+ * @return string
+ */
 function generatePeopleLivesearch($ministry_id=NULL) {
 	$livesearch="<script>var peoplearray=new Array(";
 	$people=generateNameArray($ministry_id);

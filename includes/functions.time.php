@@ -1,8 +1,14 @@
 <?php
 require_once 'config.php';
 
+/**
+ * Takes two timestamps and gives the difference between them in plain English.
+ *
+ * @param int $start a unix timestamp
+ * @param int $end a unix timestamp
+ * @return string a short phrase
+ */
 function readableTimeDiff($start,$end) {
-//takes UNIX timestamps
 	if ($start<$end) {
 		$years    = date('y', $end) - date('y', $start) ;
 		$months   = date('m', $end) - date('m', $start) + ($years * 12) ;
@@ -24,6 +30,12 @@ function readableTimeDiff($start,$end) {
 	return $readableTime;
 }
 
+/**
+ * How old is a person?
+ *
+ * @param int $people_id primary key to table people
+ * @return int the person's age in minutes
+ */
 function getAge($people_id=NULL) {
 	if ($people_id===NULL) return '';
 	$db=createDB();

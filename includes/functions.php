@@ -1,6 +1,33 @@
 <?php
-require_once 'config.php';
+require_once '../config.php';
 
+/**
+ * Simplifies db access. Will be called on almost every user page.
+ *
+ * <code>
+ * <?php
+ * $db=createDB(); // will create an MDB2 object with Extended module loaded
+ * ?>
+ * </code>
+ * @global $dsn from config.php
+ * @return returns a new MDB2 database object
+ */
+function createDB() {
+    global $dsn;
+
+    $db =& MDB2::factory($dsn);
+    $db->setFetchMode(MDB2_FETCHMODE_ASSOC);
+    $db->loadModule('Extended');
+    $db->setOption('portability', MDB2_PORTABILITY_ALL ^ MDB2_PORTABILITY_FIX_CASE);
+    return $db;
+}
+
+/*
+ * Returns a person's full name given their people_id
+ *
+ * @param int $people_id primary key for people table
+ * @return string full name of person
+ */
 function getName($people_id=NULL) {
 	$db=createDB();
 	$sql='select preferred_name,first_name,last_name FROM people WHERE people_id='.$people_id;
@@ -13,6 +40,12 @@ function getName($people_id=NULL) {
 	}
 }
 
+/**
+ * Returns an array of names in a ministry (useful for dropdowns and lookups)
+ *
+ * @param int $ministry_id primary key for table ministries
+ * @return array an array of names
+ */
 function generateNameArray($ministry_id=NULL) {
 	$db=createDB();
 	$sql='select p.people_id,p.first_name,p.last_name FROM people p,ministry_people mp WHERE mp.ministry_id='.$ministry_id.' AND mp.people_id=p.people_id';
@@ -24,6 +57,12 @@ function generateNameArray($ministry_id=NULL) {
 	return $people;
 }
 
+/**
+ * Returns the first name of a person given their people_id
+ *
+ * @param int $people_id primary key to table people
+ * @return string first name
+ */
 function getFirstName($people_id=NULL) {
 	$db=createDB();
 	$sql='select first_name,preferred_name FROM people WHERE people_id='.$people_id;
@@ -36,6 +75,12 @@ function getFirstName($people_id=NULL) {
 	}
 }
 
+/**
+ * Returns the last name of a person given their people_id
+ *
+ * @param int $people_id primary key to table people
+ * @return string last name
+ */
 function getLastName($people_id=NULL) {
 	$db=createDB();
 	$sql='select last_name FROM people WHERE people_id='.$people_id;
@@ -43,6 +88,12 @@ function getLastName($people_id=NULL) {
 	return $last_name;
 }
 
+/**
+ * Returns the name of a subgroup (Bible study, worship team, etc)
+ *
+ * @param int$subgroup_id primary key to table subgroups
+ * @return string 
+ */
 function getSubgroupName($subgroup_id=NULL) {
 	if ($subgroup_id===NULL) return '';
 	$db=createDB();
@@ -51,6 +102,13 @@ function getSubgroupName($subgroup_id=NULL) {
 	return $name;
 }
 
+/**
+ * Was a student present at an event or not?
+ *
+ * @param int $people_id primary key to table people
+ * @param int @event_id primary key to table events
+ * @return boolean
+ */
 function attendedEvent($people_id=NULL,$event_id=NULL) {
 	if ($people_id===NULL || $event_id===NULL) return false;
 	$db=createDB();
@@ -63,6 +121,12 @@ function attendedEvent($people_id=NULL,$event_id=NULL) {
 	}
 }
 
+/**
+ * Returns a count of those who attended an event
+ *
+ * @param int $event_id primary to key to table events
+ * @return int 
+ */
 function getEventAttendance($event_id=NULL) {
 	if ($event_id===NULL) return 0;
 	
@@ -72,12 +136,12 @@ function getEventAttendance($event_id=NULL) {
 	return $count;
 }
 
-//
-//  obscureEmail()
-//  Modifies an email address to make it less spam-scraper-friendly
-//  usage: despam($email[, $linkText])
-//  returns a complete mailto link
-//
+/**
+ * Modifies an email address to make it less spam-scraper-friendly
+ *
+ * @param string $email a standard email address
+ * @return string a complete mailto link
+ */
 function obscureEmail($email) {
 	$partA = substr($email, 0, strpos($email, '@'));
 	$partB = substr($email, strpos($email, '@'));
