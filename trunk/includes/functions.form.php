@@ -24,7 +24,7 @@ function generatePeopleDropdown($ministry_id=NULL,$name='people_id',$default=NUL
 	return $dropdown;
 }
 
-function generateSchoolDropdown($ministry_id=NULL$name="",$default=NULL) {
+function generateSchoolDropdown($ministry_id=NULL,$name="",$default=NULL) {
 	$dropdown="<select ID='$name' NAME='$name'>";
 	$db=createDB();
 	$sql="select s.school_id,s.name FROM schools s, people p, ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.people_id=p.people_id AND p.school_id=s.school_id ORDER BY s.name";
