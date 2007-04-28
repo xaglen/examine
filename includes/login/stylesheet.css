@@ -1,0 +1,245 @@
+/* body */
+body {
+	font: .8em verdana,arial,helvetica,sans-serif;
+	color: #000000;
+	padding: 0px;
+	margin: 0px;
+	margin-left: 3px;
+	background: #326A95;
+}
+tr {
+	vertical-align: top;
+}
+table#mainTable {
+	font: 1em verdana,arial,helvetica,sans-serif;
+	color: #000000;
+	padding: 5px;
+	margin: 0px 0px -5px 0px;
+	border-top: 7px solid #234B69;
+	border-bottom: 7px solid #234B69;
+	border-spacing: 0px;
+	background: #ffffff;
+	width: 705px;
+}
+table#mainTable td {
+	font: 1em verdana,arial,helvetica,sans-serif;
+}
+div.bannerBottom {
+	width: 705px;
+	height: 10px;
+	background: url(../images/specialBottom.gif) bottom;
+}
+
+table.menu {
+	margin: 10px 5px 10px 5px;
+	font: .9em verdana,arial,helvetica,sans-serif;
+	font-weight: bold;
+	width: 705px;
+}
+table.menu td {
+	text-align: center;
+	padding-left: 5px;
+	padding-right: 5px;
+	color: #eeeeff;
+}
+table.menu a {
+	color: #9DD0FF;
+	text-decoration: none;
+	padding: 7px 15px;
+}
+table.menu a:active, table.menu a:hover {
+	color: #fff;
+}
+table.menu span.current {
+	padding: 7px 15px;
+	color: #eeeeff;
+}
+
+
+
+/* general styles */
+.error {
+	color: #990000;
+}
+.confirmation {
+	color: #008000;
+}
+.vspacer {
+	height: 20px;
+}
+h1 {
+	font-size: 1.4em;
+	text-align: left;
+	font-weight: bold;
+	padding: 0px 7px 7px 5px;
+	margin-top: 5px;
+	color: #326A95;
+	border-bottom: 2px solid #234B69;
+	margin-right: 2px;
+}
+h2 {
+	color: #326A95;
+	font-size: 1.1em;
+	font-weight: bold;
+	margin: 10px 5px 0px 5px;
+	padding-bottom: 3px;
+	border-bottom: 1px solid #234B69;
+}
+p {
+	padding: 2px 5px 2px 5px;
+}
+hr {
+	padding: 0px;
+	margin: 0px;
+	height: 1px;
+	border: none;
+	background: #a0a0a0;
+	color: #a0a0a0;
+}
+a {
+	color: #326A95;
+}
+a:hover, a:active {
+	color: #fe6a1a;
+}
+form {
+	margin: 0px 0px 5px 0px;
+}
+.button {
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-weight: bold;
+	font-size: .9em;
+	color: #234B69;
+	background: #E3F2FF;
+	padding: 2px 5px 2px 5px;
+	border: 1px solid #333333;
+}
+.button:hover, .button:active {
+	background: #EDFCFF;
+}
+.inputBox {
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-size: .9em;
+	font-weight: normal;
+	color: #000000;
+	background-color: #ffffff;
+	border: 1px solid #333333;
+	padding: 2px;
+	margin-bottom: 3px;
+}
+#mailSubject {
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-size: .9em;
+	font-weight: normal;
+	color: #000000;
+	background-color: #ffffff;
+	border: 1px solid #333333;
+	padding: 2px;
+	margin-bottom: 3px;
+	width: 250px;
+}
+.divBox {
+	border: 2px solid #234B69;
+	background: #f6f6f9;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 5px;
+}
+
+
+
+/* data display table */
+table.dataDisp {
+	border: none;
+	border-spacing: 2px;
+	padding: 0px;
+	margin: 0px;
+	width: 650px;
+	font-size: .85em;
+}
+table.dataDisp td {
+	padding: 2px 5px 2px 5px;
+}
+table.dataDisp th {
+	text-align: left;
+	font-size: 1.1em;
+	background: #d6d6d9;
+	height: 2em;
+	padding: 2px 15px 2px 5px;
+}
+table.dataDisp tr.data {
+	background: #ffffff;
+}
+table.dataDisp tr.dataEven {
+	background: #eaeaec;
+}
+table.dataDisp .radio {
+	width: 10px;
+}
+
+
+/* lists */
+.selectionList {
+	list-style: none;
+}
+.selectionList li {
+	padding: 3px;
+	margin-left: -10px;
+}
+
+
+
+/* menu organizer*/
+table.menuOrganizer {
+	width: 100%;
+	border: none;
+}
+
+
+
+/* footer */
+div#footer {
+	padding: 5px 10px 15px 10px;
+	font-size: .9em;
+	color: #303030;
+}
+
+
+
+/*****
+ * navigation
+ *****/
+.pageNav {
+	clear: both;
+	text-align: center;
+	font-weight: bold;
+}
+.pageNav a {
+	padding: 2px 6px 3px 6px;
+	border: solid 1px #999;
+	text-decoration: none;
+}
+.pageNav a:hover, .pageNav a:active {
+	padding: 2px 6px 3px 6px;
+	border: solid 1px #999;
+	background: #fff;
+	text-decoration: none;
+}
+.pageNav .thisPage {
+	padding: 2px 6px 3px 6px;
+	border-color: #999;
+	font-weight: bold;
+	vertical-align: top;
+	color: #2C2008/*#fe6a1a*/;
+}
+.pageNav .prev {
+	margin-right: 20px;
+	padding: 2px 6px 3px 6px;
+}
+.pageNav .next {
+	margin-left: 20px;
+	padding: 2px 6px 3px 6px;
+}
+.pageNav span.prev, .pageNav span.next {
+	color: #666666;
+}
