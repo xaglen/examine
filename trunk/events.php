@@ -119,7 +119,6 @@ if (!isset($event_id)) {
 </style>
 </head>
 <body>
-<?php include 'header.php';?>
 <div id="main">
 <div id="sidebar">
 <?php
