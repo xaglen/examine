@@ -1,0 +1,95 @@
+<html>
+<head>
+<title>File Source for search.php</title>
+<link rel="stylesheet" type="text/css" href="../media/style.css">
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+    <td class="header_top">examine</td>
+  </tr>
+  <tr><td class="header_line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td class="header_menu">
+  		  [ <a href="../classtrees_examine.html" class="menu">class tree: examine</a> ]
+		  [ <a href="../elementindex_examine.html" class="menu">index: examine</a> ]
+		  [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td class="header_line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="200" class="menu">
+	<div id="ric">
+					<p><a href="../ric_README.html">README</a></p>
+			</div>
+      <b>Packages:</b><br />
+              <a href="../li_examine.html">examine</a><br />
+            <br /><br />
+                  
+      
+                </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1 align="center">Source for file search.php</h1>
+<p>Documentation is available at <a href="../examine/_search.php.html">search.php</a></p>
+<div class="src-code">
+<ol><li><div class="src-line"><a name="a1"></a><span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a2"></a><span class="src-inc">require_once&nbsp;</span><span class="src-str">'config.php'</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a3"></a><span class="src-inc">require_once&nbsp;</span><span class="src-str">'functions.php'</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a4"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a5"></a><span class="src-var">$db</span>=<a href="../examine/_config.sample.php.html#functioncreateDB">createDB</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a6"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a7"></a><span class="src-key">if&nbsp;</span><span class="src-sym">(</span><span class="src-sym">!</span>isset<span class="src-sym">(</span><span class="src-var">$_REQUEST</span><span class="src-sym">[</span><span class="src-str">'s'</span><span class="src-sym">]</span><span class="src-sym">))&nbsp;</span><span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a8"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">die&nbsp;</span><span class="src-sym">(</span><span class="src-str">&quot;No&nbsp;search&nbsp;term&quot;</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a9"></a><span class="src-sym">}</span></div></li>
+<li><div class="src-line"><a name="a10"></a><span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a11"></a>&lt;!DOCTYPE&nbsp;html&nbsp;PUBLIC&nbsp;&quot;-//W3C//DTD&nbsp;XHTML&nbsp;1.0&nbsp;Transitional//EN&quot;</div></li>
+<li><div class="src-line"><a name="a12"></a>&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a13"></a>&lt;html&nbsp;xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a14"></a>&lt;head&gt;</div></li>
+<li><div class="src-line"><a name="a15"></a>&lt;title&gt;</div></li>
+<li><div class="src-line"><a name="a16"></a>Search&nbsp;Results</div></li>
+<li><div class="src-line"><a name="a17"></a>&lt;/title&gt;</div></li>
+<li><div class="src-line"><a name="a18"></a>&lt;link&nbsp;rel=&quot;stylesheet&quot;&nbsp;href=&quot;examine.css&quot;&nbsp;type=&quot;text/css&quot;&nbsp;/&gt;</div></li>
+<li><div class="src-line"><a name="a19"></a>&lt;/head&gt;</div></li>
+<li><div class="src-line"><a name="a20"></a>&lt;body&gt;</div></li>
+<li><div class="src-line"><a name="a21"></a>&lt;div&nbsp;id=&quot;main&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a22"></a>&lt;div&nbsp;id=&quot;sidebar&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a23"></a>&amp;nbsp;</div></li>
+<li><div class="src-line"><a name="a24"></a>&lt;/div&gt;</div></li>
+<li><div class="src-line"><a name="a25"></a><span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a26"></a><span class="src-key">if&nbsp;</span><span class="src-sym">(</span><span class="src-sym">!</span><a href="http://www.php.net/get_magic_quotes_gpc">get_magic_quotes_gpc</a><span class="src-sym">(</span><span class="src-sym">))&nbsp;</span><span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a27"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-var">$s&nbsp;</span>=&nbsp;<a href="http://www.php.net/addslashes">addslashes</a><span class="src-sym">(</span><span class="src-var">$_GET</span><span class="src-sym">[</span><span class="src-str">'s'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a28"></a><span class="src-sym">}&nbsp;</span><span class="src-key">else&nbsp;</span><span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a29"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-var">$s&nbsp;</span>=&nbsp;<span class="src-var">$_GET</span><span class="src-sym">[</span><span class="src-str">'s'</span><span class="src-sym">]</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a30"></a><span class="src-sym">}</span></div></li>
+<li><div class="src-line"><a name="a31"></a>echo&nbsp;<span class="src-str">&quot;</span><span class="src-str">&lt;<span class="src-id">H1</span>&gt;<span class="src-id">Search</span>&nbsp;<span class="src-id">Results</span>&nbsp;<span class="src-id">For</span>&nbsp;'<span class="src-var">$s</span>'&lt;/<span class="src-id">H1</span>&gt;</span><span class="src-str">&quot;</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a32"></a><span class="src-var">$sql</span>=<span class="src-str">&quot;</span><span class="src-str"><span class="src-id">SELECT</span>&nbsp;<span class="src-id">people_id</span>,<span class="src-id">preferred_name</span>,<span class="src-id">last_name</span>,<span class="src-id">MATCH</span>(<span class="src-id">preferred_name</span>,<span class="src-id">middle_name</span>,<span class="src-id">lastname</span>)&nbsp;<span class="src-id">AGAINST</span>&nbsp;('<span class="src-var">$s</span>')&nbsp;<span class="src-id">as</span>&nbsp;<span class="src-id">score</span>&nbsp;<span class="src-id">FROM</span>&nbsp;<span class="src-id">people</span>&nbsp;<span class="src-id">WHERE</span>&nbsp;<span class="src-id">MATCH</span>(<span class="src-id">preferred_name</span>,<span class="src-id">middle_name</span>,<span class="src-id">last_name</span>)&nbsp;<span class="src-id">AGAINST</span>&nbsp;('<span class="src-var">$s</span>')&nbsp;<span class="src-id">ORDER</span>&nbsp;<span class="src-id">BY</span>&nbsp;<span class="src-id">score</span>&nbsp;<span class="src-id">DESC</span></span><span class="src-str">&quot;</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a33"></a><span class="src-var">$result</span>=<span class="src-var">$db</span><span class="src-sym">-&gt;</span><span class="src-id">query</span><span class="src-sym">(</span><span class="src-var">$sql</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a34"></a>echo&nbsp;<span class="src-str">'&lt;ul&gt;'</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a35"></a><span class="src-key">while&nbsp;</span><span class="src-sym">(</span><span class="src-var">$row</span>=<span class="src-var">$result</span><span class="src-sym">-&gt;</span><span class="src-id">fetchRow</span><span class="src-sym">(</span><span class="src-sym">))&nbsp;</span><span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a36"></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.php.net/printf">printf</a><span class="src-sym">(</span><span class="src-str">'&lt;li&gt;&lt;a&nbsp;href=&quot;people.php?id=%s&quot;&gt;%s&nbsp;%s&lt;/a&gt;&lt;/li&gt;'</span><span class="src-sym">,</span><span class="src-var">$row</span><span class="src-sym">[</span><span class="src-str">'people_id'</span><span class="src-sym">]</span><span class="src-sym">,</span><span class="src-var">$row</span><span class="src-sym">[</span><span class="src-str">'first_name'</span><span class="src-sym">]</span><span class="src-sym">,</span><span class="src-var">$row</span><span class="src-sym">[</span><span class="src-str">'last_name'</span><span class="src-sym">]</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a37"></a><span class="src-sym">}</span></div></li>
+<li><div class="src-line"><a name="a38"></a>echo&nbsp;<span class="src-str">'&lt;/ul&gt;'</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a39"></a><span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a40"></a>&lt;/div&gt;</div></li>
+<li><div class="src-line"><a name="a41"></a>&lt;/body&gt;</div></li>
+<li><div class="src-line"><a name="a42"></a>&lt;/html&gt;</div></li>
+</ol>
+</div>
+        <div class="credit">
+		    <hr />
+		    Documentation generated on Sat, 28 Apr 2007 17:30:23 -0500 by <a href="http://www.phpdoc.org">phpDocumentor 1.3.2</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
