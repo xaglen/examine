@@ -1,0 +1,500 @@
+<html>
+<head>
+<title>Docs for page functions.form.php</title>
+<link rel="stylesheet" type="text/css" href="../media/style.css">
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+    <td class="header_top">examine</td>
+  </tr>
+  <tr><td class="header_line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td class="header_menu">
+  		  [ <a href="../classtrees_examine.html" class="menu">class tree: examine</a> ]
+		  [ <a href="../elementindex_examine.html" class="menu">index: examine</a> ]
+		  [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td class="header_line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="200" class="menu">
+      <b>Packages:</b><br />
+              <a href="../li_examine.html">examine</a><br />
+            <br /><br />
+                        <b>Files:</b><br />
+      	  <div class="package">
+			<a href="../examine/_includes---debug.php.html">		debug.php
+		</a><br>
+			<a href="../examine/_includes---definitions.php.html">		definitions.php
+		</a><br>
+			<a href="../examine/_events.php.html">		events.php
+		</a><br>
+			<a href="../examine/_includes---footer.php.html">		footer.php
+		</a><br>
+			<a href="../examine/_includes---formTools.php.html">		formTools.php
+		</a><br>
+			<a href="../examine/_includes---functions.form.php.html">		functions.form.php
+		</a><br>
+			<a href="../examine/_includes---functions.php.html">		functions.php
+		</a><br>
+			<a href="../examine/_includes---functions.time.php.html">		functions.time.php
+		</a><br>
+			<a href="../examine/_index.php.html">		index.php
+		</a><br>
+	  </div><br />
+      
+      
+                </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Procedural File: functions.form.php</h1>
+Source Location: /includes/functions.form.php<br /><br />
+
+<br>
+<br>
+
+
+<h2>Page Details:</h2>
+<br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>filesource:</b>&nbsp;&nbsp;</td><td><a href="../__filesource/fsource_examine__includesfunctions.form.php.html">Source Code for this file</a></td>
+  </tr>
+</table>
+</div>
+<br /><br />
+<h4>Includes:</h4>
+<div class="tags">
+require_once(<a href="../examine/_includes---functions.php.html">'functions.php'</a>) [line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a10">10</a>]<br />
+require_once('../config.php') [line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a9">9</a>]<br />
+provides $dsn global<br /><br /></div>
+<br /><br />
+<br /><br />
+<br />
+  <hr />
+	<a name="functiondaysList"></a>
+	<h3>daysList <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a309">309</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void daysList(
+ $name, [ $day = &amp;quot;&amp;quot;])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		***<br /><br /><p>daysList()  Outputs a drop-down list of days of the week  receives: $name - the name of the input field  			 $day (optional) - a value to mark as &quot;selected&quot; (usually a value in the $_POST variable) ***</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$name</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$day</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functionformatDate"></a>
+	<h3>formatDate <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a366">366</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void formatDate(
+ $strDate)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		*************<br /><br /><p>formatDate ()  Takes date in the form MM/DD/YYYY or MM-DD-YYYY and re-formats it  for insertion into MySQL (YYYY-MM-DD) *************</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$strDate</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functiongenerateCategoryDropdown"></a>
+	<h3>generateCategoryDropdown <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a71">71</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void generateCategoryDropdown(
+[ $name = &#039;category_id&#039;], [ $default = NULL])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$name</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$default</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functiongeneratePeopleDropdown"></a>
+	<h3>generatePeopleDropdown <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a20">20</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>string generatePeopleDropdown(
+[int $ministry_id = NULL], [string $name = &#039;people_id&#039;], [int $default = NULL])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		Creates a dropdown of all the people in a ministry<br /><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">int&nbsp;&nbsp;</td>
+        <td><b>$ministry_id</b>&nbsp;&nbsp;</td>
+        <td>primary key to table ministries</td>
+      </tr>
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$name</b>&nbsp;&nbsp;</td>
+        <td>desired name of the dropdown</td>
+      </tr>
+		      <tr>
+        <td class="type">int&nbsp;&nbsp;</td>
+        <td><b>$default</b>&nbsp;&nbsp;</td>
+        <td>the people_id of the person who is to be the default value in the dropdown</td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functiongeneratePeopleLivesearch"></a>
+	<h3>generatePeopleLivesearch <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a120">120</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>string generatePeopleLivesearch(
+[int $ministry_id = NULL])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		creates the javascript necessary for an Ajax textbox<br /><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">int&nbsp;&nbsp;</td>
+        <td><b>$ministry_id</b>&nbsp;&nbsp;</td>
+        <td>primary key to table ministries</td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functiongenerateSchoolDropdown"></a>
+	<h3>generateSchoolDropdown <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a50">50</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>string generateSchoolDropdown(
+[int $ministry_id = NULL], [string $name = &#039;school_id&#039;], [int $default = NULL])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		Creates a dropdown of all the schools associated with a ministry<br /><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">int&nbsp;&nbsp;</td>
+        <td><b>$ministry_id</b>&nbsp;&nbsp;</td>
+        <td>primary key of table ministries</td>
+      </tr>
+		      <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$name</b>&nbsp;&nbsp;</td>
+        <td>desired name of the dropdown</td>
+      </tr>
+		      <tr>
+        <td class="type">int&nbsp;&nbsp;</td>
+        <td><b>$default</b>&nbsp;&nbsp;</td>
+        <td>the school_id of the school that is to be the default value in the dropdown</td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functiongenerateSubgroupDropdown"></a>
+	<h3>generateSubgroupDropdown <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a93">93</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void generateSubgroupDropdown(
+[ $ministry_id = NULL], [ $name = &#039;subgroup_id&#039;], [ $default = NULL])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$ministry_id</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$name</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$default</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functionhoursList"></a>
+	<h3>hoursList <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a253">253</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void hoursList(
+ $name, [ $hour = &amp;quot;&amp;quot;])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		***<br /><br /><p>hoursList()  Outputs a drop-down list of hours  receives: $name - the name of the input field  			 $hour (optional) - a value to mark as &quot;selected&quot; (usually a value in the $_POST variable) ***</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$name</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$hour</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functionminutesList"></a>
+	<h3>minutesList <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a271">271</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void minutesList(
+ $name, [ $minute = &amp;quot;&amp;quot;])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		***<br /><br /><p>minutesList()  Outputs a drop-down list of minutes  receives: $name - the name of the input field  			 $minute (optional) - a value to mark as &quot;selected&quot; (usually a value in the $_POST variable) ***</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$name</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$minute</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functionmonthsList"></a>
+	<h3>monthsList <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a290">290</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void monthsList(
+ $name, [ $month = &amp;quot;&amp;quot;])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		***<br /><br /><p>monthsList()  Outputs a drop-down list of months  receives: $name - the name of the input field  			 $month (optional) - a value to mark as &quot;selected&quot; (usually a value in the $_POST variable) ***</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$name</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$month</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functionprocessPhone"></a>
+	<h3>processPhone <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a337">337</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void processPhone(
+ $element)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		***<br /><br /><p>processPhone()  formats a phone number for consistent entry into database ***</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$element</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functionstateName"></a>
+	<h3>stateName <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a187">187</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void stateName(
+ $abbr)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		***<br /><br /><p>stateName()  Returns name of state based on supplied abbreviation ***</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$abbr</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functionstatesList"></a>
+	<h3>statesList <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a141">141</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void statesList(
+ $name, [ $state = &amp;quot;&amp;quot;])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		***<br /><br /><p>statesList()  Outputs a drop-down list of states  receives: $name - the name of the input field  			 $state (optional) - a value to mark as &quot;selected&quot; (usually a value in the $_POST variable) ***</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$name</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$state</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functionstatesListArrays"></a>
+	<h3>statesListArrays <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a159">159</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void statesListArrays(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		***<br /><br /><p>statesListArrays()  Returns an array with save/display lists for states (primarily intended for html select drop-down lists) ***</p><br />    <br /><br />
+	
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functiontitleList"></a>
+	<h3>titleList <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.form.php.html#a328">328</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void titleList(
+ $name,  $default, [ $selectedValue = &amp;quot;&amp;quot;])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		***<br /><br /><p>titleList()  Calls makeDropDownHTML() with correct values to output an html select list of name titles  receives: name - the name of the input field  			 default - text for first item on select list (doesn't have a value)  			 selectedValue (optional) - a value to mark as &quot;selected&quot; (usually a value in the $_POST variable) ***</p><br />    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$name</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$default</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+		      <tr>
+        <td class="type">&nbsp;&nbsp;</td>
+        <td><b>$selectedValue</b>&nbsp;&nbsp;</td>
+        <td></td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+
+        <div class="credit">
+		    <hr />
+		    Documentation generated on Sat, 28 Apr 2007 18:48:49 -0500 by <a href="http://www.phpdoc.org">phpDocumentor 1.3.2</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

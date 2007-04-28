@@ -1,0 +1,161 @@
+<html>
+<head>
+<title>Docs for page functions.time.php</title>
+<link rel="stylesheet" type="text/css" href="../media/style.css">
+</head>
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" height="48" width="100%">
+  <tr>
+    <td class="header_top">examine</td>
+  </tr>
+  <tr><td class="header_line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+  <tr>
+    <td class="header_menu">
+  		  [ <a href="../classtrees_examine.html" class="menu">class tree: examine</a> ]
+		  [ <a href="../elementindex_examine.html" class="menu">index: examine</a> ]
+		  [ <a href="../elementindex.html" class="menu">all elements</a> ]
+    </td>
+  </tr>
+  <tr><td class="header_line"><img src="../media/empty.png" width="1" height="1" border="0" alt=""  /></td></tr>
+</table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="200" class="menu">
+      <b>Packages:</b><br />
+              <a href="../li_examine.html">examine</a><br />
+            <br /><br />
+                        <b>Files:</b><br />
+      	  <div class="package">
+			<a href="../examine/_includes---debug.php.html">		debug.php
+		</a><br>
+			<a href="../examine/_includes---definitions.php.html">		definitions.php
+		</a><br>
+			<a href="../examine/_events.php.html">		events.php
+		</a><br>
+			<a href="../examine/_includes---footer.php.html">		footer.php
+		</a><br>
+			<a href="../examine/_includes---formTools.php.html">		formTools.php
+		</a><br>
+			<a href="../examine/_includes---functions.form.php.html">		functions.form.php
+		</a><br>
+			<a href="../examine/_includes---functions.php.html">		functions.php
+		</a><br>
+			<a href="../examine/_includes---functions.time.php.html">		functions.time.php
+		</a><br>
+			<a href="../examine/_index.php.html">		index.php
+		</a><br>
+	  </div><br />
+      
+      
+                </td>
+    <td>
+      <table cellpadding="10" cellspacing="0" width="100%" border="0"><tr><td valign="top">
+
+<h1>Procedural File: functions.time.php</h1>
+Source Location: /includes/functions.time.php<br /><br />
+
+<br>
+<br>
+
+
+<h2>Page Details:</h2>
+<br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>filesource:</b>&nbsp;&nbsp;</td><td><a href="../__filesource/fsource_examine__includesfunctions.time.php.html">Source Code for this file</a></td>
+  </tr>
+</table>
+</div>
+<br /><br />
+<h4>Includes:</h4>
+<div class="tags">
+require_once('config.php') [line <a href="../__filesource/fsource_examine__includesfunctions.time.php.html#a2">2</a>]<br />
+</div>
+<br /><br />
+<br /><br />
+<br />
+  <hr />
+	<a name="functiongetAge"></a>
+	<h3>getAge <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.time.php.html#a39">39</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>int getAge(
+[int $people_id = NULL])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		How old is a person?<br /><br /><br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>return:</b>&nbsp;&nbsp;</td><td>the person's age in minutes</td>
+  </tr>
+</table>
+</div>
+    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">int&nbsp;&nbsp;</td>
+        <td><b>$people_id</b>&nbsp;&nbsp;</td>
+        <td>primary key to table people</td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+  <hr />
+	<a name="functionreadableTimeDiff"></a>
+	<h3>readableTimeDiff <span class="smalllinenumber">[line <a href="../__filesource/fsource_examine__includesfunctions.time.php.html#a11">11</a>]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>string readableTimeDiff(
+int $start, int $end)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+
+		Takes two timestamps and gives the difference between them in plain English.<br /><br /><br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>return:</b>&nbsp;&nbsp;</td><td>a short phrase</td>
+  </tr>
+</table>
+</div>
+    <br /><br />
+	
+    		<h4>Parameters</h4>
+    <table border="0" cellspacing="0" cellpadding="0">
+		      <tr>
+        <td class="type">int&nbsp;&nbsp;</td>
+        <td><b>$start</b>&nbsp;&nbsp;</td>
+        <td>a unix timestamp</td>
+      </tr>
+		      <tr>
+        <td class="type">int&nbsp;&nbsp;</td>
+        <td><b>$end</b>&nbsp;&nbsp;</td>
+        <td>a unix timestamp</td>
+      </tr>
+				</table>
+    	<div class="top">[ <a href="#top">Top</a> ]</div><br /><br />
+	</div>
+
+        <div class="credit">
+		    <hr />
+		    Documentation generated on Sat, 28 Apr 2007 18:48:52 -0500 by <a href="http://www.phpdoc.org">phpDocumentor 1.3.2</a>
+	      </div>
+      </td></tr></table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
