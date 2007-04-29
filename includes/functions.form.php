@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * @package examine
  */
@@ -16,6 +16,7 @@ require_once 'functions.php';
  * @param string $name desired name of the dropdown
  * @param int $default the people_id of the person who is to be the default value in the dropdown
  * @return string 
+ * @author Glen Davis
  */
 function generatePeopleDropdown($ministry_id=NULL,$name='people_id',$default=NULL) {
 	$dropdown="<select ID='$name' NAME='$name'>";
@@ -46,6 +47,7 @@ function generatePeopleDropdown($ministry_id=NULL,$name='people_id',$default=NUL
  * @param string $name desired name of the dropdown
  * @param int $default the school_id of the school that is to be the default value in the dropdown
  * @return string 
+ * @author Glen Davis
  */
 function generateSchoolDropdown($ministry_id=NULL,$name='school_id',$default=NULL) {
 	$dropdown="<select ID='$name' NAME='$name'>";
@@ -68,6 +70,14 @@ function generateSchoolDropdown($ministry_id=NULL,$name='school_id',$default=NUL
 	return $dropdown;
 }
 
+/**
+ * Creates a dropdown of all the categories a person can be in
+ *
+  * @param string $name desired name of the dropdown
+ * @param int $default the category_id of the category that is to be the default value in the dropdown
+ * @return string 
+ * @author Glen Davis
+ */
 function generateCategoryDropdown($name='category_id',$default=NULL) {
 	$dropdown="<select ID='$name' NAME='$name'>";
 	$db=createDB();
@@ -89,7 +99,15 @@ function generateCategoryDropdown($name='category_id',$default=NULL) {
 	return $dropdown;
 }
 
-
+/**
+ * Creates a dropdown of all the subgroups (Bible studies and whatnot) associated with a ministry
+ *
+ * @param int $ministry_id primary key of table ministries
+ * @param string $name desired name of the dropdown
+ * @param int $default the subgroup_id of the school that is to be the default value in the dropdown
+ * @return string 
+ * @author Glen Davis
+ */
 function generateSubgroupDropdown($ministry_id=NULL,$name='subgroup_id',$default=NULL) {
 	$dropdown="<select ID='$name' NAME='$name'>";
 	$db=createDB();
@@ -116,6 +134,7 @@ function generateSubgroupDropdown($ministry_id=NULL,$name='subgroup_id',$default
  *
  * @param int $ministry_id primary key to table ministries
  * @return string
+ * @author Glen Davis
  */
 function generatePeopleLivesearch($ministry_id=NULL) {
 	$livesearch="<script>var peoplearray=new Array(";
@@ -132,12 +151,13 @@ function generatePeopleLivesearch($ministry_id=NULL) {
 	return $livesearch;
 }
 
-/*****
- * statesList()
- * Outputs a drop-down list of states
- * receives: $name - the name of the input field
- * 			 $state (optional) - a value to mark as "selected" (usually a value in the $_POST variable)
- *****/
+/**
+  * Outputs a drop-down list of states
+ * @param string $name the name of the input field
+ * @param string $state a value to mark as "selected" (usually a value in the $_POST variable)
+ * @return void
+ * @author Brian Kloefkorn
+ */
 function statesList ( $name, $state="" ) {
 	$arrays = statesListArrays();
 	$value = $arrays[0];
@@ -152,10 +172,12 @@ function statesList ( $name, $state="" ) {
 }
 
 
-/*****
- * statesListArrays()
- * Returns an array with save/display lists for states (primarily intended for html select drop-down lists)
- *****/
+/**
+  * Returns an array with save/display lists for states (primarily intended for html select drop-down lists)
+  *
+  * @return array
+  * @author Brian Kloefkorn
+  */
 function statesListArrays () {
 	$value = array(
 		'AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL',
@@ -244,12 +266,13 @@ function stateName ( $abbr ) {
 }
 
 
-/*****
- * hoursList()
+/**
  * Outputs a drop-down list of hours
- * receives: $name - the name of the input field
- * 			 $hour (optional) - a value to mark as "selected" (usually a value in the $_POST variable)
- *****/
+ *
+ * @param string $name the name of the input field
+ * @param string $hour a value to mark as "selected" (usually a value in the $_POST variable)
+ * @author Brian Kloefkorn
+ */
 function hoursList ( $name, $hour="" ) {
 	$values = array(1=>'01','02','03','04','05','06','07','08','09','10','11','12');
 	echo '<select name="'.$name.'">'."\n";
@@ -261,13 +284,13 @@ function hoursList ( $name, $hour="" ) {
 	echo '</select>'."\n";
 }
 
-
-/*****
- * minutesList()
+/**
  * Outputs a drop-down list of minutes
- * receives: $name - the name of the input field
- * 			 $minute (optional) - a value to mark as "selected" (usually a value in the $_POST variable)
- *****/
+ *
+ * @param string $name the name of the input field
+ * @param string $minute a value to mark as "selected" (usually a value in the $_POST variable)
+ * @author Brian Kloefkorn
+ **/
 function minutesList ( $name, $minute="" ) {
 	$values = array('0','1','2','3','4','5','6','7','8','9');
 	echo '<select name="'.$name.'">'."\n";
@@ -281,12 +304,14 @@ function minutesList ( $name, $minute="" ) {
 }
 
 
-/*****
- * monthsList()
+/**
  * Outputs a drop-down list of months
- * receives: $name - the name of the input field
- * 			 $month (optional) - a value to mark as "selected" (usually a value in the $_POST variable)
- *****/
+ * 
+ * @param string $name - the name of the input field
+ * @param string $month (optional) - a value to mark as "selected" (usually a value in the $_POST variable)
+ * @return void
+ * @author Brian Kloefkorn
+ */
 function monthsList ( $name, $month="" ) {
 	$value = array('01','02','03','04','05','06','07','08','09','10','11','12');
 	$display = array('January','February','March','April','May','June','July','August','September','October','November','December');
@@ -300,12 +325,13 @@ function monthsList ( $name, $month="" ) {
 }
 
 
-/*****
- * daysList()
+/**
  * Outputs a drop-down list of days of the week
- * receives: $name - the name of the input field
- * 			 $day (optional) - a value to mark as "selected" (usually a value in the $_POST variable)
- *****/
+ *
+ * @param string $name - the name of the input field
+ * @param string $day (optional) - a value to mark as "selected" (usually a value in the $_POST variable)
+ * @author Brian Kloefkorn
+ */
 function daysList ( $name, $day="" ) {
 	$value = array('1','2','3','4','5','6','7');
 	$display = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
@@ -318,22 +344,26 @@ function daysList ( $name, $day="" ) {
 	echo '</select>'."\n";
 }
 
-/*****
- * titleList()
+/**
  * Calls makeDropDownHTML() with correct values to output an html select list of name titles
- * receives: name - the name of the input field
- * 			 default - text for first item on select list (doesn't have a value)
- * 			 selectedValue (optional) - a value to mark as "selected" (usually a value in the $_POST variable)
- *****/
+ * 
+ * @param string $name - the name of the input field
+ * @param string $default - text for first item on select list (doesn't have a value)
+ * @param string $selectedValue (optional) - a value to mark as "selected" (usually a value in the $_POST variable)
+ * @author Brian Kloefkorn
+ */
 function titleList ($name, $default, $selectedValue="") {
 	$titles = array('Mr.','Mrs.','Miss','Ms.','Rev.','Dr.');
 	makeDropDownHTML($name, $default, $titles, $titles, $selectedValue);
 }
 
-/*****
- * processPhone()
+/**
  * formats a phone number for consistent entry into database
- *****/
+ *
+ * @param string $element a phone number
+ * @return string
+ * @author Brian Kloefkorn
+ */
 function processPhone($element) {
 	// strips everything that isn't a digit
 	$element = preg_replace("/\D/", "", $element);
@@ -358,11 +388,13 @@ function processPhone($element) {
 }
 
 
-/***************
- * formatDate ()
- * Takes date in the form MM/DD/YYYY or MM-DD-YYYY and re-formats it 
- * for insertion into MySQL (YYYY-MM-DD)
- ***************/
+/**
+ * Takes date in the form MM/DD/YYYY or MM-DD-YYYY and re-formats it for insertion into MySQL (YYYY-MM-DD)
+ * 
+ * @param string $strDate a date in standard American format
+ * @return string
+ * @author Brian Kloefkorn
+ */
 function formatDate ( $strDate ) {
 	$err = false;
 	if ( (strlen($strDate) >= 8) && (strlen($strDate) <= 10) ) {
