@@ -13,6 +13,10 @@ if (isset($_REQUEST['event_id'])) {
 	$event_id=$_REQUEST['event_id'];
 }
 
+if (!isset($_POST['ACTION'])) {
+    $_POST['ACTION']='DEFAULT';
+}
+
 switch ($_POST['ACTION']) {
 case 'DELETE': // request confirmation for an event deletion
 	if (ownsEvent($user_id,$event_id)) {
@@ -136,7 +140,7 @@ if ($event_id!==NULL) {
 ?>
 </div>
 <?php
-if ($event_id===NULL && ($_POST['ACTION']!='ADD'))) {
+if ($event_id===NULL && $_POST['ACTION']!='ADD') {
 	$sql="SELECT event_id,name,begin,UNIX_TIMESTAMP(begin) as unixdate,estimated_attendance FROM events ORDER BY begin DESC";
 	$result=$db->query($sql);
 	$OldTimeLabel='';
