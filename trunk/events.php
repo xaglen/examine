@@ -226,6 +226,6 @@ CALENDAR;
 } // end if $event_id===NULL
 ?>
 </div>
-<?php include 'includes/footer.php';?>
+<?php include 'templates/footer.php';?>
 </body>
 </html>
