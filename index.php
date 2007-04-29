@@ -1,4 +1,5 @@
 <?php 
+require_once 'config.php';
 require_once 'includes/functions.php';
 $db=createDB();
 $ministry_id=1; // for testing purposes only - later we will get this from the id of the person logged in

@@ -1,5 +1,5 @@
 <?php
-require_once '../config.php';
+require_once "../config.php";
 
 /**
  * Simplifies db access. Will be called on almost every user page.
