@@ -5,9 +5,10 @@
 
 /**
  * provides $dsn global
- */
-require_once '../config.php';
-require_once 'functions.php';
+ * convoluted call necessary because PHP does not compute relative paths from location of file. No - really
+*/
+require_once dirname(__FILE__).'/../config.php';
+require_once dirname(__FILE__).'/functions.php';
 
 /**
  * Creates a dropdown of all the people in a ministry

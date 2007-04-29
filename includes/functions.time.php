@@ -1,5 +1,9 @@
 <?php
-require_once 'config.php';
+/**
+ * provides $dsn global
+ * convoluted call necessary because PHP does not compute relative paths from location of file. No - really
+ */
+require_once dirname(__FILE__).'/../config.php';
 
 /**
  * Takes two timestamps and gives the difference between them in plain English.
