@@ -51,13 +51,15 @@ case 'UPDATE': // process modifications to an event
 case 'ADD': // create a blank form for data entry
 	$event_id=NULL;
 	// this should print out a blank form for data entry
-	$sql='DESCRIBE events';
-	$result=$db->query($sql);
-	while ($row=$result->nextRow()) {
+	$mysqli = new mysqli($mdb2_host,$mdb2_user,$mdb2_pass,$mdb2_db_name);
+    $sql='DESCRIBE events';
+	$result=$mysqli->query($sql);
+	while ($row=$result->fetch_row()) {
 		$event[$row[0]]='';
 	}
 	unset($event['event_id']); // we don't want the user to enter a value for this
 	reset($event);
+    $mysqli->close();
 	break;
 case 'INSERT': // this takes the results of ADD and puts it in the database
 	unset($_POST['ACTION']);
@@ -88,6 +90,7 @@ if (!isset($event_id)) {
 <head>
 <title><?php echo $name;?></title>
 <link rel="stylesheet" href="examine.css" type="text/css">
+<link rel="stylesheet" href="quickform.css" type="text/css">
 <script type="text/javascript" src="datarequestor-1.6.js"></script>
 <script type="text/javascript" src="display.js"></script>
 <script type="text/javascript" src="forms.js"></script>
@@ -165,6 +168,8 @@ if ($event_id===NULL && $_POST['ACTION']!='ADD') {
 if ($_POST['ACTION']=='ADD') {
 	echo '<div class="visible" id="edit">'."\n";
 	echo '<H1>Add An Event</H1>'."\n";
+     $form = new HTML_QuickForm('add','POST',$_SERVER['PHP_SELF'],null,null,true);
+     $form->addElement('header','','Add New Event');
 } else {
 	echo '<div class="visible" id="content">';
 	echo '<H1>'.$name.'</H1>';
@@ -178,10 +183,10 @@ if ($_POST['ACTION']=='ADD') {
 	echo "<H1>Edit $name</H1>\n";
 	printf('<a href="#" onclick="javascript:displaymode()">Display Mode</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="%s?DELETE=yes&amp;event_id=%d">Delete<
 /a><br/>',$_SERVER['PHP_SELF'],$event_id);
+ $form = new HTML_QuickForm('modify','POST',$_SERVER['PHP_SELF'],null,null,true);
+ $form->addElement('header','','Modify Event');
 }
 
-	$form = new HTML_QuickForm('modify','POST',$_SERVER['PHP_SELF'],null,null,true);
-	$form->addElement('header','','Modify Event');
 	unset($event['unixdate']);
 	while (list($key,$val)=each($event)) {
 		switch($key) {
@@ -219,7 +224,7 @@ CALENDAR;
 	$renderer =& new HTML_QuickForm_Renderer_Tableless();
 	$form->accept($renderer);
 	echo $renderer->toHtml();
-	if (isset($_POST['ADD'])) {
+	if ($_POST['ACTION']='ADD') {
 		echo "<H2>Regulars Who Might Have Been There</H2>\n";
 		include('subforms/regulars.php');
 		echo '<INPUT TYPE="SUBMIT" NAME="ACTION" VALUE="ADD">';
