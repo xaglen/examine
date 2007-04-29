@@ -42,10 +42,10 @@ case 'UPDATE': // process modifications to an event
 case 'ADD': // create a blank form for data entry
 	$event_id=NULL;
 	// this should print out a blank form for data entry
-	$sql='SELECT * FROM events LIMIT 1';
-	$event=$db->getRow($sql);
-	while (list($key,$val)=each($event)) {
-		$event[$key]=NULL;
+	$sql='DESCRIBE events';
+	$result=$db->query($sql);
+	while ($row=$result->nextRow()) {
+		$event[$row[0]]=NULL;
 	}
 	unset($event['event_id']); // we don't want the user to enter a value for this
 	reset($event);
