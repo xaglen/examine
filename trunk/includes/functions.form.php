@@ -4,10 +4,13 @@
  */
 
 /**
- * provides $dsn global
- * convoluted call necessary because PHP does not compute relative paths from location of file. No - really
-*/
+ * config.php provides global variable $dsn
+ * funky require code necessary because PHP evals relative paths according
+ * to location of script execution, not according to location of file
+ * No. Really.
+ */
 require_once dirname(__FILE__).'/../config.php';
+
 require_once dirname(__FILE__).'/functions.php';
 
 /**
