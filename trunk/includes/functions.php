@@ -1,5 +1,8 @@
 <?php
-require_once "../config.php";
+/**
+ * necessary because PHP does not compute relative paths from location of file. No - really.
+ */
+require_once dirname(__FILE__).'/../config.php'; 
 
 /**
  * Simplifies db access. Will be called on almost every user page.
