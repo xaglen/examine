@@ -136,7 +136,7 @@ if ($event_id!==NULL) {
 ?>
 </div>
 <?php
-if ($event_id===NULL && !isset($_POST['ADD'])) {
+if ($event_id===NULL && ($_POST['ACTION']!='ADD'))) {
 	$sql="SELECT event_id,name,begin,UNIX_TIMESTAMP(begin) as unixdate,estimated_attendance FROM events ORDER BY begin DESC";
 	$result=$db->query($sql);
 	$OldTimeLabel='';
@@ -153,27 +153,24 @@ if ($event_id===NULL && !isset($_POST['ADD'])) {
 	}
 	echo "</ol></ul>";
 } else { // event_id is not equal to null or ADD is set
-	if (!isset($_POST['ADD'])) {
-		echo '<div class="visible" id="content">';
-		echo '<H1>'.$name.'</H1>';
-		printf('<a href="#" onclick="javascript:editmode()">Edit Mode</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="%s?DELETE=yes&amp;event_id=%d">Delete</a><br
+if ($_POST['ACTION']=='ADD') {
+	echo '<div class="visible" id="edit">'."\n";
+	echo '<H1>Add An Event</H1>'."\n";
+} else {
+	echo '<div class="visible" id="content">';
+	echo '<H1>'.$name.'</H1>';
+	printf('<a href="#" onclick="javascript:editmode()">Edit Mode</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="%s?DELETE=yes&amp;event_id=%d">Delete</a><br
 />',$_SERVER['PHP_SELF'],$event_id);
-		echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
-		echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
-		echo '<em>'.$event['notes'].'</em>'."\n";
-		echo '</div>'."\n";
-		echo '<div class="hidden" id="edit">'."\n";
-		echo "<H1>Edit $name</H1>\n";
-	} else {
-		echo '<div class="visible" id="edit">'."\n";
-		echo '<H1>Add An Event</H1>'."\n";
-	}
-	?>
-	<?php
-	if (!isset($_POST['ADD'])) {
-		printf('<a href="#" onclick="javascript:displaymode()">Display Mode</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="%s?DELETE=yes&amp;event_id=%d">Delete<
+	echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
+	echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
+	echo '<em>'.$event['notes'].'</em>'."\n";
+	echo '</div>'."\n";
+	echo '<div class="hidden" id="edit">'."\n";
+	echo "<H1>Edit $name</H1>\n";
+	printf('<a href="#" onclick="javascript:displaymode()">Display Mode</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="%s?DELETE=yes&amp;event_id=%d">Delete<
 /a><br/>',$_SERVER['PHP_SELF'],$event_id);
-	}
+}
+
 	$form = new HTML_QuickForm('modify','POST',$_SERVER['PHP_SELF'],null,null,true);
 	$form->addElement('header','','Modify Event');
 	unset($event['unixdate']);
