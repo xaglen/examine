@@ -15,6 +15,7 @@ $ministry_id=1; // for testing purposes only - later we will get this from the i
 <script type="text/javascript" src="display.js"></script>
 </head>
 <body>
+<?php include 'templates/header.php';?>
 <div id="main">
 <div id="sidebar">
 Birthdays This Month & Next: <br/>

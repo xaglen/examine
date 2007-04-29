@@ -78,11 +78,10 @@ if (!isset($event_id)) {
 <html>
 <head>
 <title><?php echo $name;?></title>
-<link rel="stylesheet" href="students.css" type="text/css">
-<link rel="stylesheet" href="navbar-underline.css" type="text/css">
-<link rel="stylesheet" href="quickform.css" type="text/css">
-<script type="text/javascript" src="dataRequestor.js"></script>
-<script type="text/javascript" src="students.js"></script>
+<link rel="stylesheet" href="examine.css" type="text/css">
+<script type="text/javascript" src="datarequestor-1.6.js"></script>
+<script type="text/javascript" src="display.js"></script>
+<script type="text/javascript" src="forms.js"></script>
 <script type="text/javascript">
 function SetDate(HiddenFieldID,NewDate,NewDateID) {
 	if (!document.getElementById) return null;
@@ -117,6 +116,7 @@ function ChangeCalendar(datefield,month,day,year) {
 </style>
 </head>
 <body>
+<?php include 'templates/header.php';?>
 <div id="main">
 <div id="sidebar">
 <?php
