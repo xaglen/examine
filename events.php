@@ -14,7 +14,12 @@ if (isset($_REQUEST['event_id'])) {
 }
 
 if (!isset($_POST['ACTION'])) {
-    $_POST['ACTION']='DEFAULT';
+    $total=$db->getOne('SELECT COUNT(*) FROM events WHERE ministry_id='.$ministry_id);
+    if ($total>0) {
+        $_POST['ACTION']='DEFAULT';
+    } else {
+        $_POST['ACTION']='ADD';
+    }
 }
 
 switch ($_POST['ACTION']) {
@@ -49,7 +54,7 @@ case 'ADD': // create a blank form for data entry
 	$sql='DESCRIBE events';
 	$result=$db->query($sql);
 	while ($row=$result->nextRow()) {
-		$event[$row[0]]=NULL;
+		$event[$row[0]]='';
 	}
 	unset($event['event_id']); // we don't want the user to enter a value for this
 	reset($event);
