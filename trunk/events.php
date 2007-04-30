@@ -15,25 +15,38 @@ if (isset($_REQUEST['event_id'])) {
 	$event_id=$_REQUEST['event_id'];
 }
 
-if (!isset($_POST['ACTION'])) {
+if (!isset($_POST['ACTION']) && !isset($_GET['action'])) {
     $total=$db->getOne('SELECT COUNT(*) FROM events WHERE ministry_id='.$ministry_id);
     if ($total>0) {
         $_POST['ACTION']='DEFAULT';
+		$_GET['action']='DEFAULT';
     } else {
-        $_POST['ACTION']='ADD';
+        $_GET['action']='add';
     }
 }
 
-switch ($_POST['ACTION']) {
-case 'DELETE': // request confirmation for an event deletion
-	if (ownsEvent($user_id,$event_id)) {
+if (isset($_GET['action'])) {
+	switch ($_GET['action']) {
+	case 'add': // create a blank form for data entry
+		$event_id=NULL;
+		// this should print out a blank form for data entry
+		$sql='DESCRIBE events';
+		$result=$db->query($sql);
+		while ($row=$result->fetchRow()) {
+			$event[$row[0]]='';
+		}
+		unset($event['event_id']); // we don't want the user to enter a value for this
+		reset($event);
+	break;
+	case 'delete': // request confirmation for an event deletion
 		echo "Are you sure you want to delete this event? There is NO UNDO!<br/>";
 		echo '<FORM ACTION="'.$_SERVER['PHP_SELF'].'"><INPUT TYPE="SUBMIT" NAME="ACTION" VALUE="CONFIRM"><INPUT TYPE="HIDDEN" NAME="event_id" VALUE="'.$event_id.'"></FORM>';
-		exit();
-	} else {
-		echo "You do not have authority to delete this event.<br/>";
+	exit();
+	default:
 	}
-	break;
+}
+
+switch ($_POST['ACTION']) {
 case 'CONFIRM': // remove an event from the database
 	if (ownsEvent($user_id,$event_id)) {
 		$sql='DELETE FROM events WHERE event_id='.$event_id;
@@ -49,18 +62,6 @@ case 'UPDATE': // process modifications to an event
 	} else {
 		echo "You do not have authority to modify this event.</br>";
 	}
-	break;
-case 'ADD': // create a blank form for data entry
-	$event_id=NULL;
-	// this should print out a blank form for data entry
-	//$mysqli = new mysqli($dbHost,$dbUser,$dbPass,$dbName);
-    $sql='DESCRIBE events';
-	$result=$db->query($sql);
-	while ($row=$result->fetchRow()) {
-		$event[$row[0]]='';
-	}
-	unset($event['event_id']); // we don't want the user to enter a value for this
-	reset($event);
 	break;
 case 'INSERT': // this takes the results of ADD and puts it in the database
 	unset($_POST['ACTION']);
@@ -151,8 +152,7 @@ if ($event_id!==NULL) {
 ?>
 </div>
 <?php
-echo '<FORM ACTION="'.$_SERVER['PHP_SELF'].'" METHOD=POST><INPUT TYPE=SUBMIT NAME="ACTION" VALUE="ADD"><INPUT TYPE=SUBMIT NAME="ACTION" VALUE="DELETE"></FORM>';
-if ($event_id===NULL && $_POST['ACTION']!='ADD') {
+if ($event_id===NULL && $_GET['action']!='ADD') {
 	$sql="SELECT event_id,name,begin,UNIX_TIMESTAMP(begin) as unixdate,estimated_attendance FROM events ORDER BY begin DESC";
 	$result=$db->query($sql);
 	$OldTimeLabel='';
@@ -169,7 +169,7 @@ if ($event_id===NULL && $_POST['ACTION']!='ADD') {
 	}
 	echo "</ol></ul>";
 } else { // event_id is not equal to null or ADD is set
-if ($_POST['ACTION']=='ADD') {
+if ($_GET['action']=='add') {
 	echo '<div class="visible" id="edit">'."\n";
 	echo '<H1>Add An Event</H1>'."\n";
      $form = new HTML_QuickForm('add','POST',$_SERVER['PHP_SELF'],null,null,true);
@@ -177,14 +177,15 @@ if ($_POST['ACTION']=='ADD') {
 } else {
 	echo '<div class="visible" id="content">';
 	echo '<H1>'.$name.'</H1>';
-	echo '<a href="#" onclick="javascript:editmode()">Edit Mode</a><br/>';
+	echo '<span class="actions"><a href="#" onclick="javascript:editmode()">edit</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.'>delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
 	echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
 	echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
 	echo '<em>'.$event['notes'].'</em>'."\n";
 	echo '</div>'."\n";
+	// this is the beginning of the hidden DIV
 	echo '<div class="hidden" id="edit">'."\n";
 	echo "<H1>Edit $name</H1>\n";
-	echo '<a href="#" onclick="javascript:displaymode()">Display Mode</a><br/>';
+	echo '<span class="actions"><a href="#" onclick="javascript:displaymode()">Display Mode</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.'>delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';'
  $form = new HTML_QuickForm('modify','POST',$_SERVER['PHP_SELF'],null,null,true);
  $form->addElement('header','','Modify Event');
 }
@@ -226,10 +227,10 @@ CALENDAR;
 	$renderer =& new HTML_QuickForm_Renderer_Tableless();
 	$form->accept($renderer);
 	echo $renderer->toHtml();
-	if ($_POST['ACTION']='ADD') {
+	if ($_GET['action']=='ADD') {
 		echo "<H2>Regulars Who Might Have Been There</H2>\n";
 		include('subforms/regulars.php');
-		echo '<INPUT TYPE="SUBMIT" NAME="ACTION" VALUE="ADD">';
+		echo '<INPUT TYPE="SUBMIT" NAME="ACTION" VALUE="INSERT">';
 	} else {
 		echo '<INPUT TYPE="SUBMIT" NAME="ACTION" VALUE="UPDATE">';
 	}
