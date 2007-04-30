@@ -9,4 +9,13 @@ $dbHost="localhost";
 $dbName=""; // the actual name of the database
 
 $dsn = 'mysqli://'.$dbUser.':'.$dbPass.'@'.$dbHost.'/'.$dbName;
+
+// You should not need to change anything below this line
+
+$loginOptions = array(
+        'dsn' => $dsn,
+        'table' => 'users',
+        'advancedsecurity' => true,
+        'sessionName' => 'chi_alpha_examine'
+        ); 
 ?>
