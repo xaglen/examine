@@ -177,16 +177,14 @@ if ($_POST['ACTION']=='ADD') {
 } else {
 	echo '<div class="visible" id="content">';
 	echo '<H1>'.$name.'</H1>';
-	printf('<a href="#" onclick="javascript:editmode()">Edit Mode</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="%s?DELETE=yes&amp;event_id=%d">Delete</a><br
-/>',$_SERVER['PHP_SELF'],$event_id);
+	printf('<a href="#" onclick="javascript:editmode()">Edit Mode</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="%s?DELETE=yes&amp;event_id=%d">Delete</a><br/>',$_SERVER['PHP_SELF'],$event_id);
 	echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
 	echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
 	echo '<em>'.$event['notes'].'</em>'."\n";
 	echo '</div>'."\n";
 	echo '<div class="hidden" id="edit">'."\n";
 	echo "<H1>Edit $name</H1>\n";
-	printf('<a href="#" onclick="javascript:displaymode()">Display Mode</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="%s?DELETE=yes&amp;event_id=%d">Delete<
-/a><br/>',$_SERVER['PHP_SELF'],$event_id);
+	printf('<a href="#" onclick="javascript:displaymode()">Display Mode</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="%s?DELETE=yes&amp;event_id=%d">Delete</a><br/>',$_SERVER['PHP_SELF'],$event_id);
  $form = new HTML_QuickForm('modify','POST',$_SERVER['PHP_SELF'],null,null,true);
  $form->addElement('header','','Modify Event');
 }
