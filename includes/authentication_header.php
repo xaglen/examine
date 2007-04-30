@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Auth.php';
 require_once 'HTML/QuickForm.php';
 require_once 'HTML/QuickForm/Renderer/Tableless.php';
 
@@ -11,7 +12,6 @@ require_once 'HTML/QuickForm/Renderer/Tableless.php';
  * @param object &$auth the Auth object itself
  * @author Glen Davis
  */
-
 function loginForm($username='',$status=null,&$auth=null) {
 global $_SERVER;
 
@@ -48,7 +48,6 @@ global $_SERVER;
 	$form->setRequiredNote(' ');
 	$form->setJsWarnings(' ',' ');
 	$form->addElement('link','forgot','','http://chialpha.com/login/wrt/examine/forgot_password.php','forgot your password?');
-	$form->addElement('html',"<p>Welcome to eXAmine - Chi Alpha's web-based administration tool.</p><br/><br/>");
 	$renderer =& new HTML_QuickForm_Renderer_Tableless();
 	$form->accept($renderer);
 	?>
@@ -61,21 +60,56 @@ global $_SERVER;
 <body>
 	<?
 	echo $renderer->toHtml();
-    //$form->display();
 	?>
-	</body>
+	<p>Welcome to eXAmine - Chi Alpha's web-based administration tool.</p>
+    <p>We are currently storing information for
+    <?php
+    $db = new mysqli('localhost',$mdb2_user,$mdb2_pass,'examine');
+    $result=$db->query('SELECT COUNT(*) FROM ministries');
+    $row=$result->fetch_row();
+    $ministries=$row[0];
+    $result->close();
+    $result=$db->query('SELECT COUNT(*) FROM people');
+    $row=$result->fetch_row();
+    $people=$row[0];
+    $result->close();
+    echo "$ministries ministries encompassing $people people. Add yours!</p>";
+    ?>
+    </body>
 	</html>
 	<?php
 }
 
-$params = array(
+/**
+ * Does a user have rights to edit an event?
+ *
+ * @param int $people_id primary key to table people
+ * @param int $event_id primary key to table events
+ * @return boolean
+ */
+function ownsEvent($people_id=null,$event_id=null) {
+    return true;
+}
+
+/**
+ * Does a user have rights to edit a  ministry?
+ *
+ * @param int $people_id primary key to table people
+ * @param int $ministry_id primary key to table ministries
+ * @return boolean
+ */
+function ownsMinistry ($people_id=null, $ministry_id=null) {
+    return true;
+}
+
+$loginOptions = array(
                 "dsn" => $dsn,
                 "table" => "users",
 				"advancedsecurity" => true,
 				"sessionName"=>'chi_alpha_examine'
  ); 
  
-$a = &new Auth("MDB2", $params,'loginForm');
+$a = &new Auth("MDB2", $loginOptions,'loginForm');
 $a->setSessionname('chi_alpha_examine');
 $a->setIdle(900); // fifteen minutes
 $a->start();
@@ -84,10 +118,10 @@ if (!$a->getAuth()) {
 	  exit();
 }
 
-if (isset($_GET['act']) && ($_GET['act'] == "logout")) {
-          // Log user out
-          $a->logout();
-		  header("Location: http://chialpha.com/login/wrt/examine/");
-		  exit();
+if (isset($_GET['logout'])) {
+      $a->logout();
+      header("Location: http://chialpha.com/login/wrt/examine/");
+	  exit();
 }
+
 ?>

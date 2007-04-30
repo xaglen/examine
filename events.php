@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+require_once 'includes/authentication_header.php';
 require_once 'HTML/QuickForm.php';
 //require_once 'HTML/QuickForm/DHTMLRulesTableless.php';
 require_once 'HTML/QuickForm/Renderer/Tableless.php';
@@ -51,7 +52,7 @@ case 'UPDATE': // process modifications to an event
 case 'ADD': // create a blank form for data entry
 	$event_id=NULL;
 	// this should print out a blank form for data entry
-	$mysqli = new mysqli($mdb2_host,$mdb2_user,$mdb2_pass,$mdb2_db_name);
+	$mysqli = new mysqli($dbHost,$dbUser,$dbPass,$dbName);
     $sql='DESCRIBE events';
 	$result=$mysqli->query($sql);
 	while ($row=$result->fetch_row()) {
