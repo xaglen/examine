@@ -8,6 +8,7 @@ require_once 'includes/functions.php';
 require_once 'includes/functions.time.php';
 
 $db=createDB();
+$ministry_id = $a->getMinistryID();
 
 // if event_id is specified in GET or POST, extract it here
 if (isset($_REQUEST['event_id'])) {

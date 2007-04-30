@@ -3,6 +3,22 @@
 require_once 'Auth.php';
 require_once 'HTML/QuickForm.php';
 require_once 'HTML/QuickForm/Renderer/Tableless.php';
+require_once basename(__FILE__).'/../config.php';
+
+/**
+ * Extended PEAR Auth class to allow easier internal data checks with out schema
+ *
+ * @author Glen Davis
+ */
+class myAuth extends Auth {
+    function getPeopleID() {
+        return 1;
+    }
+
+    function getMinistryID() {
+        return 1;
+    }
+}
 
 /**
  * Displays a login form
@@ -14,7 +30,10 @@ require_once 'HTML/QuickForm/Renderer/Tableless.php';
  */
 function loginForm($username='',$status=null,&$auth=null) {
 global $_SERVER;
-
+global $dbUser;
+global $dbHost;
+global $dbPass;
+global $dbName;
 
     $form = new HTML_QuickForm('login', 'POST',$_SERVER['PHP_SELF'],null,null,true);
 	$form->addElement('header','','Login');
@@ -62,9 +81,10 @@ global $_SERVER;
 	echo $renderer->toHtml();
 	?>
 	<p>Welcome to eXAmine - Chi Alpha's web-based administration tool.</p>
+    <p>You can give me a test-drive by logging in with username <b>example@chialpha.com</b> and password <b>demo</b> (don't worry - you can't mess anything up, the example database is repopulated every hour).</p>
     <p>We are currently storing information for
     <?php
-    $db = new mysqli('localhost',$mdb2_user,$mdb2_pass,'examine');
+    $db = new mysqli($dbHost,$dbUser,$dbPass,$dbName);
     $result=$db->query('SELECT COUNT(*) FROM ministries');
     $row=$result->fetch_row();
     $ministries=$row[0];
@@ -102,14 +122,7 @@ function ownsMinistry ($people_id=null, $ministry_id=null) {
     return true;
 }
 
-$loginOptions = array(
-                "dsn" => $dsn,
-                "table" => "users",
-				"advancedsecurity" => true,
-				"sessionName"=>'chi_alpha_examine'
- ); 
- 
-$a = &new Auth("MDB2", $loginOptions,'loginForm');
+$a = &new myAuth("MDB2", $loginOptions,'loginForm');
 $a->setSessionname('chi_alpha_examine');
 $a->setIdle(900); // fifteen minutes
 $a->start();
