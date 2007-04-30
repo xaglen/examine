@@ -47,4 +47,37 @@ function getAge($people_id=NULL) {
 	$age=$db->getOne($sql);
 	return $age;
 }
+
+/**
+ * What academic term is it?
+ *
+ * @param int timestamp the time to be labeled
+ * @param string system quarter or semester?
+ * @return string
+ * @todo check the weeks for semester and quarter schools
+ */
+function getTimeLabel($timestamp=NULL,$system='semester') {
+        if ($timestamp===NULL) return '';
+        if ($system=='semester') {
+            if (date('W',$timestamp)<=20) {
+                $TimeLabel='Spring Semester '.date('Y',$timestamp);
+            } elseif (date('W',$timestamp)<=30) {
+                $TimeLabel='Summer Semester '.date('Y',$timestamp);
+            } else {
+                $TimeLabel='Fall Semester '.date('Y',$timestamp);
+            }
+        } else {
+            // these weeks are mostly made up
+            if (date('W',$timestamp)<=12) {
+                $TimeLabel='Winter Quarter '.date('Y',$timestamp);
+            } elseif (date('W',$timestamp)<=25) {
+                $TimeLabel='Spring Quarter '.date('Y',$timestamp);
+            } elseif (date('W',$timestamp)<=37) {
+                $TimeLabel='Summer Quarter '.date('Y',$timestamp);
+            } else {
+                $TimeLabel='Fall Quarter '.date('Y',$timestamp);
+            }
+        }
+        return $TimeLabel;
+}
 ?>

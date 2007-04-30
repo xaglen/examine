@@ -53,10 +53,10 @@ case 'UPDATE': // process modifications to an event
 case 'ADD': // create a blank form for data entry
 	$event_id=NULL;
 	// this should print out a blank form for data entry
-	$mysqli = new mysqli($dbHost,$dbUser,$dbPass,$dbName);
+	//$mysqli = new mysqli($dbHost,$dbUser,$dbPass,$dbName);
     $sql='DESCRIBE events';
-	$result=$mysqli->query($sql);
-	while ($row=$result->fetch_row()) {
+	$result=$db->query($sql);
+	while ($row=$result->fetchRow()) {
 		$event[$row[0]]='';
 	}
 	unset($event['event_id']); // we don't want the user to enter a value for this
@@ -65,6 +65,8 @@ case 'ADD': // create a blank form for data entry
 	break;
 case 'INSERT': // this takes the results of ADD and puts it in the database
 	unset($_POST['ACTION']);
+    $event_id=$db->nextID();
+    $_POST['event_id']=$event_id;
 	if (isset($_POST['people_id'])) {
 		$people_ids=$_POST['people_id'];
 		foreach($people_ids as $people_id) {
@@ -82,7 +84,7 @@ if (!isset($event_id)) {
 	$event_id=NULL;
 	$name='All Events';
 } else {
-	$sql='SELECT *,UNIX_TIMESTAMP(event_start) as unixdate FROM events WHERE event_id='.$event_id;
+	$sql='SELECT *,UNIX_TIMESTAMP(begin) as unixdate FROM events WHERE event_id='.$event_id;
 	$result=$db->query($sql);
 	$event=$result->fetchRow();
 	$name=sprintf('%s %s',$event['name'],date('F jS, Y',$event['unixdate']));
