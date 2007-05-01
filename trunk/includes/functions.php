@@ -1,5 +1,13 @@
 <?php
 /**
+ * this file contains the core functions almost every script will require
+ *
+ * @package examine
+ * @subpackage library
+ * @author Glen Davis
+ */
+
+/**
  * config.php provides global variable $dsn
  * funky require code necessary because PHP evals relative paths according
  * to location of script execution, not according to location of file

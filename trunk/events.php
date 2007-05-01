@@ -1,4 +1,10 @@
 <?php
+/**
+ * This file displays and processes events
+ *
+ * @package examine
+ * @subpackage interface
+ */
 require_once 'config.php';
 require_once 'includes/authentication_header.php';
 require_once 'HTML/QuickForm.php';
@@ -185,7 +191,7 @@ if ($_GET['action']=='add') {
 	// this is the beginning of the hidden DIV
 	echo '<div class="hidden" id="edit">'."\n";
 	echo "<H1>Edit $name</H1>\n";
-	echo '<span class="actions"><a href="#" onclick="javascript:displaymode()">Display Mode</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.'>delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';'
+	echo '<span class="actions"><a href="#" onclick="javascript:displaymode()">Display Mode</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.'>delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
  $form = new HTML_QuickForm('modify','POST',$_SERVER['PHP_SELF'],null,null,true);
  $form->addElement('header','','Modify Event');
 }

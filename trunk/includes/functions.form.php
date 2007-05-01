@@ -1,6 +1,9 @@
 ﻿<?php
 /**
+ * This file contains functions useful for building forms
  * @package examine
+ * @subpackage library
+ * @author Glen Davis and Brian Kloefkorn
  */
 
 /**
