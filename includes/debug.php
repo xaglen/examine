@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file contains some routines to help with debugging
+ * It replaces the PEAR error handler at the bottom of the file
+ *
+ * @package examine
+ * @subpackage library
+ * @author Glen Davis
+ */
 require_once 'PEAR.php';
 
 /**

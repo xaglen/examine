@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file should be included at the top of any page needing restricted access
+ * It both provides the classes necessary for authentication and initializes the
+ * authentication object.
+ *
+ * @package examine
+ * @subpackage security
+ */
 
 require_once 'Auth.php';
 require_once 'HTML/QuickForm.php';
@@ -9,13 +17,63 @@ require_once basename(__FILE__).'/../config.php';
  * Extended PEAR Auth class to allow easier internal data checks with out schema
  *
  * @author Glen Davis
+ * @package examine
  */
 class myAuth extends Auth {
+
+    /**
+     * what is the people_id of the logged in person?
+     *
+     * @return boolean
+     * @author Glen Davis
+     */
     function getPeopleID() {
         return 1;
     }
 
-    function getMinistryID() {
+
+    /**
+     * does the logged-in user have rights to edit an event?
+     *
+     * @param int $event_id primary key to table events
+     * @return boolean
+     * @author Glen Davis
+     */
+    function ownsEvent($event_id=NULL) {
+        return 1;
+    }
+    
+
+    /**
+     * does the logged-in user have rights to edit a person?
+     *
+     * @param int $people_id primary key to table people
+     * @return boolean
+     * @author Glen Davis
+     */
+    function ownsPerson($people_id=NULL) {
+        return 1;
+    }
+
+    /**
+     * does the logged-in user have rights to edit a subgroup?
+     *
+     * @param int $subgroup_id primary key to table subgroups
+     * @return boolean
+     * @author Glen Davis
+     */
+    function ownsGroup($subgroup_id=NULL) {
+        return 1;
+    }
+
+    /**
+     * does the logged-in user have rights to edit a ministry?
+     *
+     * @param int $ministry_id primary key to table ministries
+     * @return boolean
+     * @author Glen Davis
+     */
+    function ownsMinistry($ministry_id=NULL) {
         return 1;
     }
 }

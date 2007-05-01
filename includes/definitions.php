@@ -1,5 +1,10 @@
 ﻿<?php
-
+/**
+ * this file contains constant definitions
+ *
+ * @package undecided
+ * @author Brian Kloefkorn
+ */
 // system directory
 define ( 'SYSTEM_BASE',		"g:/ApacheDocs/ChiAlpha/" );// /www/vhosts/chialpha.com/htdocs/ , /Users/bkloef/Sites/ChiAlpha/ , c:\\Apache\\Apache\\htdocs\\ChiAlpha\\
 define ( 'COMPONENTS', 		SYSTEM_BASE."pageComponents/" );

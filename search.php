@@ -1,4 +1,10 @@
 <?php
+/**
+ * this file handles searches for users
+ *
+ * @package examine
+ * @subpackage interface
+ */
 require_once 'config.php';
 require_once 'functions.php';
 

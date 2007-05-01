@@ -1,4 +1,10 @@
 <?php 
+/**
+ * this file is the main screen a user sees
+ *
+ * @package examine
+ * @subpackage interface
+ */
 require_once 'config.php';
 require_once 'includes/authentication_header.php';
 require_once 'includes/functions.php';

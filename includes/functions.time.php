@@ -1,5 +1,12 @@
 <?php
 /**
+ * this file contains functions related to time
+ *
+ * @package examine
+ * @subpackage library
+ */
+
+/**
  * provides $dsn global
  * convoluted call necessary because PHP does not compute relative paths from location of file. No - really
  */
