@@ -1,6 +1,6 @@
 ﻿<?php
 /**
- * This file contains functions useful for building forms
+ * This file contains functions useful for building forms.
  * @package examine
  * @subpackage library
  * @author Glen Davis and Brian Kloefkorn
@@ -9,7 +9,7 @@
 /**
  * config.php provides global variable $dsn
  * funky require code necessary because PHP evals relative paths according
- * to location of script execution, not according to location of file
+ * to location of script execution, not according to location of file.
  * No. Really.
  */
 require_once dirname(__FILE__).'/../config.php';
@@ -21,14 +21,14 @@ require_once dirname(__FILE__).'/functions.php';
  *
  * @param int $ministry_id primary key to table ministries
  * @param string $name desired name of the dropdown
- * @param int $default the people_id of the person who is to be the default value in the dropdown
+ * @param int $default the pid of the person who is to be the default value in the dropdown
  * @return string 
  * @author Glen Davis
  */
-function generatePeopleDropdown($ministry_id=NULL,$name='people_id',$default=NULL) {
+function generatePeopleDropdown($ministry_id=NULL,$name='pid',$default=NULL) {
 	$dropdown="<select ID='$name' NAME='$name'>";
 	$db=createDB();
-	$sql="select p.people_id,p.first_name,p.last_name FROM people p,ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.people_id=p.people_id ORDER BY p.last_name,p.first_name";
+	$sql="select p.pid,p.first_name,p.last_name FROM people p,ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.pid=p.pid ORDER BY p.last_name,p.first_name";
 	$result=$db->query($sql);
 	//testQueryResult($result,$sql);
 	if ($default===NULL) {
@@ -37,10 +37,10 @@ function generatePeopleDropdown($ministry_id=NULL,$name='people_id',$default=NUL
 		$dropdown.='<option value="">&nbsp;';
 	}
 	while($row=$result->fetchRow()) {
-		if ($default==$row['people_id']) {
-			$dropdown.='<option value='.$row['people_id'].' selected>'.$row['first_name'].' '.$row['last_name']."\n";
+		if ($default==$row['pid']) {
+			$dropdown.='<option value='.$row['pid'].' selected>'.$row['first_name'].' '.$row['last_name']."\n";
 		} else {
-			$dropdown.='<option value='.$row['people_id'].'>'.$row['first_name'].' '.$row['last_name']."\n";
+			$dropdown.='<option value='.$row['pid'].'>'.$row['first_name'].' '.$row['last_name']."\n";
 		}
 	}
 	$dropdown.='</select>';
@@ -59,7 +59,7 @@ function generatePeopleDropdown($ministry_id=NULL,$name='people_id',$default=NUL
 function generateSchoolDropdown($ministry_id=NULL,$name='school_id',$default=NULL) {
 	$dropdown="<select ID='$name' NAME='$name'>";
 	$db=createDB();
-	$sql="select s.school_id,s.name FROM schools s, people p, ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.people_id=p.people_id AND p.school_id=s.school_id ORDER BY s.name";
+	$sql="select s.school_id,s.name FROM schools s, people p, ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.pid=p.pid AND p.school_id=s.school_id ORDER BY s.name";
 	$result=$db->query($sql);
 	if ($default===NULL) {
 		$dropdown.='<option value="" selected>&nbsp;';
@@ -118,7 +118,7 @@ function generateCategoryDropdown($name='category_id',$default=NULL) {
 function generateSubgroupDropdown($ministry_id=NULL,$name='subgroup_id',$default=NULL) {
 	$dropdown="<select ID='$name' NAME='$name'>";
 	$db=createDB();
-	$sql="select s.subgroup_id,s.time,s.location FROM subgroups s, ministry_people mp, subgroup_people sp WHERE mp.ministry_id=$ministry_id AND sp.people_id=m.people_id AND s.subgroup_id=sp.subgroup_id";
+	$sql="select s.subgroup_id,s.time,s.location FROM subgroups s, ministry_people mp, subgroup_people sp WHERE mp.ministry_id=$ministry_id AND sp.pid=m.pid AND s.subgroup_id=sp.subgroup_id";
 	$result=$db->query($sql);
 	if ($default===NULL) {
 		$dropdown.='<option value="" selected>&nbsp;';
