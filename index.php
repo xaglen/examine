@@ -29,10 +29,10 @@ $ministry_id=$a->getMinistryID();
 Birthdays This Month & Next: <br/>
 <ol>
 <?php
-$sql="SELECT p.people_id,p.birthdate,UNIX_TIMESTAMP(p.birthdate) as unixdate, (YEAR(CURRENT_DATE())-YEAR(p.birthdate)) as age FROM people p,ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.people_id=p.people_id AND (MONTH(p.birthdate)=MONTH(CURRENT_DATE()) OR MONTH(p.birthdate)=MONTH(DATE_ADD(CURRENT_DATE(),INTERVAL 1 MONTH))) ORDER BY MONTH(p.birthdate),DAYOFMONTH(p.birthdate)";
+$sql="SELECT p.pid,p.birthdate,UNIX_TIMESTAMP(p.birthdate) as unixdate, (YEAR(CURRENT_DATE())-YEAR(p.birthdate)) as age FROM people p,ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.pid=p.pid AND (MONTH(p.birthdate)=MONTH(CURRENT_DATE()) OR MONTH(p.birthdate)=MONTH(DATE_ADD(CURRENT_DATE(),INTERVAL 1 MONTH))) ORDER BY MONTH(p.birthdate),DAYOFMONTH(p.birthdate)";
 $result=$db->query($sql);
 while ($row=$result->fetchRow()) {
-	echo '<li><a href="people.php?id='.$row['people_id'].'">'.getName($row['people_id']).'</a>: born '.date('F jS, Y',$row['unixday']).', turning '.$row['age'].'.</li>';
+	echo '<li><a href="people.php?id='.$row['pid'].'">'.getName($row['pid']).'</a>: born '.date('F jS, Y',$row['unixday']).', turning '.$row['age'].'.</li>';
 }
 ?>
 </ol>
@@ -42,11 +42,11 @@ while ($row=$result->fetchRow()) {
 
 Total Students In Database:
 <?php
-$sql="SELECT COUNT(*) FROM people p, ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.people_id=p.people_id AND (p.category_id=1 OR p.category_id=2)";
+$sql="SELECT COUNT(*) FROM people p, ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.pid=p.pid AND (p.category_id=1 OR p.category_id=2)";
 $count=$db->getOne($sql);
 echo $count;
 
-$sql="SELECT COUNT(DISTINCT p.people_id) FROM people p, ministry_people mp, email_addresses ea WHERE mp.ministry_id=$ministry_id AND mp.people_id=p.people_id AND (p.category_id=1 OR p.category_id=2) AND ea.people_id=p.people_id AND ea.receive_emails=1";
+$sql="SELECT COUNT(DISTINCT p.pid) FROM people p, ministry_people mp, email_addresses ea WHERE mp.ministry_id=$ministry_id AND mp.pid=p.pid AND (p.category_id=1 OR p.category_id=2) AND ea.pid=p.pid AND ea.receive_emails=1";
 $count=$db->getOne($sql);
 echo  " ($count receive email)";
 ?>
@@ -54,7 +54,7 @@ echo  " ($count receive email)";
 
 How Many Have Shown Up:
 <?php
-$sql="SELECT COUNT(*) FROM event_attendance ea,people p, ministry_people mp WHERE mp.people_id=p.people_id AND ea.people_id=p.people_id AND (p.category_id=1 OR p.category_id=2)";
+$sql="SELECT COUNT(*) FROM event_attendance ea,people p, ministry_people mp WHERE mp.pid=p.pid AND ea.pid=p.pid AND (p.category_id=1 OR p.category_id=2)";
 $visitors=$db->getOne($sql);
 echo $visitors;
 ?>
@@ -62,7 +62,7 @@ echo $visitors;
 
 Have Come 3+ Times:
 <?php
-$sql="SELECT COUNT(ea.people_id) FROM event_attendance ea, ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.people_id=ea.people_id GROUP BY ea.people_id HAVING COUNT(ea.people_id)>=3";
+$sql="SELECT COUNT(ea.pid) FROM event_attendance ea, ministry_people mp WHERE mp.ministry_id=$ministry_id AND mp.pid=ea.pid GROUP BY ea.pid HAVING COUNT(ea.pid)>=3";
 $result=$db->query($sql);
 $attenders=$result->numRows();
 echo $attenders. ' <em><a href="subforms/view.attenders.php?threshold=3">see them</a></em>';
@@ -72,10 +72,10 @@ echo $attenders. ' <em><a href="subforms/view.attenders.php?threshold=3">see the
 7 Most Recent Guests: <br/>
 <ol>
 <?php
-$sql="SELECT DISTINCT p.people_id FROM people p,event_attendance ea, ministry_people mp WHERE mp.ministry_id=$ministry_id AND p.people_id=ea.people_id ORDER BY p.created_on DESC LIMIT 7";
+$sql="SELECT DISTINCT p.pid FROM people p,event_attendance ea, ministry_people mp WHERE mp.ministry_id=$ministry_id AND p.pid=ea.pid ORDER BY p.created_on DESC LIMIT 7";
 $result=$db->query($sql);
 while ($row=$result->fetchRow()) {
-    echo '<li><a href="people.php?id='.$row['people_id'].'">'.getName($row['people_id']).'</a></li>';
+    echo '<li><a href="people.php?id='.$row['pid'].'">'.getName($row['pid']).'</a></li>';
 }
 ?>
 </ol>

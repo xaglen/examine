@@ -35,11 +35,11 @@ if (!get_magic_quotes_gpc()) {
 	$s = $_GET['s'];
 }
 echo "<H1>Search Results For '$s'</H1>";
-$sql="SELECT people_id,preferred_name,last_name,MATCH(preferred_name,middle_name,lastname) AGAINST ('$s') as score FROM people WHERE MATCH(preferred_name,middle_name,last_name) AGAINST ('$s') ORDER BY score DESC";
+$sql="SELECT pid,preferred_name,last_name,MATCH(preferred_name,middle_name,lastname) AGAINST ('$s') as score FROM people WHERE MATCH(preferred_name,middle_name,last_name) AGAINST ('$s') ORDER BY score DESC";
 $result=$db->query($sql);
 echo '<ul>';
 while ($row=$result->fetchRow()) {
-	printf('<li><a href="people.php?id=%s">%s %s</a></li>',$row['people_id'],$row['first_name'],$row['last_name']);
+	printf('<li><a href="people.php?id=%s">%s %s</a></li>',$row['pid'],$row['first_name'],$row['last_name']);
 }
 echo '</ul>';
 ?>

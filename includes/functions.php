@@ -37,14 +37,14 @@ function createDB() {
 }
 
 /*
- * Returns a person's full name given their people_id
+ * Returns a person's full name given their pid
  *
- * @param int $people_id primary key for people table
+ * @param int $pid primary key for people table
  * @return string full name of person
  */
-function getName($people_id=NULL) {
+function getName($pid=NULL) {
 	$db=createDB();
-	$sql='select preferred_name,first_name,last_name FROM people WHERE people_id='.$people_id;
+	$sql='select preferred_name,first_name,last_name FROM people WHERE pid='.$pid;
 	$result=$db->query($sql);
 	$row=$result->fetchRow();
 	if ($row['preferred_name']===NULL) {
@@ -62,24 +62,24 @@ function getName($people_id=NULL) {
  */
 function generateNameArray($ministry_id=NULL) {
 	$db=createDB();
-	$sql='select p.people_id,p.first_name,p.last_name FROM people p,ministry_people mp WHERE mp.ministry_id='.$ministry_id.' AND mp.people_id=p.people_id';
+	$sql='select p.pid,p.first_name,p.last_name FROM people p,ministry_people mp WHERE mp.ministry_id='.$ministry_id.' AND mp.pid=p.pid';
 	$result = $db->query($sql);
 	//testQueryResult($result,$sql);
 	while ($row=$result->fetchRow()) {
-		$people[$row['people_id']]=$row['first_name'].' '.$row['last_name'];
+		$people[$row['pid']]=$row['first_name'].' '.$row['last_name'];
 	}
 	return $people;
 }
 
 /**
- * Returns the first name of a person given their people_id
+ * Returns the first name of a person given their pid
  *
- * @param int $people_id primary key to table people
+ * @param int $pid primary key to table people
  * @return string first name
  */
-function getFirstName($people_id=NULL) {
+function getFirstName($pid=NULL) {
 	$db=createDB();
-	$sql='select first_name,preferred_name FROM people WHERE people_id='.$people_id;
+	$sql='select first_name,preferred_name FROM people WHERE pid='.$pid;
 	$result=$db->query($sql);
 	$row=$result->fetchRow();
 	if ($row['preferred_name']===NULL) {
@@ -90,14 +90,14 @@ function getFirstName($people_id=NULL) {
 }
 
 /**
- * Returns the last name of a person given their people_id
+ * Returns the last name of a person given their pid
  *
- * @param int $people_id primary key to table people
+ * @param int $pid primary key to table people
  * @return string last name
  */
-function getLastName($people_id=NULL) {
+function getLastName($pid=NULL) {
 	$db=createDB();
-	$sql='select last_name FROM people WHERE people_id='.$people_id;
+	$sql='select last_name FROM people WHERE pid='.$pid;
 	$last_name=$db->getOne($sql);
 	return $last_name;
 }
@@ -119,14 +119,14 @@ function getSubgroupName($subgroup_id=NULL) {
 /**
  * Was a student present at an event or not?
  *
- * @param int $people_id primary key to table people
+ * @param int $pid primary key to table people
  * @param int @event_id primary key to table events
  * @return boolean
  */
-function attendedEvent($people_id=NULL,$event_id=NULL) {
-	if ($people_id===NULL || $event_id===NULL) return false;
+function attendedEvent($pid=NULL,$event_id=NULL) {
+	if ($pid===NULL || $event_id===NULL) return false;
 	$db=createDB();
-	$sql="select * FROM event_attendance WHERE people_id=$people_id AND event_id=$event_id";
+	$sql="select * FROM event_attendance WHERE pid=$pid AND event_id=$event_id";
 	$attended=$db->getOne($sql);
 	if ($attended) {
 		return true;

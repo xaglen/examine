@@ -73,13 +73,13 @@ case 'INSERT': // this takes the results of ADD and puts it in the database
 	unset($_POST['ACTION']);
     $event_id=$db->nextID();
     $_POST['event_id']=$event_id;
-	if (isset($_POST['people_id'])) {
-		$people_ids=$_POST['people_id'];
-		foreach($people_ids as $people_id) {
-			$sql="INSERT INTO event_attendance SET event_id='$event_id',people_id='$people_id'";
+	if (isset($_POST['pid'])) {
+		$pids=$_POST['pid'];
+		foreach($pids as $pid) {
+			$sql="INSERT INTO event_attendance SET event_id='$event_id',pid='$pid'";
 			$db->exec($sql);
 		}
-		unset($_POST['people_id']);
+		unset($_POST['pid']);
 	}
 	$db->autoExecute('events',$_POST,MDB2_AUTOQUERY_INSERT);
 	break;
