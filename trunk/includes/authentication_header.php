@@ -22,7 +22,7 @@ require_once basename(__FILE__).'/../config.php';
 class myAuth extends Auth {
 
     /**
-     * what is the people_id of the logged in person?
+     * what is the pid of the logged in person?
      *
      * @return boolean
      * @author Glen Davis
@@ -47,11 +47,11 @@ class myAuth extends Auth {
     /**
      * does the logged-in user have rights to edit a person?
      *
-     * @param int $people_id primary key to table people
+     * @param int $pid primary key to table people
      * @return boolean
      * @author Glen Davis
      */
-    function ownsPerson($people_id=NULL) {
+    function ownsPerson($pid=NULL) {
         return 1;
     }
 
@@ -161,22 +161,22 @@ global $dbName;
 /**
  * Does a user have rights to edit an event?
  *
- * @param int $people_id primary key to table people
+ * @param int $pid primary key to table people
  * @param int $event_id primary key to table events
  * @return boolean
  */
-function ownsEvent($people_id=null,$event_id=null) {
+function ownsEvent($pid=null,$event_id=null) {
     return true;
 }
 
 /**
  * Does a user have rights to edit a  ministry?
  *
- * @param int $people_id primary key to table people
+ * @param int $pid primary key to table people
  * @param int $ministry_id primary key to table ministries
  * @return boolean
  */
-function ownsMinistry ($people_id=null, $ministry_id=null) {
+function ownsMinistry ($pid=null, $ministry_id=null) {
     return true;
 }
 

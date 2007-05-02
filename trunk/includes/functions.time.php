@@ -44,13 +44,13 @@ function readableTimeDiff($start,$end) {
 /**
  * How old is a person?
  *
- * @param int $people_id primary key to table people
+ * @param int $pid primary key to table people
  * @return int the person's age in minutes
  */
-function getAge($people_id=NULL) {
-	if ($people_id===NULL) return '';
+function getAge($pid=NULL) {
+	if ($pid===NULL) return '';
 	$db=createDB();
-	$sql="SELECT DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(birthdate, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(birthdate, '00-%m-%d')) AS age FROM people WHERE people_id=$people_id";
+	$sql="SELECT DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(birthdate, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(birthdate, '00-%m-%d')) AS age FROM people WHERE pid=$pid";
 	$age=$db->getOne($sql);
 	return $age;
 }
