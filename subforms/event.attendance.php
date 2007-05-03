@@ -9,6 +9,12 @@ if (!isset($_REQUEST['event_id'])) {
 
 $event_id=$_REQUEST['event_id'];
 
+if (!isset($_REQUEST['ministry_id'])) {
+    exit();
+}
+
+$ministry_id=$_REQUEST['ministry_id'];
+
 if (isset($_REQUEST['remove'])) {
 	if (isset($_REQUEST['pid'])) {
 		foreach($_REQUEST['pid'] as $pid) {
@@ -27,7 +33,7 @@ if (isset($_REQUEST['remove'])) {
 }
 ?>
 <FORM name="present" TYPE="POST" ACTION="<?php echo $_SERVER['PHP_SELF'];?>">
-<?php echo generateStudentDropDown('pid');?>
+<?php echo generatePeopleDropDown($ministry_id,'pid');?>
 <input type="button" name="add" value="add this student" onclick="addItem('present','pid','eventattenders',<?php echo '\''.$_SERVER['PHP_SELF'].'\'';?>,'event_id');"/><br/>
 select: <a href="#" onclick="setAllCheckBoxes('present', 'pid[]', true);">all</a>
 <a href="#" onclick="setAllCheckBoxes('present', 'pid[]', false);">none</a>
