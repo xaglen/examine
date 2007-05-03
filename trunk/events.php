@@ -221,7 +221,7 @@ CALENDAR;
 	echo $renderer->toHtml();
 	if ($_GET['action']=='ADD') {
 		echo "<H2>Regulars Who Might Have Been There</H2>\n";
-		include('subforms/regulars.php');
+		include('subforms/event.regulars.php');
 		echo '<INPUT TYPE="SUBMIT" NAME="ACTION" VALUE="INSERT">';
 	} else {
 		echo '<INPUT TYPE="SUBMIT" NAME="ACTION" VALUE="UPDATE">';
