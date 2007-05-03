@@ -14,7 +14,7 @@ require_once 'includes/functions.php';
 require_once 'includes/functions.time.php';
 
 $db=createDB();
-$ministry_id = $a->getMinistryID();
+$ministry_id = 1; //@todo testing only - fix later
 
 // if event_id is specified in GET or POST, extract it here
 if (isset($_REQUEST['event_id'])) {
@@ -141,21 +141,7 @@ function ChangeCalendar(datefield,month,day,year) {
 <?php include 'templates/header.php';?>
 <div id="main">
 <div id="sidebar">
-<?php
-if ($event_id!==NULL) {
-	?>
-	<H2>Present</H2>
-	<div id="eventattenders">
-	</div>
-	<script type="text/javascript">
-	var req = new DataRequestor();
-	req.setObjToReplace('eventattenders');
-	req.addArg(_GET, "event_id", "<?php echo $event_id;?>");
-	req.getURL('subforms/event.attendance.php');
-	</script>
-	<?php
-} // end $event_id !==NULL
-?>
+<h3>Help</h3>
 </div>
 <?php
 if ($event_id===NULL && $_GET['action']!='ADD') {
@@ -244,6 +230,21 @@ CALENDAR;
 	</form></div>
 	<?php
 } // end if $event_id===NULL
+// display those present
+if ($event_id!==NULL) {
+    ?>
+        <H2>Present</H2>
+        <div id="eventattenders">
+        </div>
+        <script type="text/javascript">
+        var req = new DataRequestor();
+    req.setObjToReplace('eventattenders');
+    req.addArg(_GET, "event_id", "<?php echo $event_id;?>");
+    req.addArg(_GET, "ministry_id', "<?php echo $ministry_id;?>");
+    req.getURL('subforms/event.attendance.php');
+    </script>
+        <?php
+} // end $event_id !==NULL
 ?>
 </div>
 <?php include 'templates/footer.php';?>

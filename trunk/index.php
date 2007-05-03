@@ -10,7 +10,7 @@ require_once 'includes/authentication_header.php';
 require_once 'includes/functions.php';
 
 $db=createDB();
-$ministry_id=$a->getMinistryID();
+$ministry_id=1; // testing @todo create API to get this
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
