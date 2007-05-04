@@ -21,21 +21,21 @@ require_once basename(__FILE__).'/../config.php';
  */
 class myAuth extends Auth {
 
-var $pid = -1;
+private $pid = null;
 
 /**
    * what is the pid of the logged in person?
    *
-   * @return boolean
+   * @return int
    * @author Glen Davis
    */
     function getPid() {
-		if ($pid==-1) {
+		if ($this->pid===null) {
 			$db=createDB();
-			$pid=$db->getOne('SELECT pid FROM users WHERE username='.$username);
+			$this->pid=$db->getOne('SELECT pid FROM users WHERE username='.$db->quote($this->getUsername()));
 			$db->disconnect();
 		} 
-		return $pid;
+		return $this->pid;
     }
 
 
