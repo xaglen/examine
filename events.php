@@ -22,7 +22,6 @@ if (isset($_REQUEST['event_id'])) {
 
 if (!isset($_POST['ACTION']) && !isset($_GET['action'])) {
     $total=$db->getOne('SELECT COUNT(*) FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id'); //role_id of 1 and 2 indicate staff - higher is student or misc
-	ministry_id='.$ministry_id);
     if ($total>0) {
         $_POST['ACTION']='DEFAULT';
 		$_GET['action']='DEFAULT';
