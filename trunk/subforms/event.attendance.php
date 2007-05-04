@@ -1,5 +1,6 @@
 <?php
-require_once basedir(__FILE__).'/../includes/functions.php';
+require_once dirname(__FILE__).'/../includes/functions.php';
+require_once dirname(__FILE__).'/../includes/functions.form.php';
 
 $db=createDB();
 
@@ -32,9 +33,10 @@ if (isset($_REQUEST['remove'])) {
 	}
 }
 ?>
+<h2>Attendance</h2>
 <FORM name="present" TYPE="POST" ACTION="<?php echo $_SERVER['PHP_SELF'];?>">
 <?php echo generatePeopleDropDown($ministry_id,'pid');?>
-<input type="button" name="add" value="add this student" onclick="addItem('present','pid','eventattenders',<?php echo '\''.$_SERVER['PHP_SELF'].'\'';?>,'event_id');"/><br/>
+<input type="button" name="add" value="add attender" onclick="addItem('present','pid','eventattenders',<?php echo '\''.$_SERVER['PHP_SELF'].'\'';?>,'event_id');"/><br/>
 select: <a href="#" onclick="setAllCheckBoxes('present', 'pid[]', true);">all</a>
 <a href="#" onclick="setAllCheckBoxes('present', 'pid[]', false);">none</a>
 <a href="#" onclick="invertAllCheckBoxes('present', 'pid[]');">invert</a><br/>

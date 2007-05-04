@@ -233,8 +233,7 @@ CALENDAR;
 // display those present -> do this as a javascript replace to allow for dynamic updating
 if ($event_id!==NULL) {
     ?>
-        <H2>Present</H2>
-        <div id="eventattenders">
+        <div id="eventattenders" class="subform">
         </div>
         <script type="text/javascript">
         var req = new DataRequestor();
