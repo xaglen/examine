@@ -219,7 +219,7 @@ CALENDAR;
 	$renderer =& new HTML_QuickForm_Renderer_Tableless();
 	$form->accept($renderer);
 	echo $renderer->toHtml();
-	if ($_GET['action']=='ADD') {
+	if ($_GET['action']=='add') {
 		echo "<H2>Regulars Who Might Have Been There</H2>\n";
 		include('subforms/event.regulars.php');
 		echo '<INPUT TYPE="SUBMIT" NAME="ACTION" VALUE="INSERT">';
@@ -230,7 +230,7 @@ CALENDAR;
 	</form></div>
 	<?php
 } // end if $event_id===NULL
-// display those present
+// display those present -> do this as a javascript replace to allow for dynamic updating
 if ($event_id!==NULL) {
     ?>
         <H2>Present</H2>
