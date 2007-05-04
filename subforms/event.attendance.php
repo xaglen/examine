@@ -9,12 +9,7 @@ if (!isset($_REQUEST['event_id'])) {
 } 
 
 $event_id=$_REQUEST['event_id'];
-
-if (!isset($_REQUEST['ministry_id'])) {
-    exit();
-}
-
-$ministry_id=$_REQUEST['ministry_id'];
+$ministry_id=$db->getOne('SELECT ministry_id FROM events WHERE event_id='.$event_id);
 
 if (isset($_REQUEST['remove'])) {
 	if (isset($_REQUEST['pid'])) {
