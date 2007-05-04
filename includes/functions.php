@@ -164,4 +164,72 @@ function obscureEmail($email) {
 	$linkText = str_replace('@', '<span class="obscure">&#64;</span> ', $linkText);
 	return '<a href="email" onClick=\'a="'.$partA.'";this.href="ma"+"il"+"to:"+a+"'.$partB.'";\'>'.$linkText.'</a>';
 }
+
+/**
+ * Sets a user preference
+ *
+ * @param int $pid primary key for table people
+ * @param string $option the preference to be set
+ * @param string $value what the preference is - a serialized PHP variable. It is the responsibility of the calling function to serialize the data.
+ */
+function setUserPreference($pid=null,$option=null,$value=null) {
+	if ($pid===null || $option===null || $value===null) {
+		return;
+	}
+	$db=createDB();
+	$sql='INSERT INTO user_preferences (pid,option,value) VALUES ('.$db->quote($pid).','.$db->quote($option).','.$db->quote($value.') ON DUPLICATE KEY UPDATE value=VALUES(value)';
+	$db->exec($sql);
+}
+
+/**
+ * Retrieves a user preference
+ * 
+ * @param int $pid primary key for table people
+ * @param string $option the preference to retrieve
+ * @return string $value a serialized PHP variable. Call unserialize on this returned value.
+ */
+function getUserPreference($pid=null,$option=null) {
+if ($pid===null || $option===null) {
+		return null;
+	}
+	
+	$db=createDB();
+	$option=$db->quote($option);
+	$sql="SELECT value FROM user_preferences WHERE pid=$pid and option='$option'";
+	$value=$db->getOne($sql); // pid and option are the key together, so there will never be two entries
+	return $value;
+}
+
+/**
+ * Sets a systemwide option
+ *
+ * @param string $option the option to be set
+ * @param string $value what the preference is - a serialized PHP variable. It is the responsibility of the calling function to serialize the data.
+ */
+function setSystemVariable($option=null, $value=null) {
+	if ($option===null || $value===null) {
+		return;
+	}
+	$db=createDB();
+	$sql='INSERT INTO variables (option,value) VALUES ('.$db->quote($option).','.$db->quote($value.') ON DUPLICATE KEY UPDATE value=VALUES(value)';
+	$db->exec($sql);
+}
+
+/**
+ * Retrieves a systemwide setting
+ * 
+ * @param string $option the preference to retrieve
+ * @return string $value a serialized PHP variable. Call unserialize on this returned value.
+ */
+function getSystemVariable($option) {
+	if ($option===null) {
+		return null;
+	}
+	
+	$db=createDB();
+	$option=$db->quote($option);
+	$sql="SELECT value FROM variables WHERE option='$option'";
+	$value=$db->getOne($sql); // option is the key, so there will never be two entries
+	return $value;
+}
 ?>
