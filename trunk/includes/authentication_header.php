@@ -23,12 +23,12 @@ class myAuth extends Auth {
 
 var $pid = -1;
 
-    /**
-     * what is the pid of the logged in person?
-     *
-     * @return boolean
-     * @author Glen Davis
-     */
+/**
+   * what is the pid of the logged in person?
+   *
+   * @return boolean
+   * @author Glen Davis
+   */
     function getPid() {
 		if ($pid==-1) {
 			$db=createDB();

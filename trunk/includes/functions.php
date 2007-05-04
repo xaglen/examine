@@ -177,7 +177,10 @@ function setUserPreference($pid=null,$option=null,$value=null) {
 		return;
 	}
 	$db=createDB();
-	$sql='INSERT INTO user_preferences (pid,option,value) VALUES ('.$db->quote($pid).','.$db->quote($option).','.$db->quote($value.') ON DUPLICATE KEY UPDATE value=VALUES(value)';
+	$pid=$db->quote($pid);
+	$option=$db->quote($option);
+	$value=$db->quote($value);
+	$sql="INSERT INTO user_preferences (pid,option,value) VALUES ($pid,$option,$value) ON DUPLICATE KEY UPDATE value=VALUES(value)";
 	$db->exec($sql);
 }
 
