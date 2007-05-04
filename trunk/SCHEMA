@@ -148,10 +148,10 @@ CREATE TABLE `subgroups` (
   PRIMARY KEY  (`subgroup_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='for worship teams, bible studies, etc';
 CREATE TABLE `user_preferences` (
-  `user_id` int(11) NOT NULL,
+  `pid` int(11) NOT NULL,
   `option` varchar(32) NOT NULL,
   `value` mediumtext,
-  PRIMARY KEY  (`user_id`,`option`)
+  PRIMARY KEY  (`pid`,`option`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,

@@ -21,7 +21,7 @@ require_once basename(__FILE__).'/../config.php';
  */
 class myAuth extends Auth {
 
-var private $pid = -1;
+var $pid = -1;
 
     /**
      * what is the pid of the logged in person?
