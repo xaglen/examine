@@ -242,6 +242,7 @@ if ($event_id!==NULL) {
     req.addArg(_GET, "event_id", "<?php echo $event_id;?>");
     req.addArg(_GET, "ministry_id", "<?php echo $ministry_id;?>");
     req.getURL('subforms/event.attendance.php');
+	
     </script>
         <?php
 } // end $event_id !==NULL
