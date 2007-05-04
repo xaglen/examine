@@ -14,7 +14,6 @@ require_once 'includes/functions.php';
 require_once 'includes/functions.time.php';
 
 $db=createDB();
-$ministry_id = 1; //@todo testing only - fix later
 
 // if event_id is specified in GET or POST, extract it here
 if (isset($_REQUEST['event_id'])) {
@@ -22,7 +21,8 @@ if (isset($_REQUEST['event_id'])) {
 }
 
 if (!isset($_POST['ACTION']) && !isset($_GET['action'])) {
-    $total=$db->getOne('SELECT COUNT(*) FROM events WHERE ministry_id='.$ministry_id);
+    $total=$db->getOne('SELECT COUNT(*) FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id'); //role_id of 1 and 2 indicate staff - higher is student or misc
+	ministry_id='.$ministry_id);
     if ($total>0) {
         $_POST['ACTION']='DEFAULT';
 		$_GET['action']='DEFAULT';
@@ -145,7 +145,7 @@ function ChangeCalendar(datefield,month,day,year) {
 </div>
 <?php
 if ($event_id===NULL && $_GET['action']!='ADD') {
-	$sql="SELECT event_id,name,begin,UNIX_TIMESTAMP(begin) as unixdate,estimated_attendance FROM events ORDER BY begin DESC";
+	$sql='SELECT event_id,name,begin,UNIX_TIMESTAMP(begin) as unixdate,estimated_attendance FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id ORDER BY begin DESC';
 	$result=$db->query($sql);
 	$OldTimeLabel='';
 	echo '<ol>';
@@ -239,7 +239,6 @@ if ($event_id!==NULL) {
         var req = new DataRequestor();
     req.setObjToReplace('eventattenders');
     req.addArg(_GET, "event_id", "<?php echo $event_id;?>");
-    req.addArg(_GET, "ministry_id", "<?php echo $ministry_id;?>");
     req.getURL('subforms/event.attendance.php');
 	
     </script>
