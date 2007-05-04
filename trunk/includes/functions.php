@@ -214,7 +214,9 @@ function setSystemVariable($option=null, $value=null) {
 		return;
 	}
 	$db=createDB();
-	$sql='INSERT INTO variables (option,value) VALUES ('.$db->quote($option).','.$db->quote($value.') ON DUPLICATE KEY UPDATE value=VALUES(value)';
+    $option=$db->quote($option);
+    $value = $db->quote($value);
+	$sql="INSERT INTO variables (option,value) VALUES ($option,$value) ON DUPLICATE KEY UPDATE value=VALUES(value)";
 	$db->exec($sql);
 }
 
