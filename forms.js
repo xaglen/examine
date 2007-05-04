@@ -55,8 +55,8 @@ function removeChecked(FormName,FieldName,ParentObject,SubmitTo,HiddenVariable) 
 		req.addArg(_GET,HiddenVariable,document.forms[FormName].elements[HiddenVariable].value);
 	}
 	if(!countCheckBoxes) {
-		if (objCheckBoxes[0].checked) {
-			req.addArg(_GET,objCheckBoxes[0].name,objCheckBoxes[0].value);
+		if (objCheckBoxes.checked) {
+			req.addArg(_GET,objCheckBoxes.name,objCheckBoxes.value);
 		}
 	} else {
 		// set the check value for all check boxes
