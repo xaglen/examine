@@ -196,19 +196,15 @@ foreach($visibleFields as $field) {
 				$event[$field]=date('Y-m-d 00:00:00',time());
 			}
 			// need to find a better calendar widget
-			$calendar=<<<CALENDAR
-			<div id="eventcalendar">
-			</div>
-			<script type="text/javascript">
-			var cal = new DataRequestor();
-			cal.setObjToReplace("eventcalendar");
-			cal.addArg(_GET,"datefield","<?php echo $field;?>");
-			cal.addArg(_GET,"month",<?php echo date('m',strtotime($event[$field]))?>);
-			cal.addArg(_GET,"day",<?php echo date('j',strtotime($event[$field]))?>);
-			cal.addArg(_GET,"year",<?php echo date('Y',strtotime($event[$field]))?>);
-			cal.getURL("subforms/monthly.calendar.php");
-			</script>
-CALENDAR;
+			$calendarLabel=$field.'calendar';
+			$calendar="<div id='$calendarLabel'></div>";
+			$calendar.='<script type="text/javascript">var cal = new DataRequestor();';
+			$calendar.="cal.setObjToReplace($calendarLabel);\n";
+			$calendar.='cal.addArg(_GET,"datefield","'.$field.'");';
+			$calendar.='cal.addArg(_GET,"month",'.date('m',strtotime($event[$field])).');';
+			$calendar.='cal.addArg(_GET,"day",'.date('j',strtotime($event[$field])).');';
+			$calendar.='cal.addArg(_GET,"year",'.date('Y',strtotime($event[$field])).');';
+			$calendar.='cal.getURL("subforms/monthly.calendar.php");</script>';
 			$form->addElement('html',$calendar);
 			break;
 		default:
