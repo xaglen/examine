@@ -149,9 +149,9 @@ CREATE TABLE `subgroups` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='for worship teams, bible studies, etc';
 CREATE TABLE `user_preferences` (
   `pid` int(11) NOT NULL,
-  `option` varchar(32) NOT NULL,
-  `value` mediumtext,
-  PRIMARY KEY  (`pid`,`option`)
+  `prefname` varchar(32) NOT NULL,
+  `prefval` mediumtext,
+  PRIMARY KEY  (`pid`,`prefname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
@@ -163,7 +163,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `username` (`username`,`pid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 CREATE TABLE `variables` (
-  `option` varchar(32) NOT NULL,
-  `value` mediumtext NOT NULL,
-  PRIMARY KEY  (`option`)
+  `configname` varchar(32) NOT NULL,
+  `configval` mediumtext NOT NULL,
+  PRIMARY KEY  (`configname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='for system-wide variables';

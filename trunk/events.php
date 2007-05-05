@@ -155,15 +155,19 @@ if (!$eventFieldsToDisplay) { // if neither the user pref nor the system variabl
 }
 
 $form = new HTML_QuickForm('add','POST',$_SERVER['PHP_SELF'],null,null,true);
--     $form->addElement('header','','Event');
+         $form->addElement('header','','Event');
        echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
        echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
-$calNum=0;
+$calNum=1;
 foreach($visibleFields as $field) {
 	switch($field) {
+        case 'ministry_id':
+        case 'event_id':
+            $form->addElement('hidden',$field,$field);
+            // need to add these as hidden fields - although ministry_id should be a dropdown in some cases
+            break;
 		case 'notes':
 			$form->addElement('textarea',$field,$field);
-			//$element=sprintf('<textarea id="%s" name="%s">%s</textarea>',$field,$field,$event[$field]);
 			break;
 		case 'begin':
 		case 'end':
@@ -171,11 +175,7 @@ foreach($visibleFields as $field) {
                        if (!$event[$field]) {
                                $event[$field]=date('Y-m-d 00:00:00',time());
                       }
-                       $calendarLabel=$field.'calendar';
-                       $calendar="<div id='$calendarLabel'></div>";
-                       $calendar.="<script>YAHOO.namespace('example.calendar');";
-                       $calendar.="function init() {YAHOO.example.calendar.cal1 = new YAHOO.widget.Calendar('cal1','$calendarLabel'); YAHOO.example.calendar.cal1.render(); } ";
-                       $calendar.='YAHOO.util.Event.addListener(window, "load", init);</script>";';
+                       $calendar=generateYahooCalendarJS($field.'_cal',$calNum++,$field.'_date');
                        $form->addElement('html',$calendar);
 		/*
 			$calNum=$calNum++; // allows us to generate multiple JS calendars
@@ -191,15 +191,14 @@ foreach($visibleFields as $field) {
 			break;
 		default:
 			$form->addElement('text',$field,$field);
-			//$element=sprintf('<text id="%s" name="%s" type="text" value="%s"/>',$field,$field,$event[$field]);
 		}
+}
 $form->setDefaults($event);
 $form->applyFilter('__ALL__','trim');
       //$form->display();
       $renderer =& new HTML_QuickForm_Renderer_Tableless();
       $form->accept($renderer);
       echo $renderer->toHtml();	
-}
 /* @todo deal with this later
 foreach ($hiddenFields as $field) {
 	switch ($field) {
