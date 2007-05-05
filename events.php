@@ -174,10 +174,13 @@ foreach($visibleFields as $field) {
 		case 'end':
 		$form->addElement('date', $field.'_date', $field, null,
 array('class'=>'control-date'));
+		$form->addElement('text', $field.'_time', $field);
                        if (!$event[$field]) {
                                $event[$field.'_date']=date('Y-m-d',time());
+							   $event[$field.'_time']='8:00pm';
                       } else {
-					          $event[$field.'_date']=$event[$field];
+					          $event[$field.'_date']=date('Y-m-d',strtotime($event[$field]));
+							  $event[$field.'_time']=date('g:ia',strtotime($event[$field]));
 					  }
                        //$calendar=generateYahooCalendarJS($field.'_cal',$calNum++,$field.'_date');
                        //$form->addElement('html',$calendar);
