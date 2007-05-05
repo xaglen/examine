@@ -110,6 +110,7 @@ if (!isset($event_id)) {
 <script type="text/javascript" src="yui/event/event-min.js"></script>
 <script type="text/javascript" src="yui/dom/dom-min.js"></script>
 <script type="text/javascript" src="yui/calendar/calendar-min.js"></script>
+<script type="text/javascript" src="events.js"></script>
 </head>
 <body>
 <?php include 'templates/header.php';?>
@@ -171,12 +172,15 @@ foreach($visibleFields as $field) {
 			break;
 		case 'begin':
 		case 'end':
-		$form->addElement('hidden',$field,$field);
+		$form->addElement('date', $field.'_date', $field, null,
+array('class'=>'control-date'));
                        if (!$event[$field]) {
-                               $event[$field]=date('Y-m-d 00:00:00',time());
-                      }
-                       $calendar=generateYahooCalendarJS($field.'_cal',$calNum++,$field.'_date');
-                       $form->addElement('html',$calendar);
+                               $event[$field.'_date']=date('Y-m-d',time());
+                      } else {
+					          $event[$field.'_date']=$event[$field];
+					  }
+                       //$calendar=generateYahooCalendarJS($field.'_cal',$calNum++,$field.'_date');
+                       //$form->addElement('html',$calendar);
 		/*
 			$calNum=$calNum++; // allows us to generate multiple JS calendars
 			$dateFieldName=$field.'_date';
