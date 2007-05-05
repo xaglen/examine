@@ -201,5 +201,4 @@ if (isset($_GET['logout'])) {
       header("Location: http://chialpha.com/login/wrt/examine/");
 	  exit();
 }
-
 ?>

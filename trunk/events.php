@@ -4,6 +4,7 @@
  *
  * @package examine
  * @subpackage interface
+ * @todo - fix data entry to be default display and show only desired fields
  */
 require_once 'config.php';
 require_once 'includes/authentication_header.php';
@@ -21,7 +22,7 @@ if (isset($_REQUEST['event_id'])) {
 }
 
 if (!isset($_POST['ACTION']) && !isset($_GET['action'])) {
-    $total=$db->getOne('SELECT COUNT(*) FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id'); //role_id of 1 and 2 indicate staff - higher is student or misc
+    $total=$db->getOne('SELECT COUNT(*) FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid.' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id'); //role_id of 1 and 2 indicate staff - higher is student or misc
     if ($total>0) {
         $_POST['ACTION']='DEFAULT';
 		$_GET['action']='DEFAULT';
@@ -144,7 +145,7 @@ function ChangeCalendar(datefield,month,day,year) {
 </div>
 <?php
 if ($event_id===NULL && $_GET['action']!='ADD') {
-	$sql='SELECT event_id,name,begin,UNIX_TIMESTAMP(begin) as unixdate,estimated_attendance FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id ORDER BY begin DESC';
+	$sql='SELECT event_id,name,begin,UNIX_TIMESTAMP(begin) as unixdate FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id ORDER BY begin DESC';
 	$result=$db->query($sql);
 	$OldTimeLabel='';
 	echo '<ol>';
@@ -160,64 +161,73 @@ if ($event_id===NULL && $_GET['action']!='ADD') {
 	}
 	echo "</ol></ul>";
 } else { // event_id is not equal to null or ADD is set
-if ($_GET['action']=='add') {
-	echo '<div class="visible" id="edit">'."\n";
-	echo '<H1>Add An Event</H1>'."\n";
-     $form = new HTML_QuickForm('add','POST',$_SERVER['PHP_SELF'],null,null,true);
-     $form->addElement('header','','Add New Event');
-} else {
-	echo '<div class="visible" id="content">';
-	echo '<H1>'.$name.'</H1>';
 	echo '<span class="actions"><a href="#" onclick="javascript:editmode()">edit</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.'>delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
+     $form = new HTML_QuickForm('add','POST',$_SERVER['PHP_SELF'],null,null,true);
+     $form->addElement('header','','Event');
 	echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
 	echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
-	echo '<em>'.$event['notes'].'</em>'."\n";
-	echo '</div>'."\n";
-	// this is the beginning of the hidden DIV
-	echo '<div class="hidden" id="edit">'."\n";
-	echo "<H1>Edit $name</H1>\n";
-	echo '<span class="actions"><a href="#" onclick="javascript:displaymode()">Display Mode</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.'>delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
- $form = new HTML_QuickForm('modify','POST',$_SERVER['PHP_SELF'],null,null,true);
- $form->addElement('header','','Modify Event');
+
+	// add a file admin/options.events.php which will allow you to set global events options
+$eventFieldsToDisplay=deserialize(getUserPreference($a->getPid(),'eventFieldsToDisplay'));
+
+if (!$eventFieldsToDisplay) {
+	$eventFieldsToDisplay=deserialize(getSystemVariable('eventFieldsToDisplay'));
 }
 
-	unset($event['unixdate']);
-	while (list($key,$val)=each($event)) {
-		switch($key) {
+unset($event['unixdate']);
+
+// maybe change this so that we check two things: if the field is set to display by default AND whether or not it is null
+if (!$eventFieldsToDisplay) { // if neither the user pref nor the system variable is set
+	$visibleFields=$eventFields;
+} else {
+	$visibleFields=array_intersect_key($event,$eventFieldsToDisplay);
+	$hiddenFields=array_diff_key($event,$eventFieldsToDisplay); // perhaps not necessary using this implementation
+}
+
+foreach($visibleFields as $field) {
+	switch($field) {
 		case 'notes':
-			$form->addElement('textarea',$key,$key);
+			$form->addElement('textarea',$field,$field);
 			break;
 		case 'begin':
 		case 'end':
-			$form->addElement('hidden',$key,$key);
-			if (!$val) {
-				$event[$key]=date('Y-m-d 00:00:00',time());
+			$form->addElement('hidden',$field,$field);
+			if (!$event[$field]) {
+				$event[$field]=date('Y-m-d 00:00:00',time());
 			}
+			// need to find a better calendar widget
 			$calendar=<<<CALENDAR
 			<div id="eventcalendar">
 			</div>
 			<script type="text/javascript">
 			var cal = new DataRequestor();
 			cal.setObjToReplace("eventcalendar");
-			cal.addArg(_GET,"datefield","<?php echo $key;?>");
-			cal.addArg(_GET,"month",<?php echo date('m',strtotime($val))?>);
-			cal.addArg(_GET,"day",<?php echo date('j',strtotime($val))?>);
-			cal.addArg(_GET,"year",<?php echo date('Y',strtotime($val))?>);
+			cal.addArg(_GET,"datefield","<?php echo $field;?>");
+			cal.addArg(_GET,"month",<?php echo date('m',strtotime($event[$field']))?>);
+			cal.addArg(_GET,"day",<?php echo date('j',strtotime($event[$field']))?>);
+			cal.addArg(_GET,"year",<?php echo date('Y',strtotime($event[$field']))?>);
 			cal.getURL("subforms/monthly.calendar.php");
 			</script>
 CALENDAR;
 			$form->addElement('html',$calendar);
 			break;
 		default:
-			$form->addElement('text',$key,$key);
+			$form->addElement('text',$field,$field);
 		}
+}
+foreach ($hiddenFields as $field) {
+	switch ($field) {
+		default:
+			$form->addElement('hidden',$field,$field);
 	}
+}
 	$form->setDefaults($event);
 	$form->applyFilter('__ALL__','trim');
 	//$form->display();
 	$renderer =& new HTML_QuickForm_Renderer_Tableless();
 	$form->accept($renderer);
 	echo $renderer->toHtml();
+	echo '<a href="#">view all possible fields</a></div>';
 	if ($_GET['action']=='add') {
 		echo "<H2>Regulars Who Might Have Been There</H2>\n";
 		include('subforms/event.regulars.php');
