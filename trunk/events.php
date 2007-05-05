@@ -101,41 +101,14 @@ if (!isset($event_id)) {
 <title><?php echo $name;?></title>
 <link rel="stylesheet" href="examine.css" type="text/css">
 <link rel="stylesheet" href="quickform.css" type="text/css">
+<link type="text/css" rel="stylesheet" href="yui/calendar/assets/calendar.css">
 <script type="text/javascript" src="datarequestor-1.6.js"></script>
 <script type="text/javascript" src="display.js"></script>
 <script type="text/javascript" src="forms.js"></script>
-<script type="text/javascript">
-function SetDate(HiddenFieldID,NewDate,NewDateID) {
-	if (!document.getElementById) return null;
-	dateField = document.getElementById(HiddenFieldID);
-	dateField.value=NewDate;
-	for (i=0;i<31;i++) {
-		calendarEntry=document.getElementById('cal'+i);
-		if (calendarEntry) calendarEntry.className='normalDate';
-	}
-	newDateElement = document.getElementById(NewDateID);
-	newDateElement.className='selectedDate';
-}
-
-function ChangeCalendar(datefield,month,day,year) {
-	if (!document.getElementById) return null;
-	var cal = new DataRequestor();
-	cal.setObjToReplace("eventcalendar");
-	cal.addArg(_GET,"datefield",datefield);
-	cal.addArg(_GET,"month",month);
-	cal.addArg(_GET,"day",day);
-	cal.addArg(_GET,"year",year);
-	cal.getURL("subforms/monthly.calendar.php");
-}
-</script>
-<style type="text/css">
-.selectedDate {
-	background-color: red;
-}
-.normalDate {
-	background-color: white;
-}
-</style>
+<script type="text/javascript" src="yui/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="yui/event/event-min.js"></script>
+<script type="text/javascript" src="yui/dom/dom-min.js"></script>
+<script type="text/javascript" src="yui/calendar/calendar-min.js"></script>
 </head>
 <body>
 <?php include 'templates/header.php';?>
@@ -195,9 +168,16 @@ foreach($visibleFields as $field) {
 			if (!$event[$field]) {
 				$event[$field]=date('Y-m-d 00:00:00',time());
 			}
-			// need to find a better calendar widget
 			$calendarLabel=$field.'calendar';
 			$calendar="<div id='$calendarLabel'></div>";
+			$calendar.="<script>YAHOO.namespace('example.calendar');";
+			$calendar.="function init() {YAHOO.example.calendar.cal1 = new YAHOO.widget.Calendar('cal1','$calendarLabel'); YAHOO.example.calendar.cal1.render(); } ";
+			$calendar.='YAHOO.util.Event.addListener(window, "load", init);</script>";';
+			$form->addElement('html',$calendar);
+			/*
+			// need to find a better calendar widget
+			
+			
 			$calendar.='<script type="text/javascript">var cal = new DataRequestor();';
 			$calendar.="cal.setObjToReplace($calendarLabel);\n";
 			$calendar.='cal.addArg(_GET,"datefield","'.$field.'");';
@@ -206,6 +186,7 @@ foreach($visibleFields as $field) {
 			$calendar.='cal.addArg(_GET,"year",'.date('Y',strtotime($event[$field])).');';
 			$calendar.='cal.getURL("subforms/monthly.calendar.php");</script>';
 			$form->addElement('html',$calendar);
+			*/
 			break;
 		default:
 			$form->addElement('text',$field,$field);
@@ -254,3 +235,4 @@ if ($event_id!==NULL) {
 <?php include 'templates/footer.php';?>
 </body>
 </html>
+
