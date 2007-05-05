@@ -22,7 +22,7 @@ if (isset($_REQUEST['event_id'])) {
 }
 
 if (!isset($_POST['ACTION']) && !isset($_GET['action'])) {
-    $total=$db->getOne('SELECT COUNT(*) FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid.' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id'); //role_id of 1 and 2 indicate staff - higher is student or misc
+    $total=$db->getOne('SELECT COUNT(*) FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id'); //role_id of 1 and 2 indicate staff - higher is student or misc
     if ($total>0) {
         $_POST['ACTION']='DEFAULT';
 		$_GET['action']='DEFAULT';
@@ -168,10 +168,10 @@ if ($event_id===NULL && $_GET['action']!='ADD') {
 	echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
 
 	// add a file admin/options.events.php which will allow you to set global events options
-$eventFieldsToDisplay=deserialize(getUserPreference($a->getPid(),'eventFieldsToDisplay'));
+$eventFieldsToDisplay=unserialize(getUserPreference($a->getPid(),'eventFieldsToDisplay'));
 
 if (!$eventFieldsToDisplay) {
-	$eventFieldsToDisplay=deserialize(getSystemVariable('eventFieldsToDisplay'));
+	$eventFieldsToDisplay=unserialize(getSystemVariable('eventFieldsToDisplay'));
 }
 
 unset($event['unixdate']);
@@ -203,9 +203,9 @@ foreach($visibleFields as $field) {
 			var cal = new DataRequestor();
 			cal.setObjToReplace("eventcalendar");
 			cal.addArg(_GET,"datefield","<?php echo $field;?>");
-			cal.addArg(_GET,"month",<?php echo date('m',strtotime($event[$field']))?>);
-			cal.addArg(_GET,"day",<?php echo date('j',strtotime($event[$field']))?>);
-			cal.addArg(_GET,"year",<?php echo date('Y',strtotime($event[$field']))?>);
+			cal.addArg(_GET,"month",<?php echo date('m',strtotime($event[$field]))?>);
+			cal.addArg(_GET,"day",<?php echo date('j',strtotime($event[$field]))?>);
+			cal.addArg(_GET,"year",<?php echo date('Y',strtotime($event[$field]))?>);
 			cal.getURL("subforms/monthly.calendar.php");
 			</script>
 CALENDAR;

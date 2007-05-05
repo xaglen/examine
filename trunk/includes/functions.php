@@ -180,7 +180,7 @@ function setUserPreference($pid=null,$option=null,$value=null) {
 	$pid=$db->quote($pid);
 	$option=$db->quote($option);
 	$value=$db->quote($value);
-	$sql="INSERT INTO user_preferences (pid,option,value) VALUES ($pid,$option,$value) ON DUPLICATE KEY UPDATE value=VALUES(value)";
+	$sql="INSERT INTO user_preferences (pid,prefname,prefval) VALUES ($pid,$option,$value) ON DUPLICATE KEY UPDATE prefval=VALUES(prefval)";
 	$db->exec($sql);
 }
 
@@ -198,7 +198,7 @@ if ($pid===null || $option===null) {
 	
 	$db=createDB();
 	$option=$db->quote($option);
-	$sql="SELECT value FROM user_preferences WHERE pid=$pid and option='$option'";
+	$sql="SELECT prefval FROM user_preferences WHERE pid=$pid AND prefname=$option";
 	$value=$db->getOne($sql); // pid and option are the key together, so there will never be two entries
 	return $value;
 }
@@ -216,7 +216,7 @@ function setSystemVariable($option=null, $value=null) {
 	$db=createDB();
     $option=$db->quote($option);
     $value = $db->quote($value);
-	$sql="INSERT INTO variables (option,value) VALUES ($option,$value) ON DUPLICATE KEY UPDATE value=VALUES(value)";
+	$sql="INSERT INTO variables (configname, configval) VALUES ($option,$value) ON DUPLICATE KEY UPDATE val=VALUES(val)";
 	$db->exec($sql);
 }
 
@@ -233,7 +233,7 @@ function getSystemVariable($option) {
 	
 	$db=createDB();
 	$option=$db->quote($option);
-	$sql="SELECT value FROM variables WHERE option='$option'";
+	$sql="SELECT configval FROM variables WHERE configname=$option";
 	$value=$db->getOne($sql); // option is the key, so there will never be two entries
 	return $value;
 }
