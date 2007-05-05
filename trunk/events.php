@@ -110,7 +110,7 @@ if (!isset($event_id)) {
 <script type="text/javascript" src="yui/event/event-min.js"></script>
 <script type="text/javascript" src="yui/dom/dom-min.js"></script>
 <script type="text/javascript" src="yui/calendar/calendar-min.js"></script>
-<script type="text/javascript" src="events.js"></script>
+<script type="text/javascript" src="events2.js"></script>
 </head>
 <body>
 <?php include 'templates/header.php';?>
@@ -172,8 +172,8 @@ foreach($visibleFields as $field) {
 			break;
 		case 'begin':
 		case 'end':
-		$form->addElement('date', $field.'_date', $field, null,
-array('class'=>'control-date'));
+		//$form->addElement('date', $field.'_date', $field, null,array('class'=>'control-date'));
+		$form->addElement('text', $field.'_date', $field);
 		$form->addElement('text', $field.'_time', $field);
                        if (!$event[$field]) {
                                $event[$field.'_date']=date('Y-m-d',time());
