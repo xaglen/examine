@@ -439,17 +439,17 @@ function formatDate ( $strDate ) {
  * @return string an HTML snippet containing a div and javascript
  */
 function generateYahooCalendarJS($divLabel='cal',$calNum=1,$linkedField='date') {
-	$calendar="<div id='$divLabel'></div>";
+	$calendar="\n<div id='$divLabel'></div>\n";
 	$calendar.='<script type="text/javascript">';
 	$calendar.='function handleCalendar'.$calNum.'Select(type,args,obj) {';
 	$calendar.='var dates = args[0]; var date = dates[0]; var year = date[0], month = date[1], day = date[2];';
 	$calendar.='var txtDate = document.getElementById("'.$linkedField.'");';
 	$calendar.='txtDate.value = month + "/" + day + "/" + year;';
 	$calendar.='}';
-	$calendar.="<script>YAHOO.namespace('example.calendar');";
-	$calendar.="function init() {YAHOO.example.calendar.cal$calNum = new YAHOO.widget.Calendar('cal$calNum','$divLabel'); YAHOO.example.calendar.cal$calNum.render(); } ";
+	$calendar.='YAHOO.namespace("example.calendar");';
+	$calendar.='function init() {YAHOO.example.calendar.cal'.$calNum.' = new YAHOO.widget.Calendar("cal'.$calNum.'","'.$divLabel.'"); YAHOO.example.calendar.cal'.$calNum.'.render(); } ';
 	$calendar.='YAHOO.util.Event.addListener(window, "load", init);';
-	$calendar.='YAHOO.example.calendar.cal$calNum.selectEvent.subscribe(handleCalendar'.$calNum.'Select, YAHOO.example.calendar.cal'.$calNum.', true);';
+	$calendar.='YAHOO.example.calendar.cal'.$calNum.'.selectEvent.subscribe(handleCalendar'.$calNum.'Select, YAHOO.example.calendar.cal'.$calNum.', true);';
 	$calendar.='</script>';
 	return $calendar;
 }

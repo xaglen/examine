@@ -7,10 +7,10 @@ require_once 'HTML/QuickForm.php';
 <head>
 <title>HTML QuickForm Dates + YUI Control</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<script type="text/javascript" src="yui/build/yahoo/yahoo.js"></script>
-<script type="text/javascript" src="yui/build/dom/dom.js"></script>
-<script type="text/javascript" src="yui/build/event/event.js"></script>
-<script type="text/javascript" src="yui/build/calendar/calendar.js"></script>
+<script type="text/javascript" src="yui/yahoo/yahoo.js"></script>
+<script type="text/javascript" src="yui/dom/dom.js"></script>
+<script type="text/javascript" src="yui/event/event.js"></script>
+<script type="text/javascript" src="yui/calendar/calendar.js"></script>
 <script type="text/javascript">
 <!--
 YAHOO.util.Event.addListener(window, 'load', function(e) {
@@ -19,13 +19,12 @@ if (!(document.createElement && document.getElementsByTagName)) return;
 var ss = document.createElement('link');
 ss.setAttribute('rel', 'stylesheet');
 ss.setAttribute('type', 'text/css');
-ss.setAttribute('href', 'yui/build/calendar/assets/calendar.css');
+ss.setAttribute('href', 'yui/calendar/assets/calendar.css');
 document.getElementsByTagName('head')[0].appendChild(ss);
 
 // create a global variable to contain my calendars, similar to the YAHOO namespace to avoid future collisions
 window._jcp_ = (window._jcp_ ? window._jcp_ : {});
-window._jcp_.calendarControls = (window._jcp_.calendarControls ?
-window._jcp_.calendarControls : []);
+window._jcp_.calendarControls = (window._jcp_.calendarControls ? window._jcp_.calendarControls : []);
 // grab all of my HTML_QuickForm date controls into one array
 var dateControls = YAHOO.util.Dom.getElementsByClassName('control-date');
 /**
@@ -49,7 +48,7 @@ while(p.firstChild) p.removeChild(p.firstChild);
 // determine the parent form of this control
 var f = p.parentNode;
 while(f.nodeName.toLowerCase() != 'form') {
-if (f.nodeName.toLowerCase() == 'body') return; // we'll want to exit the loop if we don't find a good node -- this assume's you're using valid pages that actually have a <body> present
+if (f.nodeName.toLowerCase() == 'body') return; // we'll want to exit the loop if we don't find a good node -- this assumes you're using valid pages that actually have a <body> present
 f = f.parentNode;
 }
 
