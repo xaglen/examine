@@ -178,7 +178,7 @@ unset($event['unixdate']);
 
 // maybe change this so that we check two things: if the field is set to display by default AND whether or not it is null
 if (!$eventFieldsToDisplay) { // if neither the user pref nor the system variable is set
-	$visibleFields=$eventFields;
+	$visibleFields=array_keys($event);
 } else {
 	$visibleFields=array_intersect_key($event,$eventFieldsToDisplay);
 	$hiddenFields=array_diff_key($event,$eventFieldsToDisplay); // perhaps not necessary using this implementation
