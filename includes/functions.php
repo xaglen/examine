@@ -169,18 +169,18 @@ function obscureEmail($email) {
  * Sets a user preference
  *
  * @param int $pid primary key for table people
- * @param string $option the preference to be set
- * @param string $value what the preference is - a serialized PHP variable. It is the responsibility of the calling function to serialize the data.
+ * @param string $prefname the preference to be set
+ * @param string $prefval what the preference is - a serialized PHP variable. It is the responsibility of the calling function to serialize the data.
  */
-function setUserPreference($pid=null,$option=null,$value=null) {
-	if ($pid===null || $option===null || $value===null) {
+function setUserPreference($pid=null,$prefname=null,$prefval=null) {
+	if ($pid===null || $prefname===null || $prefval===null) {
 		return;
 	}
 	$db=createDB();
 	$pid=$db->quote($pid);
-	$option=$db->quote($option);
-	$value=$db->quote($value);
-	$sql="INSERT INTO user_preferences (pid,prefname,prefval) VALUES ($pid,$option,$value) ON DUPLICATE KEY UPDATE prefval=VALUES(prefval)";
+	$prefname=$db->quote($prefname);
+	$prefval=$db->quote($prefval);
+	$sql="INSERT INTO user_preferences (pid,prefname,prefval) VALUES ($pid,$prefname,$prefval) ON DUPLICATE KEY UPDATE prefval=VALUES(prefval)";
 	$db->exec($sql);
 }
 
@@ -188,53 +188,53 @@ function setUserPreference($pid=null,$option=null,$value=null) {
  * Retrieves a user preference
  * 
  * @param int $pid primary key for table people
- * @param string $option the preference to retrieve
- * @return string $value a serialized PHP variable. Call unserialize on this returned value.
+ * @param string $prefname the preference to retrieve
+ * @return string a serialized PHP variable. Call unserialize on this returned value.
  */
-function getUserPreference($pid=null,$option=null) {
-if ($pid===null || $option===null) {
+function getUserPreference($pid=null,$prefname=null) {
+if ($pid===null || $prefname===null) {
 		return null;
 	}
 	
 	$db=createDB();
-	$option=$db->quote($option);
-	$sql="SELECT prefval FROM user_preferences WHERE pid=$pid AND prefname=$option";
-	$value=$db->getOne($sql); // pid and option are the key together, so there will never be two entries
-	return $value;
+	$prefname=$db->quote($prefname);
+	$sql="SELECT prefval FROM user_preferences WHERE pid=$pid AND prefname=$prefname";
+	$prefval=$db->getOne($sql); // pid and prefname are the key together, so there will never be two entries
+	return $prefval;
 }
 
 /**
  * Sets a systemwide option
  *
- * @param string $option the option to be set
- * @param string $value what the preference is - a serialized PHP variable. It is the responsibility of the calling function to serialize the data.
+ * @param string $configname the option to be set
+ * @param string $configval what the preference is - a serialized PHP variable. It is the responsibility of the calling function to serialize the data.
  */
-function setSystemVariable($option=null, $value=null) {
-	if ($option===null || $value===null) {
+function setSystemVariable($configname=null, $configval=null) {
+	if ($configname===null || $configval===null) {
 		return;
 	}
 	$db=createDB();
-    $option=$db->quote($option);
-    $value = $db->quote($value);
-	$sql="INSERT INTO variables (configname, configval) VALUES ($option,$value) ON DUPLICATE KEY UPDATE val=VALUES(val)";
+    $configname=$db->quote($configname);
+    $configval = $db->quote($configval);
+	$sql="INSERT INTO variables (configname, configval) VALUES ($configname,$configval) ON DUPLICATE KEY UPDATE configval=VALUES(configval)";
 	$db->exec($sql);
 }
 
 /**
  * Retrieves a systemwide setting
  * 
- * @param string $option the preference to retrieve
- * @return string $value a serialized PHP variable. Call unserialize on this returned value.
+ * @param string $configname n the preference to retrieve
+ * @return string a serialized PHP variable. Call unserialize on this returned value.
  */
-function getSystemVariable($option) {
-	if ($option===null) {
+function getSystemVariable($configname=null) {
+	if ($configname===null) {
 		return null;
 	}
 	
 	$db=createDB();
-	$option=$db->quote($option);
-	$sql="SELECT configval FROM variables WHERE configname=$option";
-	$value=$db->getOne($sql); // option is the key, so there will never be two entries
-	return $value;
+	$configname=$db->quote($configname);
+	$sql="SELECT configval FROM variables WHERE configname=$configname";
+	$configval=$db->getOne($sql); // option is the key, so there will never be two entries
+	return $configval;
 }
 ?>
