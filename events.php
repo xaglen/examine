@@ -247,7 +247,8 @@ foreach($visibleFields as $field) {
 		case 'begin':
 		case 'end':
 		//$form->addElement('date', $field.'_date', $field, null,array('class'=>'control-date'));
-		$form->addElement('text', $field.'_date', $field);
+		// ultimately need to add this as a group using addGroup http://pear.php.net/manual/en/package.html.html-quickform.html-quickform.addgroup.php
+		$form->addElement('text', $field.'_date', $field,array('autocomplete'=>'off'));
 		$form->addElement('text', $field.'_time', $field);
                        if (!$event[$field]) {
                                $event[$field.'_date']=date('Y-m-d',time());
