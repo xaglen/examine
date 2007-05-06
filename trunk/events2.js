@@ -20,7 +20,6 @@ function init() {
     YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'focus', showCal);
     YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'blur', hideCal);
     cal1.render();
-    dp.SyntaxHighlighter.HighlightAll('code'); 
 }
 
 function setupListeners() {

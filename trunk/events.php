@@ -13,7 +13,6 @@ require_once 'HTML/QuickForm.php';
 require_once 'HTML/QuickForm/Renderer/Tableless.php';
 require_once 'includes/functions.php';
 require_once 'includes/functions.time.php';
-require_once 'includes/functions.form.php';
 
 $db=createDB();
 
@@ -104,10 +103,10 @@ if (!isset($event_id)) {
 <link rel="stylesheet" href="quickform.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="yui/calendar/assets/calendar.css">
 <script type="text/javascript" src="datarequestor-1.6.js"></script>
-<script type="text/javascript" src="display.js"></script>
 <script type="text/javascript" src="forms.js"></script>
 <script type="text/javascript" src="yui/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="yui/event/event-min.js"></script>
+<script type="text/javascript" src="yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="yui/dom/dom-min.js"></script>
 <script type="text/javascript" src="yui/calendar/calendar-min.js"></script>
 <script type="text/javascript" src="events2.js"></script>
@@ -157,9 +156,9 @@ if (!$eventFieldsToDisplay) { // if neither the user pref nor the system variabl
 
 $form = new HTML_QuickForm('add','POST',$_SERVER['PHP_SELF'],null,null,true);
          $form->addElement('header','','Event');
+         $form->addElement('html','<div id="cal1Container"></div>'); // used later for YUI calendar
        echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
        echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
-$calNum=1;
 foreach($visibleFields as $field) {
 	switch($field) {
         case 'ministry_id':
@@ -181,8 +180,8 @@ foreach($visibleFields as $field) {
                       } else {
 					          $event[$field.'_date']=date('Y-m-d',strtotime($event[$field]));
 							  $event[$field.'_time']=date('g:ia',strtotime($event[$field]));
-					  }
-                       //$calendar=generateYahooCalendarJS($field.'_cal',$calNum++,$field.'_date');
+                      }
+        //$calendar=generateYahooCalendarJS($field.'_cal',$calNum++,$field.'_date');
                        //$form->addElement('html',$calendar);
 		/*
 			$calNum=$calNum++; // allows us to generate multiple JS calendars
@@ -245,4 +244,3 @@ if ($event_id!==NULL) {
 <?php include 'templates/footer.php';?>
 </body>
 </html>
-
