@@ -13,7 +13,8 @@ from http://blog.davglass.com/files/yui/cal2/more.php
 var cal1;
 var over_cal = false;
 var cur_field = '';
-function init() {
+
+function setupCal1() {
     cal1 = new YAHOO.widget.Calendar("cal1","cal1Container");
     cal1.selectEvent.subscribe(getDate, cal1, true);
     cal1.renderEvent.subscribe(setupListeners, cal1, true);
@@ -68,4 +69,4 @@ function outCal() {
     over_cal = false;
 }
 
-YAHOO.util.Event.addListener(window, 'load', init);
+YAHOO.util.Event.addListener(window, 'load', setupCal1);
