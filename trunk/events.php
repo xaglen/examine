@@ -105,11 +105,11 @@ if (!isset($event_id)) {
 <link type="text/css" rel="stylesheet" href="yui/calendar/assets/calendar.css">
 <script type="text/javascript" src="datarequestor-1.6.js"></script>
 <script type="text/javascript" src="forms.js"></script>
-<script type="text/javascript" src="yui/yahoo/yahoo-min.js"></script>
-<script type="text/javascript" src="yui/event/event-min.js"></script>
+<script type="text/javascript" src="yui/yahoo/yahoo-debug.js"></script>
+<script type="text/javascript" src="yui/event/event-debug.js"></script>
 <script type="text/javascript" src="yui/utilities/utilities.js"></script>
-<script type="text/javascript" src="yui/dom/dom-min.js"></script>
-<script type="text/javascript" src="yui/calendar/calendar-min.js"></script>
+<script type="text/javascript" src="yui/dom/dom-debug.js"></script>
+<script type="text/javascript" src="yui/calendar/calendar-debug.js"></script>
 <script type="text/javascript">
 /*
 from http://blog.davglass.com/files/yui/cal2/more.php
