@@ -104,6 +104,8 @@ if (!isset($event_id)) {
 <link rel="stylesheet" href="quickform.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="yui/calendar/assets/calendar.css">
 <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css"> 
+</head>
+<body>
 <script type="text/javascript" src="datarequestor-1.6.js"></script>
 <script type="text/javascript" src="forms.js"></script>
 <script type="text/javascript" src="yui/yahoo/yahoo.js"></script>
@@ -111,7 +113,7 @@ if (!isset($event_id)) {
 <script type="text/javascript" src="yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="yui/dom/dom-debug.js"></script>
 <script type="text/javascript" src="yui/calendar/calendar-debug.js"></script>
-<script type+"text/javascript" src="yui/logger/logger-min.js"></script>
+<script type="text/javascript" src="yui/logger/logger-min.js"></script>
 <script type="text/javascript"> 
 var myLogReader = new YAHOO.widget.LogReader(); 
 
@@ -188,8 +190,6 @@ function outCal() {
 
 YAHOO.util.Event.addListener(window, 'load', setupCal1);
 </script>
-</head>
-<body>
 <?php include 'templates/header.php';?>
 <div id="main">
 <div id="sidebar">
