@@ -109,14 +109,18 @@ if (!isset($event_id)) {
 <script type="text/javascript" src="datarequestor-1.6.js"></script>
 <script type="text/javascript" src="forms.js"></script>
 <script type="text/javascript" src="yui/yahoo/yahoo.js"></script>
-<script type="text/javascript" src="yui/event/event-debug.js"></script>
+<script type="text/javascript" src="yui/event/event-min.js"></script>
 <script type="text/javascript" src="yui/utilities/utilities.js"></script>
-<script type="text/javascript" src="yui/dom/dom-debug.js"></script>
-<script type="text/javascript" src="yui/calendar/calendar-debug.js"></script>
+<script type="text/javascript" src="yui/dom/dom-min.js"></script>
+<script type="text/javascript" src="yui/calendar/calendar-min.js"></script>
+<?php
+/*
 <script type="text/javascript" src="yui/logger/logger-min.js"></script>
 <script type="text/javascript"> 
 var myLogReader = new YAHOO.widget.LogReader(); 
-
+*/
+?>
+<script type="text/javascript">
 /*
 from http://blog.davglass.com/files/yui/cal2/more.php
 
@@ -254,11 +258,12 @@ foreach($visibleFields as $field) {
 		// ultimately need to add this as a group using addGroup http://pear.php.net/manual/en/package.html.html-quickform.html-quickform.addgroup.php
 		$form->addElement('text', $field.'_date', $field,array('autocomplete'=>'off'));
 		$form->addElement('text', $field.'_time', $field);
+        //the order of the date is important for the javascript calendar to work properly - MUST BE d/m/YYYY
                        if (!$event[$field]) {
-                               $event[$field.'_date']=date('Y-m-d',time());
+                               $event[$field.'_date']=date('n/j/Y',time());
 							   $event[$field.'_time']='8:00pm';
                       } else {
-					          $event[$field.'_date']=date('Y-m-d',strtotime($event[$field]));
+					          $event[$field.'_date']=date('n/j/Y',strtotime($event[$field]));
 							  $event[$field.'_time']=date('g:ia',strtotime($event[$field]));
                       }
         //$calendar=generateYahooCalendarJS($field.'_cal',$calNum++,$field.'_date');
