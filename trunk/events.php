@@ -156,7 +156,7 @@ if (!$eventFieldsToDisplay) { // if neither the user pref nor the system variabl
 
 $form = new HTML_QuickForm('add','POST',$_SERVER['PHP_SELF'],null,null,true);
          $form->addElement('header','','Event');
-         $form->addElement('html','<div id="cal1Container"></div>'); // used later for YUI calendar
+        // $form->addElement('html','<div id="cal1Container"></div>'); // used later for YUI calendar
        echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
        echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
 foreach($visibleFields as $field) {
@@ -205,6 +205,7 @@ $form->applyFilter('__ALL__','trim');
       $renderer =& new HTML_QuickForm_Renderer_Tableless();
       $form->accept($renderer);
       echo $renderer->toHtml();	
+      echo '<div id="cal1Container"></div>';
 /* @todo deal with this later
 foreach ($hiddenFields as $field) {
 	switch ($field) {
