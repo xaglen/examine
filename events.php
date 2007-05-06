@@ -22,6 +22,7 @@ if (isset($_REQUEST['event_id'])) {
 }
 
 if (!isset($_POST['ACTION']) && !isset($_GET['action'])) {
+
     $total=$db->getOne('SELECT COUNT(*) FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id'); //role_id of 1 and 2 indicate staff - higher is student or misc
     if ($total>0) {
         $_POST['ACTION']='DEFAULT';
@@ -109,7 +110,80 @@ if (!isset($event_id)) {
 <script type="text/javascript" src="yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="yui/dom/dom-min.js"></script>
 <script type="text/javascript" src="yui/calendar/calendar-min.js"></script>
-<script type="text/javascript" src="events2.js"></script>
+<script type="text/javascript">
+/*
+from http://blog.davglass.com/files/yui/cal2/more.php
+
+<form method="get" action="more.php">
+    Select Date 1: <input type="text" name="cal1Date" id="cal1Date" autocomplete="off" size="35" value="" /><br>
+    Select Date 2: <input type="text" name="cal1Date2" id="cal1Date2" autocomplete="off" size="35" value="" /><br>
+    Select Date 3: <input type="text" name="cal1Date3" id="cal1Date3" autocomplete="off" size="35" value="" /><br>
+    <input type="submit" value="Submit" />
+</form>
+<div id="cal1Container"></div>
+*/
+
+var cal1;
+var over_cal = false;
+var cur_field = '';
+
+function setupCal1() {
+    cal1 = new YAHOO.widget.Calendar("cal1","cal1Container");
+    cal1.selectEvent.subscribe(getDate, cal1, true);
+    cal1.renderEvent.subscribe(setupListeners, cal1, true);
+    YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'focus', showCal);
+    YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'blur', hideCal);
+    cal1.render();
+}
+
+function setupListeners() {
+    YAHOO.util.Event.addListener('cal1Container', 'mouseover', overCal);
+    YAHOO.util.Event.addListener('cal1Container', 'mouseout', outCal);
+}
+
+function getDate() {
+        var calDate = this.getSelectedDates()[0];
+        calDate = (calDate.getMonth() + 1) + '/' + calDate.getDate() + '/' + calDate.getFullYear();
+        cur_field.value = calDate;
+        over_cal = false;
+        hideCal();
+}
+
+function showCal(ev) {
+    var tar = YAHOO.util.Event.getTarget(ev);
+    cur_field = tar;
+    var xy = YAHOO.util.Dom.getXY(tar);
+    var date = YAHOO.util.Dom.get(tar).value;
+    if (date) {
+        cal1.cfg.setProperty('selected', date);
+        cal1.cfg.setProperty('pagedate', new Date(date), true);
+        cal1.render();
+    } else {
+        cal1.cfg.setProperty('selected', '');
+        cal1.cfg.setProperty('pagedate', new Date(), true);
+        cal1.render();
+    }
+    YAHOO.util.Dom.setStyle('cal1Container', 'display', 'block');
+    xy[1] = xy[1] + 20;
+    YAHOO.util.Dom.setXY('cal1Container', xy);
+}
+
+function hideCal() {
+    if (!over_cal) {
+        YAHOO.util.Dom.setStyle('cal1Container', 'display', 'none');
+    }
+}
+
+function overCal() {
+    over_cal = true;
+}
+
+function outCal() {
+    over_cal = false;
+}
+
+YAHOO.util.Event.addListener(window, 'load', setupCal1);
+</script>
 </head>
 <body>
 <?php include 'templates/header.php';?>
@@ -137,14 +211,20 @@ if ($event_id===NULL && $_GET['action']!='ADD') {
 } else { // event_id is not equal to null or ADD is set
 	echo '<span class="actions"><a href="#" onclick="javascript:editmode()">edit</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.'>delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
 
-	// add a file admin/options.events.php which will allow you to set global events options
+$form = new HTML_QuickForm('add','POST',$_SERVER['PHP_SELF'],null,null,true);
+$form->addElement('header','','Event');
+// $form->addElement('html','<div id="cal1Container"></div>'); // used later for YUI calendar
+echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
+echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
+
+unset($event['unixdate']);
+	   
+// add a file admin/options.events.php which will allow you to set global events options
 $eventFieldsToDisplay=unserialize(getUserPreference($a->getPid(),'eventFieldsToDisplay'));
 
 if (!$eventFieldsToDisplay) {
 	$eventFieldsToDisplay=unserialize(getSystemVariable('eventFieldsToDisplay'));
 }
-
-unset($event['unixdate']);
 
 // maybe change this so that we check two things: if the field is set to display by default AND whether or not it is null
 if (!$eventFieldsToDisplay) { // if neither the user pref nor the system variable is set
@@ -153,12 +233,7 @@ if (!$eventFieldsToDisplay) { // if neither the user pref nor the system variabl
 	$visibleFields=array_intersect_key($event,$eventFieldsToDisplay);
 	$hiddenFields=array_diff_key($event,$eventFieldsToDisplay); // perhaps not necessary using this implementation
 }
-
-$form = new HTML_QuickForm('add','POST',$_SERVER['PHP_SELF'],null,null,true);
-         $form->addElement('header','','Event');
-        // $form->addElement('html','<div id="cal1Container"></div>'); // used later for YUI calendar
-       echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
-       echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
+	   
 foreach($visibleFields as $field) {
 	switch($field) {
         case 'ministry_id':
