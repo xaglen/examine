@@ -66,7 +66,7 @@ private $user_id = null;
 		}
 		$this->authChecks++; // critical - without this the parent function is never called
 		global $_COOKIE;
-		if (!isset[$_COOKIE[$this->tokenCookieName]) {
+		if (!isset($_COOKIE[$this->tokenCookieName])) {
 			return false;
 		} else {
 			$cookie=$_COOKIE[$this->tokenCookieName];
@@ -80,7 +80,7 @@ private $user_id = null;
 		}
 		$result=$db->query("SELECT token,username FROM user_remember_me urm,users u WHERE urm.user_id=$user_id AND u.user_id=urm.user_id");
 		// there can be many entries in the database if the user uses multiple computers
-		while ($row=result->fetchRow()) { 
+		while ($row=$result->fetchRow()) { 
 			if ($token==$row['token']) {
 				$this->updateToken();
 				$this->username=$row['username'];
@@ -235,7 +235,7 @@ function successfulLogin($username=null,$a=null) {
 	}
 }
 
-$a = &new myAuth("MDB2", $loginOptions,'loginForm');
+$a = &new myAuth('MDB2', $loginOptions,'loginForm');
 $a->setSessionname('chi_alpha_examine');
 //$a->setIdle(900); // fifteen minutes
 $a->setLoginCallback('successfulLogin');
