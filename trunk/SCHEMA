@@ -148,11 +148,17 @@ CREATE TABLE `subgroups` (
   PRIMARY KEY  (`subgroup_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='for worship teams, bible studies, etc';
 CREATE TABLE `user_preferences` (
-  `pid` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `prefname` varchar(32) NOT NULL,
   `prefval` mediumtext,
-  PRIMARY KEY  (`pid`,`prefname`)
+  PRIMARY KEY  (`user_id`,`prefname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+CREATE TABLE `user_remember_me` (
+  `user_id` int(11) NOT NULL,
+  `token` int(11) NOT NULL,
+  `created_on` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  KEY `username` (`user_id`,`token`,`created_on`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='used for the remember me function on login';
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,

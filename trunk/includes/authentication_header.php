@@ -22,7 +22,7 @@ require_once basename(__FILE__).'/../config.php';
 class myAuth extends Auth {
 
 private $pid = null;
-
+private $user_id = null;
 /**
    * what is the pid of the logged in person?
    *
@@ -38,6 +38,29 @@ private $pid = null;
 		return $this->pid;
     }
 
+    /**
+     *  what is the user_id of the logged in person?
+     * 
+     * @return int
+     * @author Glen Davis
+     */
+    function getUserId() {
+        if ($this->user_id===null) {
+            $db=createDB();
+            $this->user_id=$db->getOne('SELECT user_id FROM users WHERE username='.$db->quote($this->getUsername()));
+            $db->disconnect();
+        }
+        return $this->user_id;
+    }              
+    
+    function setToken() {
+        $db=createDB();
+        $token=mt_rand();
+        $user_id=$this->getUserId();
+        $db->exec("INSERT INTO user_remember_me (user_id, token) VALUES ($user_id, $token)");
+// need to finish up here - was interuppted by Dana`:w
+//
+    }
 
     /**
      * does the logged-in user have rights to edit an event?
@@ -83,7 +106,6 @@ private $pid = null;
     function ownsMinistry($ministry_id=NULL) {
         return 1;
     }
-}
 
 /**
  * Displays a login form
@@ -106,7 +128,8 @@ global $dbName;
 	$form->addRule('username','both username and password are required','required',null,'client');
     $form->addElement('password', 'password', 'Password:');
 	$form->addRule('password','both username and password are required','required',null,'client');
-	if (isset($status)) {
+    $form->addElement('checkbox','remember', 'Remember Me?');
+if (isset($status)) {
 		switch ($status) {
 		case AUTH_IDLED: 
 			$statusMsg='Session Timed Out';
@@ -165,31 +188,15 @@ global $dbName;
 	<?php
 }
 
-/**
- * Does a user have rights to edit an event?
- *
- * @param int $pid primary key to table people
- * @param int $event_id primary key to table events
- * @return boolean
- */
-function ownsEvent($pid=null,$event_id=null) {
-    return true;
+function successfulLogin($username=null,$a=null) {
+    $a->setToken();
 }
 
-/**
- * Does a user have rights to edit a  ministry?
- *
- * @param int $pid primary key to table people
- * @param int $ministry_id primary key to table ministries
- * @return boolean
- */
-function ownsMinistry ($pid=null, $ministry_id=null) {
-    return true;
-}
 
 $a = &new myAuth("MDB2", $loginOptions,'loginForm');
 $a->setSessionname('chi_alpha_examine');
-$a->setIdle(900); // fifteen minutes
+//$a->setIdle(900); // fifteen minutes
+$a->setLoginCallback('successfulLogin');
 $a->start();
  
 if (!$a->getAuth()) {
