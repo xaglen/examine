@@ -14,13 +14,14 @@ require_once 'HTML/QuickForm/Renderer/Tableless.php';
 require_once basename(__FILE__).'/../config.php';
 
 /**
- * Extended PEAR Auth class to allow easier internal data checks with out schema
+ * Extended PEAR Auth class to allow easier internal data checks with our schema
  *
  * @author Glen Davis
  * @package examine
  */
 class myAuth extends Auth {
 
+private $tokenCookieName = 'examinetoken';
 private $pid = null;
 private $user_id = null;
 /**
@@ -52,16 +53,55 @@ private $user_id = null;
         }
         return $this->user_id;
     }              
+
+	/**
+	* overwrite parent function because as it stands it won't allow me to do the session checks that I need to for the token-based "remember me" scheme
+	 * See http://fishbowl.pastiche.org/2004/01/19/persistent_login_cookie_best_practice
+	 * @return boolean is the user logged in OR has the user checked remember me?
+	*/
+	function checkAuth() {
+		//only deal with tokens on first login attempt
+		if ($this->authChecks>0) {
+			return parent::checkAuth();
+		}
+		$this->authChecks++; // critical - without this the parent function is never called
+		global $_COOKIE;
+		if (!isset[$_COOKIE[$this->tokenCookieName]) {
+			return false;
+		} else {
+			$cookie=$_COOKIE[$this->tokenCookieName];
+			$user_id=$cookie['user_id'];
+			$token=$cookie['token'];
+		}
+		$db=createDB();
+		// maintenance - delete all entries older than one month - probability 5%
+		if (mt_rand(1,20)==20) {
+			$db->exec('DELETE FROM user_remember_me WHERE TIMESTAMPDIFF(DAYS,NOW(),created_on)>31');
+		}
+		$result=$db->query("SELECT token,username FROM user_remember_me urm,users u WHERE urm.user_id=$user_id AND u.user_id=urm.user_id");
+		// there can be many entries in the database if the user uses multiple computers
+		while ($row=result->fetchRow()) { 
+			if ($token==$row['token']) {
+				$this->updateToken();
+				$this->username=$row['username'];
+				return true;
+			}
+		}
+		return false;
+	}
     
-    function setToken() {
+/**
+ * key part of "remember me" functionality. See http://fishbowl.pastiche.org/2004/01/19/persistent_login_cookie_best_practice
+ */
+    function updateToken() {
         $db=createDB();
         $token=mt_rand();
         $user_id=$this->getUserId();
         $db->exec("INSERT INTO user_remember_me (user_id, token) VALUES ($user_id, $token)");
-// need to finish up here - was interuppted by Dana`:w
-//
+		setcookie($this->tokenCookieName.'[token]',$token,time()+60*60*24*30);
+		$db->disconnect();
     }
-
+	
     /**
      * does the logged-in user have rights to edit an event?
      *
@@ -128,7 +168,7 @@ global $dbName;
 	$form->addRule('username','both username and password are required','required',null,'client');
     $form->addElement('password', 'password', 'Password:');
 	$form->addRule('password','both username and password are required','required',null,'client');
-    $form->addElement('checkbox','remember', 'Remember Me?');
+    $form->addElement('checkbox','remember', 'Remember me?');
 if (isset($status)) {
 		switch ($status) {
 		case AUTH_IDLED: 
@@ -189,14 +229,17 @@ if (isset($status)) {
 }
 
 function successfulLogin($username=null,$a=null) {
-    $a->setToken();
+	global $_POST;
+	if (isset($_POST['remember'])) {
+		$a->updateToken();
+	}
 }
-
 
 $a = &new myAuth("MDB2", $loginOptions,'loginForm');
 $a->setSessionname('chi_alpha_examine');
 //$a->setIdle(900); // fifteen minutes
 $a->setLoginCallback('successfulLogin');
+//$a->setCheckAuthCallback('checkAuthToken');
 $a->start();
  
 if (!$a->getAuth()) {
