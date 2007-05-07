@@ -228,7 +228,7 @@ echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance
 unset($event['unixdate']);
 	   
 // add a file admin/options.events.php which will allow you to set global events options
-$eventFieldsToDisplay=unserialize(getUserPreference($a->getPid(),'eventFieldsToDisplay'));
+$eventFieldsToDisplay=unserialize(getUserPreference($a->getUserId(),'eventFieldsToDisplay'));
 
 if (!$eventFieldsToDisplay) {
 	$eventFieldsToDisplay=unserialize(getSystemVariable('eventFieldsToDisplay'));
@@ -254,18 +254,18 @@ foreach($visibleFields as $field) {
 			break;
 		case 'begin':
 		case 'end':
-		//$form->addElement('date', $field.'_date', $field, null,array('class'=>'control-date'));
-		// ultimately need to add this as a group using addGroup http://pear.php.net/manual/en/package.html.html-quickform.html-quickform.addgroup.php
-		$form->addElement('text', $field.'_date', $field,array('autocomplete'=>'off'));
-		$form->addElement('text', $field.'_time', $field);
+            $group=null;
+            $group[] =& HTML_QuickForm::createElement('text', $field.'_date', $field,array('autocomplete'=>'off','id'=>$field.'_date','size'=>10));
+            $group[] =& HTML_QuickForm::createElement('text', $field.'_time', $field);
+            $form->addGroup($group, $field, $field,'',false);
         //the order of the date is important for the javascript calendar to work properly - MUST BE d/m/YYYY
-                       if (!$event[$field]) {
-                               $event[$field.'_date']=date('n/j/Y',time());
-							   $event[$field.'_time']='8:00pm';
-                      } else {
-					          $event[$field.'_date']=date('n/j/Y',strtotime($event[$field]));
-							  $event[$field.'_time']=date('g:ia',strtotime($event[$field]));
-                      }
+            if (!$event[$field]) {
+                $event[$field.'_date']=date('n/j/Y',time());
+                $event[$field.'_time']='8:00pm';
+            } else {
+                $event[$field.'_date']=date('n/j/Y',strtotime($event[$field]));
+                $event[$field.'_time']=date('g:ia',strtotime($event[$field]));
+            }
         //$calendar=generateYahooCalendarJS($field.'_cal',$calNum++,$field.'_date');
                        //$form->addElement('html',$calendar);
 		/*
