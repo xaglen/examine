@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="examine.css" type="text/css">
 </head>
 <body>
+
 <?php include 'templates/header.php'?>
 <div id="main">
 <p><b>eXAmine</b> is a web-based administration tool for your Chi Alpha ministry.</p>
