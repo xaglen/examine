@@ -168,38 +168,38 @@ function obscureEmail($email) {
 /**
  * Sets a user preference
  *
- * @param int $pid primary key for table people
+ * @param int $user_id primary key for table users
  * @param string $prefname the preference to be set
  * @param string $prefval what the preference is - a serialized PHP variable. It is the responsibility of the calling function to serialize the data.
  */
-function setUserPreference($pid=null,$prefname=null,$prefval=null) {
-	if ($pid===null || $prefname===null || $prefval===null) {
+function setUserPreference($user_id=null,$prefname=null,$prefval=null) {
+	if ($user_id===null || $prefname===null || $prefval===null) {
 		return;
 	}
 	$db=createDB();
-	$pid=$db->quote($pid);
+	$user_id=$db->quote($user_id);
 	$prefname=$db->quote($prefname);
 	$prefval=$db->quote($prefval);
-	$sql="INSERT INTO user_preferences (pid,prefname,prefval) VALUES ($pid,$prefname,$prefval) ON DUPLICATE KEY UPDATE prefval=VALUES(prefval)";
+	$sql="INSERT INTO user_preferences (user_id,prefname,prefval) VALUES ($user_id,$prefname,$prefval) ON DUPLICATE KEY UPDATE prefval=VALUES(prefval)";
 	$db->exec($sql);
 }
 
 /**
  * Retrieves a user preference
  * 
- * @param int $pid primary key for table people
+ * @param int $user_id primary key for table users 
  * @param string $prefname the preference to retrieve
  * @return string a serialized PHP variable. Call unserialize on this returned value.
  */
-function getUserPreference($pid=null,$prefname=null) {
-if ($pid===null || $prefname===null) {
+function getUserPreference($user_id=null,$prefname=null) {
+if ($user_id===null || $prefname===null) {
 		return null;
 	}
 	
 	$db=createDB();
 	$prefname=$db->quote($prefname);
-	$sql="SELECT prefval FROM user_preferences WHERE pid=$pid AND prefname=$prefname";
-	$prefval=$db->getOne($sql); // pid and prefname are the key together, so there will never be two entries
+	$sql="SELECT prefval FROM user_preferences WHERE user_id=$user_id AND prefname=$prefname";
+	$prefval=$db->getOne($sql); //user_pid and prefname are the key together, so there will never be two entries
 	return $prefval;
 }
 

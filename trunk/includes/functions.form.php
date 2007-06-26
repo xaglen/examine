@@ -14,7 +14,26 @@
  */
 require_once dirname(__FILE__).'/../config.php';
 
-require_once dirname(__FILE__).'/functions.php';
+require_once $rootdir.'/includes/functions.php';
+
+/**
+ * makes text content safe for entry into database
+ * performs addslashes, so we must call stripslaeshes on everything
+ *
+ * @param string $input the text to be cleaned up
+ * @return string
+ * @author Glen Davis
+ */
+function cleanup($input) {
+    $input=trim($input);
+    $safehtml =& new safehtml(); // strips out crazy tags and whatnot
+    $input=$safehtml->parse($input);
+    if (!get_magic_quotes_gpc()) {
+        $input=addslashes($input);
+    }
+    return $input;
+}
+
 
 /**
  * Creates a dropdown of all the people in a ministry
