@@ -9,7 +9,7 @@
 require_once 'config.php';
 require_once 'includes/authentication_header.php';
 require_once 'HTML/QuickForm.php';
-//require_once 'HTML/QuickForm/DHTMLRulesTableless.php';
+require_once 'HTML/QuickForm/DHTMLRulesTableless.php';
 require_once 'HTML/QuickForm/Renderer/Tableless.php';
 require_once 'includes/functions.php';
 require_once 'includes/functions.time.php';

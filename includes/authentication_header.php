@@ -10,8 +10,10 @@
 
 require_once 'Auth.php';
 require_once 'HTML/QuickForm.php';
+require_once 'HTML/QuickForm/DHTMLRulesTableless.php';
 require_once 'HTML/QuickForm/Renderer/Tableless.php';
 require_once basename(__FILE__).'/../config.php';
+require_once $rootdir.'/includes/functions.php';
 
 /**
 * Extended PEAR Auth class to allow easier internal data checks with our schema
@@ -216,8 +218,8 @@ class myAuth extends Auth {
 		global $dbPass;
 		global $dbName;
 
-		$form = new HTML_QuickForm('login', 'POST',$_SERVER['PHP_SELF'],null,null,true);
-		$form->addElement('header','','Login');
+		$form = new HTML_QuickForm_DHTMLRulesTableless('login', 'POST',$_SERVER['PHP_SELF'],null,null,true);
+		$form->addElement('header','','');
 		$form->addElement('text', 'username', 'Email:');
 		$form->addRule('username','both username and password are required','required',null,'client');
 		$form->addElement('password', 'password', 'Password:');
@@ -247,6 +249,7 @@ class myAuth extends Auth {
 		
 		//$form->addElement('submit', 'submit', 'Log In!');
 		$group[]=&HTML_QuickForm::createElement('xbutton', 'btnSave', '<img src="graphics/icons/tick.png" height="16" width="16"/> Login', array('class'=>'positive','onclick'=>'this.submit()'));
+		$form->getValidationScript();
 		$form->addGroup($group, null, '', ' ');
 		$form->setRequiredNote(' ');
 		$form->setJsWarnings(' ',' ');
