@@ -245,7 +245,9 @@ class myAuth extends Auth {
 			}
 		}
 		
-		$form->addElement('submit', 'submit', 'Log In!');
+		//$form->addElement('submit', 'submit', 'Log In!');
+		$group[]=&HTML_QuickForm::createElement('xbutton', 'btnSave', '<img src="graphics/icons/tick.png" height="16" width="16"/> Login', array('class'=>'positive','onclick'=>'this.submit()'));
+		$form->addGroup($group, null, '', ' ');
 		$form->setRequiredNote(' ');
 		$form->setJsWarnings(' ',' ');
 		$form->addElement('link','forgot','','http://chialpha.com/login/wrt/examine/forgot_password.php','forgot your password?');

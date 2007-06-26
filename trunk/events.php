@@ -17,7 +17,7 @@ require_once 'includes/functions.time.php';
 $db=createDB();
 
 // if event_id is specified in GET or POST, extract it here
-if (isset($_REQUEST['event_id'])) {
+if (array_key_exists('event_id', $_REQUEST) && ctype_digit($_REQUEST['event_id'])) {
 	$event_id=$_REQUEST['event_id'];
 }
 
