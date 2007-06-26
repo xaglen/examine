@@ -36,23 +36,6 @@ function createDB() {
     return $db;
 }
 
-/*
- * Returns a person's full name given their pid
- *
- * @param int $pid primary key for people table
- * @return string full name of person
- */
-function getName($pid=NULL) {
-	$db=createDB();
-	$sql='select preferred_name,first_name,last_name FROM people WHERE pid='.$pid;
-	$result=$db->query($sql);
-	$row=$result->fetchRow();
-	if ($row['preferred_name']===NULL) {
-		return $row['first_name'].' '.$row['last_name'];
-	} else {
-		return $row['preferred_name'].' '.$row['last_name'];
-	}
-}
 
 /**
  * Returns an array of names in a ministry (useful for dropdowns and lookups)
@@ -71,36 +54,6 @@ function generateNameArray($ministry_id=NULL) {
 	return $people;
 }
 
-/**
- * Returns the first name of a person given their pid
- *
- * @param int $pid primary key to table people
- * @return string first name
- */
-function getFirstName($pid=NULL) {
-	$db=createDB();
-	$sql='select first_name,preferred_name FROM people WHERE pid='.$pid;
-	$result=$db->query($sql);
-	$row=$result->fetchRow();
-	if ($row['preferred_name']===NULL) {
-		return $row['first_name'];
-	} else {
-		return $row['preferred_name'];
-	}
-}
-
-/**
- * Returns the last name of a person given their pid
- *
- * @param int $pid primary key to table people
- * @return string last name
- */
-function getLastName($pid=NULL) {
-	$db=createDB();
-	$sql='select last_name FROM people WHERE pid='.$pid;
-	$last_name=$db->getOne($sql);
-	return $last_name;
-}
 
 /**
  * Returns the name of a subgroup (Bible study, worship team, etc)
@@ -163,44 +116,6 @@ function obscureEmail($email) {
 	$linkText = (func_num_args() == 2) ? func_get_arg(1) : $email;
 	$linkText = str_replace('@', '<span class="obscure">&#64;</span> ', $linkText);
 	return '<a href="email" onClick=\'a="'.$partA.'";this.href="ma"+"il"+"to:"+a+"'.$partB.'";\'>'.$linkText.'</a>';
-}
-
-/**
- * Sets a user preference
- *
- * @param int $user_id primary key for table users
- * @param string $prefname the preference to be set
- * @param string $prefval what the preference is - a serialized PHP variable. It is the responsibility of the calling function to serialize the data.
- */
-function setUserPreference($user_id=null,$prefname=null,$prefval=null) {
-	if ($user_id===null || $prefname===null || $prefval===null) {
-		return;
-	}
-	$db=createDB();
-	$user_id=$db->quote($user_id);
-	$prefname=$db->quote($prefname);
-	$prefval=$db->quote($prefval);
-	$sql="INSERT INTO user_preferences (user_id,prefname,prefval) VALUES ($user_id,$prefname,$prefval) ON DUPLICATE KEY UPDATE prefval=VALUES(prefval)";
-	$db->exec($sql);
-}
-
-/**
- * Retrieves a user preference
- * 
- * @param int $user_id primary key for table users 
- * @param string $prefname the preference to retrieve
- * @return string a serialized PHP variable. Call unserialize on this returned value.
- */
-function getUserPreference($user_id=null,$prefname=null) {
-if ($user_id===null || $prefname===null) {
-		return null;
-	}
-	
-	$db=createDB();
-	$prefname=$db->quote($prefname);
-	$sql="SELECT prefval FROM user_preferences WHERE user_id=$user_id AND prefname=$prefname";
-	$prefval=$db->getOne($sql); //user_pid and prefname are the key together, so there will never be two entries
-	return $prefval;
 }
 
 /**
