@@ -24,6 +24,7 @@ class myAuth extends Auth {
 	private $tokenCookieName = 'examinetoken';
 	private $pid = null;
 	private $user_id = null;
+	private $token = null;
 	
 	/**
 	* what is the pid of the logged in person?
@@ -54,54 +55,105 @@ class myAuth extends Auth {
 		}
 		return $this->user_id;
 	}              
-
-	/**
+/**
 	* overwrite parent function because as it stands it won't allow me to do the session checks that I need to for the token-based "remember me" scheme
 	* See http://fishbowl.pastiche.org/2004/01/19/persistent_login_cookie_best_practice
 	* @return boolean is the user logged in OR has the user checked remember me?
 	*/
 	function checkAuth() {
-		//only deal with tokens on first login attempt
-		if ($this->authChecks>0) {
+		//only deal with tokens on first login attempt - otherwise call the parent function
+		if ($this->getAuthData('checkedToken')) {
+			$this->log('token already checked - calling parent auth function');
 			return parent::checkAuth();
 		}
-		$this->authChecks++; // critical - without this the parent function is never called
-		global $_COOKIE;
-		if (!isset($_COOKIE[$this->tokenCookieName])) {
-			return false;
-		} else {
-			$cookie=$_COOKIE[$this->tokenCookieName];
-			$user_id=$cookie['user_id'];
-			$token=$cookie['token'];
+		$this->setAuthData('checkedToken',true); // critical - without this the parent function is never called
+		$this->log('checking token');
+        global $_COOKIE;
+		if (!array_key_exists($this->tokenCookieName,$_COOKIE)) {
+			$this->log('cookie not set - initial auth failed');
+			return parent::checkAuth();
 		}
+        $user_id=$_COOKIE[$this->tokenCookieName]['user_id'];
+        $token=$_COOKIE[$this->tokenCookieName]['token'];
+
+        if (!$user_id || !$token) {
+			$this->log('user_id or token is null - initial auth failed');
+            return parent::checkAuth();
+        }
+
 		$db=createDB();
 		// maintenance - delete all entries older than one month - probability 5%
 		if (mt_rand(1,20)==20) {
-			$db->exec('DELETE FROM user_remember_me WHERE TIMESTAMPDIFF(DAYS,NOW(),created_on)>31');
+			$db->exec('DELETE FROM user_remember_me WHERE TIMESTAMPDIFF(DAY,NOW(),created_on)>31');
 		}
 		$result=$db->query("SELECT token,username FROM user_remember_me urm,users u WHERE urm.user_id=$user_id AND u.user_id=urm.user_id");
 		// there can be many entries in the database if the user uses multiple computers
 		while ($row=$result->fetchRow()) { 
+			$this->log('checking tokens...');
 			if ($token==$row['token']) {
+				$this->log('token found - should log in now');
+                $this->token=$token; // necessary for updateToken to work properly
 				$this->updateToken();
 				$this->username=$row['username'];
-				return true;
+                $this->setAuthData('usedToken',true);
+                return true; // the return true is what actually logs them on
 			}
 		}
-		return false;
+		return parent::checkAuth(); // used to return false - but that led to blank screens
 	}
 	
 	/**
 	* key part of "remember me" functionality. See http://fishbowl.pastiche.org/2004/01/19/persistent_login_cookie_best_practice
+    * @TODO this is glitchy
 	*/
 	function updateToken() {
 		$db=createDB();
 		$token=mt_rand();
 		$user_id=$this->getUserId();
+		$this->log('updating token for user_id: '.$user_id);
+        if (!$user_id) {
+            return;
+        }
 		$db->exec("INSERT INTO user_remember_me (user_id, token) VALUES ($user_id, $token)");
 		setcookie($this->tokenCookieName.'[token]',$token,time()+60*60*24*30);
+        setcookie($this->tokenCookieName.'[user_id]',$user_id,time()+60*60*24*30);
+        // delete currently used token (if it exists)
+        if ($this->token) {
+            $db->exec('DELETE FROM user_remember_me WHERE user_id='.$user_id.' AND token='.$this->token);
+        }
+        $this->token=$token;
 		$db->disconnect();
 	}
+
+/**
+ * destroy all tokens associated with the currently logged-in user
+ */
+    function nukeTokens() {
+        $db=createDB();
+        $user_id=$this->getUserID();
+        $db->exec("DELETE FROM user_remember_me WHERE user_id=$user_id");
+        $this->token=null;
+        $db->disconnect();
+    }
+
+/**
+ * extract the username from the token cookie
+ * part of the remember-me functionality
+ * @return string the name of the user
+ */
+    function getTokenUsername() {
+           global $_COOKIE;
+           if (!array_key_exists($this->tokenCookieName,$_COOKIE)) {
+               return '';
+           }
+           $user_id=$_COOKIE[$this->tokenCookieName]['user_id'];
+           if (!$user_id) {
+               return '';
+           }
+           $db=createDB();
+           $username=$db->getOne('SELECT username FROM users WHERE user_id='.$user_id);
+            return $username;
+    }
 	
 	/**
 	* does the logged-in user have rights to edit an event?
@@ -147,7 +199,8 @@ class myAuth extends Auth {
 	function ownsMinistry($ministry_id=NULL) {
 		return 1;
 	}
-}
+} // END OF CLASS
+
 	/**
 	* Displays a login form
 	*
@@ -229,27 +282,69 @@ class myAuth extends Auth {
 	<?php
 }
 
+/*
+ * callback function triggered upon successful login
+ * @param string $username the successful username
+ * @param object $a the authentication object
+ * @todo be sure to delete old data before inserting new data
+ * @return void
+ */
 function successfulLogin($username=null,$a=null) {
 	global $_POST;
-	if (isset($_POST['remember'])) {
+	
+	$a->log('successfulLogin begin');
+	
+    $db=createDB();
+	$sql='UPDATE users SET last_login=NOW() WHERE user_id='.$a->getUserId();
+    $db->exec($sql);
+	$a->log('sql executed '.$sql);
+    
+	if (array_key_exists('remember',$_POST)) {
+		$a->log('remember box checked - setting token');
 		$a->updateToken();
+	} else {
+		$a->log('remember box not checked - no token activity');
 	}
 }
 
+/*
+ * callback function triggered upon successful logout
+ * @param string $username the username of the just-logged-out user
+ * @param object $a the authentication object
+ */
+function successfulLogout($username=null,$a=null) {
+    // since the user has successfully logged out, we need to ensure that any token flags are cleared
+    $a->setAuthData('checkedToken',false);
+    $a->setAuthData('usedToken',false);
+	$a->login();
+}
+
+/*
+ * callback function triggered upon failed login
+ * @param string $username the username of the attempted login
+ * @param object $a the authentication object
+ */
+function failedLogin($username=null,$a=null) {
+}
+
 $a = &new myAuth('MDB2', $loginOptions,'loginForm');
-$a->setSessionname('chi_alpha_examine');
+$a->enableLogging=false;
+$a->logger=&$log;
+$a->setSessionname('chi_alpha_journey');
 //$a->setIdle(900); // fifteen minutes
 $a->setLoginCallback('successfulLogin');
+$a->setLogoutCallback('successfulLogout');
+$a->setFailedLoginCallback('failedLogin');
 //$a->setCheckAuthCallback('checkAuthToken');
+
+if (array_key_exists('logout',$_GET)) {
+	$a->logout();
+}
+
 $a->start();
 
 if (!$a->getAuth()) {
-	exit();
-}
-
-if (isset($_GET['logout'])) {
-	$a->logout();
-	header("Location: http://chialpha.com/login/wrt/examine/");
+	//$a->log('not authorized - exiting');
 	exit();
 }
 ?>
