@@ -201,6 +201,44 @@ class myAuth extends Auth {
 	function ownsMinistry($ministry_id=NULL) {
 		return 1;
 	}
+	
+	/**
+ * Sets a user preference
+ *
+ * @param string $prefname the preference to be set
+ * @param string $prefval what the preference is - a serialized PHP variable. It is the responsibility of the calling function to serialize the data.
+ */
+function setPreference($prefname=null,$prefval=null) {
+	if ($prefname===null || $prefval===null) {
+		return;
+	}
+	$db=createDB();
+	$user_id=$this->getUserId();
+	$prefname=$db->quote($prefname);
+	$prefval=$db->quote($prefval);
+	$sql="INSERT INTO user_preferences (user_id,prefname,prefval) VALUES ($user_id,$prefname,$prefval) ON DUPLICATE KEY UPDATE prefval=VALUES(prefval)";
+	$db->exec($sql);
+}
+
+/**
+ * Retrieves a user preference
+ * 
+ * @param string $prefname the preference to retrieve
+ * @return string a serialized PHP variable. Call unserialize on this returned value.
+ */
+function getPreference($prefname=null) {
+if ($prefname===null) {
+		return null;
+	}
+	
+	$db=createDB();
+	$prefname=$db->quote($prefname);
+	$user_id=$this->getUserId();
+	$sql="SELECT prefval FROM user_preferences WHERE user_id=$user_id AND prefname=$prefname";
+	$prefval=$db->getOne($sql); //user_pid and prefname are the key together, so there will never be two entries
+	return $prefval;
+}
+	
 } // END OF CLASS
 
 	/**

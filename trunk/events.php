@@ -21,16 +21,14 @@ if (array_key_exists('event_id', $_REQUEST) && ctype_digit($_REQUEST['event_id']
 	$event_id=$_REQUEST['event_id'];
 }
 
-if (!isset($_POST['ACTION']) && !isset($_GET['action'])) {
-
+// if being run on a blank database then default to add new data - maybe this should be checked later when listing all events (check if size of array is zero)...
+if (!array_key_exists('ACTION',$_POST) && !array_key_exists('action', $_GET)) {
     $total=$db->getOne('SELECT COUNT(*) FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id'); //role_id of 1 and 2 indicate staff - higher is student or misc
-    if ($total>0) {
-        $_POST['ACTION']='DEFAULT';
-		$_GET['action']='DEFAULT';
-    } else {
+    if ($total==0) {
         $_GET['action']='add';
     }
 }
+
 
 if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
@@ -45,7 +43,7 @@ if (isset($_GET['action'])) {
 		unset($event['event_id']); // we don't want the user to enter a value for this
 		reset($event);
 	break;
-	case 'delete': // request confirmation for an event deletion
+	case 'delete': // request confirmation for an event deletion - maybe I should do this via javascript?
 		echo "Are you sure you want to delete this event? There is NO UNDO!<br/>";
 		echo '<FORM ACTION="'.$_SERVER['PHP_SELF'].'"><INPUT TYPE="SUBMIT" NAME="ACTION" VALUE="CONFIRM"><INPUT TYPE="HIDDEN" NAME="event_id" VALUE="'.$event_id.'"></FORM>';
 	exit();
@@ -55,7 +53,7 @@ if (isset($_GET['action'])) {
 
 switch ($_POST['ACTION']) {
 case 'CONFIRM': // remove an event from the database
-	if (ownsEvent($user_id,$event_id)) {
+	if (ownsEvent($a->getUserId(),$event_id)) {
 		$sql='DELETE FROM events WHERE event_id='.$event_id;
 		$db->exec($sql);
 		$sql='DELETE FROM eventattendance WHERE event_id='.$event_id;
@@ -64,7 +62,7 @@ case 'CONFIRM': // remove an event from the database
 	break;
 case 'UPDATE': // process modifications to an event
 	unset($_POST['ACTION']);
-	if (ownsEvent($user_id,$event_id)) {
+	if (ownsEvent($a->getUserId(),$event_id)) {
 		$db->autoExecute('events',$_POST,MDB2_AUTOQUERY_UPDATE,"event_id='$event_id'");
 	} else {
 		echo "You do not have authority to modify this event.</br>";
@@ -204,7 +202,7 @@ YAHOO.util.Event.addListener(window, 'load', setupCal1);
 <h3>Help</h3>
 </div>
 <?php
-if ($event_id===NULL && $_GET['action']!='ADD') {
+if ($event_id===NULL && $_GET['action']!='add') {
 	$sql='SELECT event_id,name,begin,UNIX_TIMESTAMP(begin) as unixdate FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id ORDER BY begin DESC';
 	$result=$db->query($sql);
 	$OldTimeLabel='';
@@ -223,7 +221,7 @@ if ($event_id===NULL && $_GET['action']!='ADD') {
 } else { // event_id is not equal to null or ADD is set
 	echo '<span class="actions"><a href="#" onclick="javascript:editmode()">edit</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.'>delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
 
-$form = new HTML_QuickForm('add','POST',$_SERVER['PHP_SELF'],null,null,true);
+$form = new HTML_QuickForm_DHTMLRulesTableless('add','POST',$_SERVER['PHP_SELF'],null,null,true);
 $form->addElement('header','','Event');
 // $form->addElement('html','<div id="cal1Container"></div>'); // used later for YUI calendar
 echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
@@ -232,7 +230,7 @@ echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance
 unset($event['unixdate']);
 	   
 // add a file admin/options.events.php which will allow you to set global events options
-$eventFieldsToDisplay=unserialize(getUserPreference($a->getUserId(),'eventFieldsToDisplay'));
+$eventFieldsToDisplay=unserialize($a->getPreference('eventFieldsToDisplay'));
 
 if (!$eventFieldsToDisplay) {
 	$eventFieldsToDisplay=unserialize(getSystemVariable('eventFieldsToDisplay'));
@@ -321,7 +319,7 @@ if ($event_id!==NULL) {
         <div id="eventattenders" class="subform">
         </div>
         <script type="text/javascript">
-		new Ajax.Updater('eventattenders','subforms/event.attendance.php',{parameters: 'event_id=<?php echo $event_id;?>'});
+		new Ajax.Updater('eventattenders','subforms/event.attendance.php',{parameters: 'event_id=<?php echo $event_id;?>', evalScripts: true});
     //var req = new DataRequestor();
     //req.setObjToReplace('eventattenders');
     //req.addArg(_GET, "event_id", "<?php echo $event_id;?>");
