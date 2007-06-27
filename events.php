@@ -100,13 +100,17 @@ if (!isset($event_id)) {
 <html>
 <head>
 <title><?php echo $name;?></title>
-<link rel="stylesheet" href="examine.css" type="text/css">
-<link rel="stylesheet" href="quickform.css" type="text/css">
+<link rel="stylesheet" href="css/examine.css" type="text/css">
+<link rel="stylesheet" href="css/quickform.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="yui/calendar/assets/calendar.css">
-<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css"> 
+<link rel="stylesheet" href="modalbox/modalbox.css" type="text/css">
+<!-- <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css"> -->
 </head>
 <body>
-<script type="text/javascript" src="datarequestor-1.6.js"></script>
+<!-- <script type="text/javascript" src="datarequestor-1.6.js"></script> -->
+<script type="text/javascript" src="scriptaculous-js-1.7.0/lib/prototype.js"></script>
+<script type="text/javascript" src="scriptaculous-js-1.7.0/src/scriptaculous.js"></script>
+<script type="text/javascript" src="modalbox/modalbox.js"></script>
 <script type="text/javascript" src="forms.js"></script>
 <script type="text/javascript" src="yui/yahoo/yahoo.js"></script>
 <script type="text/javascript" src="yui/event/event-min.js"></script>
@@ -317,11 +321,11 @@ if ($event_id!==NULL) {
         <div id="eventattenders" class="subform">
         </div>
         <script type="text/javascript">
-        var req = new DataRequestor();
-    req.setObjToReplace('eventattenders');
-    req.addArg(_GET, "event_id", "<?php echo $event_id;?>");
-    req.getURL('subforms/event.attendance.php');
-	
+		new Ajax.Updater('eventattenders','subforms/event.attendance.php',{parameters: 'event_id=<?php echo $event_id;?>'});
+    //var req = new DataRequestor();
+    //req.setObjToReplace('eventattenders');
+    //req.addArg(_GET, "event_id", "<?php echo $event_id;?>");
+    //req.getURL('subforms/event.attendance.php');
     </script>
         <?php
 } // end $event_id !==NULL

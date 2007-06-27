@@ -260,8 +260,8 @@ class myAuth extends Auth {
 		<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 		<head>
 		<title><?php echo $statusMsg;?></title>
-		<link rel="stylesheet" type="text/css" title="default" href="examine.css"/>
-		<link rel="stylesheet" type="text/css" title="default" href="quickform.css"/>
+		<link rel="stylesheet" type="text/css" title="default" href="css/examine.css"/>
+		<link rel="stylesheet" type="text/css" title="default" href="css/quickform.css"/>
 		</head>
 		<body>
 		<?

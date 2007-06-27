@@ -3,11 +3,31 @@
  * This file contains some routines to help with debugging
  * It replaces the PEAR error handler at the bottom of the file
  *
- * @package examine
+ * @package journey
  * @subpackage library
  * @author Glen Davis
  */
 require_once 'PEAR.php';
+require_once 'Log.php';
+
+$logfile = &Log::singleton('file', '/tmp/examine_log',
+        'PHP', 
+        array('mode' => 0666), PEAR_LOG_DEBUG);
+
+$logfire = &Log::singleton('firebug', '', 
+        'PHP',
+        array('buffering' => true),
+        PEAR_LOG_DEBUG);
+
+$logdefault = &Log::singleton('error_log', PEAR_LOG_TYPE_SYSTEM);
+
+$logconsole = &Log::singleton('display', '', '',array('error_prepend' => '<font color="#ff0000"><tt>', 'error_append'  => '</tt></font>'), PEAR_LOG_ERR);
+
+$log = &Log::singleton('composite');
+$log->addChild($logfile);
+$log->addChild($logfire);
+$log->addChild($logdefault);
+$log->addChild($logconsole);
 
 /**
  * Renders the error message
@@ -73,7 +93,7 @@ function dumpArgs($arguments=null) {
  * @param object &$obj an error object
  * @return void
  */
-function handleError(&$obj) {
+function pearError(&$obj) {
     $message = 'Standard Message: ' . $obj->getMessage() . "\n";
     $message.= 'Standard Code: ' . $obj->getCode() . "\n";
     $message.= 'Error Type: ' . $obj->getType()."\n";
@@ -87,7 +107,76 @@ function handleError(&$obj) {
         $message.= $call['file'].' line '.$call['line'].' (function '.$call['function'].")";
         if (isset($call['args'])) $message.=dumpArgs($call['args'])."\n\n";
     }
+
+    switch ($obj->getCode()) {
+        case E_WARNING:
+        case E_USER_WARNING:
+            $priority = PEAR_LOG_WARNING;
+            break;
+        case E_NOTICE:
+        case E_USER_NOTICE:
+            $priority = PEAR_LOG_NOTICE;
+            break;
+        case E_ERROR:
+        case E_USER_ERROR:
+            $priority = PEAR_LOG_ERR;
+            break;
+        default:
+        $priority = PEAR_LOG_INFO;
+    }
+
+    $log = &Log::singleton('composite');
+    $log->log($message,$priority);
     dumpError($message);
+}
+
+/**
+ * Error handler replacement that writes errors to Firebug
+ *
+ * @return void
+ */
+function handleError($code, $message, $file, $line) {
+    /* Map the PHP error to a Log priority. */
+    switch ($code) {
+        case E_WARNING:
+        case E_USER_WARNING:
+            $priority = PEAR_LOG_WARNING;
+            break;
+        case E_NOTICE:
+        case E_USER_NOTICE:
+            $priority = PEAR_LOG_NOTICE;
+            break;
+        case E_ERROR:
+        case E_USER_ERROR:
+            $priority = PEAR_LOG_ERR;
+            break;
+        default:
+            $priority = PEAR_LOG_INFO;
+    }
+    $log = &Log::singleton('composite');
+
+if ($priority!=PEAR_LOG_INFO) {
+     // too many warnings from MDB2 if we print INFO
+     $log->log($message . ' in ' . $file . ' at line ' . $line,
+             $priority);
+ }
+ if ($priority==PEAR_LOG_ERR) {
+     $callstack=debug_backtrace();
+     foreach ($callstack as $call) {
+         if (!isset($call['file'])){
+             $call['file'] = '[PHP Kernel]';
+         }
+         if (!isset($call['line'])) {
+             $call['line'] = '';
+         }
+         $message.= "\n\n".$call['file'].' line '.$call['line'].' (function '.$call['function'].")";
+         if (isset($call['args'])) {
+                 $message.=dumpArgs($call['args'])."\n\n";
+         }
+     }
+     $log->log($message . ' in ' . $file . ' at line ' . $line,$priority);
+     die($message . ' in ' . $file . ' at line ' . $line);
+ }
 }
 
 /**
@@ -148,5 +237,26 @@ function logError($message='non-PEAR Error',$defined_vars=null) {
     dumpError($message,'non-PEAR Error');
 }
 
-PEAR::setErrorHandling(PEAR_ERROR_CALLBACK,'handleError');
+function dumpVariable(&$var=null, $scope=false, $prefix='unique', $suffix='value') {
+    if($scope) $vals = $scope;
+    else      $vals = $GLOBALS;
+
+    $old = $var;
+    $var = $new = $prefix.mt_rand().$suffix;
+    $vname = FALSE;
+    
+    foreach($vals as $key => $val) {
+        if($val === $new) $vname = $key;
+    }
+
+    $var = $old;
+
+    $log = &Log::singleton('composite');
+    $log->log($vname.': '.print_r($var,true));
+        //print_r($variable);
+}
+
+
+PEAR::setErrorHandling(PEAR_ERROR_CALLBACK,'pearError');
+set_error_handler('handleError');
 ?>
