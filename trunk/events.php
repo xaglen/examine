@@ -15,6 +15,7 @@ require_once 'includes/functions.php';
 require_once 'includes/functions.time.php';
 
 $db=createDB();
+$message='';
 
 // if event_id is specified in GET or POST, extract it here
 if (array_key_exists('event_id', $_REQUEST) && ctype_digit($_REQUEST['event_id'])) {
@@ -22,16 +23,18 @@ if (array_key_exists('event_id', $_REQUEST) && ctype_digit($_REQUEST['event_id']
 }
 
 // if being run on a blank database then default to add new data - maybe this should be checked later when listing all events (check if size of array is zero)...
-if (!array_key_exists('ACTION',$_POST) && !array_key_exists('action', $_GET)) {
-    $total=$db->getOne('SELECT COUNT(*) FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id'); //role_id of 1 and 2 indicate staff - higher is student or misc
+if (array_key_exists('action',$_REQUEST)) {
+	$action=$_REQUEST['action'];
+} else {
+	$total=$db->getOne('SELECT COUNT(*) FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id'); //role_id of 1 and 2 indicate staff - higher is student or misc
     if ($total==0) {
-        $_GET['action']='add';
+        $_REQUEST['action']='add';
     }
 }
 
 
-if (isset($_GET['action'])) {
-	switch ($_GET['action']) {
+if (isset($action)) {
+	switch ($action) {
 	case 'add': // create a blank form for data entry
 		$event_id=NULL;
 		// this should print out a blank form for data entry
@@ -44,32 +47,28 @@ if (isset($_GET['action'])) {
 		reset($event);
 	break;
 	case 'delete': // request confirmation for an event deletion - maybe I should do this via javascript?
-		echo "Are you sure you want to delete this event? There is NO UNDO!<br/>";
-		echo '<FORM ACTION="'.$_SERVER['PHP_SELF'].'"><INPUT TYPE="SUBMIT" NAME="ACTION" VALUE="CONFIRM"><INPUT TYPE="HIDDEN" NAME="event_id" VALUE="'.$event_id.'"></FORM>';
-	exit();
-	default:
-	}
-}
-
-switch ($_POST['ACTION']) {
-case 'CONFIRM': // remove an event from the database
+		//echo "Are you sure you want to delete this event? There is NO UNDO!<br/>";
+		//echo '<FORM action="'.$_SERVER['PHP_SELF'].'"><INPUT TYPE="SUBMIT" NAME="action" VALUE="CONFIRM"><INPUT TYPE="HIDDEN" NAME="event_id" VALUE="'.$event_id.'"></FORM>';
+//	exit();
 	if (ownsEvent($a->getUserId(),$event_id)) {
 		$sql='DELETE FROM events WHERE event_id='.$event_id;
 		$db->exec($sql);
 		$sql='DELETE FROM eventattendance WHERE event_id='.$event_id;
 		$db->exec($sql);
+		$message.='Event deleted.';
+		unset($event_id);
 	}
-	break;
-case 'UPDATE': // process modifications to an event
-	unset($_POST['ACTION']);
+	case 'UPDATE': // process modifications to an event
+	unset($_POST['action']);
 	if (ownsEvent($a->getUserId(),$event_id)) {
 		$db->autoExecute('events',$_POST,MDB2_AUTOQUERY_UPDATE,"event_id='$event_id'");
+		$message.='Event updated.';
 	} else {
-		echo "You do not have authority to modify this event.</br>";
+		$message.='You do not have authority to modify this event.';
 	}
 	break;
-case 'INSERT': // this takes the results of ADD and puts it in the database
-	unset($_POST['ACTION']);
+	case 'INSERT': // this takes the results of ADD and puts it in the database
+	unset($_POST['action']);
     $event_id=$db->nextID();
     $_POST['event_id']=$event_id;
 	if (isset($_POST['pid'])) {
@@ -81,18 +80,19 @@ case 'INSERT': // this takes the results of ADD and puts it in the database
 		unset($_POST['pid']);
 	}
 	$db->autoExecute('events',$_POST,MDB2_AUTOQUERY_INSERT);
+	$message.='Event added.';
 	break;
-default:
+	default:
 }
 
-if (!isset($event_id)) {
-	$event_id=NULL;
-	$name='All Events';
-} else {
+if (isset($event_id)) {
 	$sql='SELECT *,UNIX_TIMESTAMP(begin) as unixdate FROM events WHERE event_id='.$event_id;
 	$result=$db->query($sql);
 	$event=$result->fetchRow();
 	$name=sprintf('%s %s',$event['name'],date('F jS, Y',$event['unixdate']));
+} else {
+	$event_id=NULL;
+	$name='All Events';
 }
 ?>
 <html>
@@ -202,7 +202,10 @@ YAHOO.util.Event.addListener(window, 'load', setupCal1);
 <h3>Help</h3>
 </div>
 <?php
-if ($event_id===NULL && $_GET['action']!='add') {
+
+echo "<p id='statusmsg'>$message</p><script type='text/javascript'>new Effect.Highlight('statusmsg', {duration: 3.0});</script>";
+
+if ($event_id===NULL && $action!='add') {
 	$sql='SELECT event_id,name,begin,UNIX_TIMESTAMP(begin) as unixdate FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id ORDER BY begin DESC';
 	$result=$db->query($sql);
 	$OldTimeLabel='';
@@ -218,8 +221,8 @@ if ($event_id===NULL && $_GET['action']!='add') {
 
 	}
 	echo "</ol></ul>";
-} else { // event_id is not equal to null or ADD is set
-	echo '<span class="actions"><a href="#" onclick="javascript:editmode()">edit</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.'>delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
+} else { // event_id is not equal to null or we are adding an event
+	echo '<span class="actions"><a href="#" onclick="javascript:editmode()">edit</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.' onclick="javascript:return confirm(\'Are you sure you want to delete this module?\')">delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
 
 $form = new HTML_QuickForm_DHTMLRulesTableless('add','POST',$_SERVER['PHP_SELF'],null,null,true);
 $form->addElement('header','','Event');
@@ -305,9 +308,9 @@ foreach ($hiddenFields as $field) {
 	if ($_GET['action']=='add') {
 		echo "<H2>Regulars Who Might Have Been There</H2>\n";
 		include('subforms/event.regulars.php');
-		echo '<INPUT TYPE="SUBMIT" NAME="ACTION" VALUE="INSERT">';
+		echo '<INPUT TYPE="SUBMIT" NAME="action" VALUE="INSERT">';
 	} else {
-		echo '<INPUT TYPE="SUBMIT" NAME="ACTION" VALUE="UPDATE">';
+		echo '<INPUT TYPE="SUBMIT" NAME="action" VALUE="UPDATE">';
 	}
 	?>
 	</form></div>
