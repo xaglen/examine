@@ -100,6 +100,7 @@ if (isset($event_id)) {
 <head>
 <title><?php echo $name;?></title>
 <link rel="stylesheet" href="css/examine.css" type="text/css">
+<link rel="stylesheet" href="css/tabs.css" type="text/css">
 <link rel="stylesheet" href="css/quickform.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="yui/calendar/assets/calendar.css">
 <link rel="stylesheet" href="modalbox/modalbox.css" type="text/css">
@@ -294,6 +295,10 @@ foreach($visibleFields as $field) {
 		case 'salvations':
 			$form->addElement('text',$field,$field);
 			$form->addRule($field,'must be a number','numeric',null,'client');
+			break;
+		case 'offering':
+			$form->addElement('text',$field,$field);
+			$form->addRule($field,'must be a dollar amount (no dollar sign)','regex','^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(\.[0-9]{1,2})?$','client');
 			break;
 		case 'estimated_attendance':
 			$form->addElement('text',$field,'estimated attendance');
