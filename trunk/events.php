@@ -291,6 +291,10 @@ foreach($visibleFields as $field) {
 			$form->addElement('text',$field,'spirit baptisms');
 			$form->addRule($field,'must be a number','numeric',null,'client');
 			break;
+		case 'salvations':
+			$form->addElement('text',$field,$field);
+			$form->addRule($field,'must be a number','numeric',null,'client');
+			break;
 		case 'estimated_attendance':
 			$form->addElement('text',$field,'estimated attendance');
 			$form->addRule($field,'must be a number','numeric',null,'client');
