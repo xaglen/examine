@@ -1,7 +1,10 @@
 #main {
-		border:1px solid #000; 
-		background:#fff;
+	    background: #FFF3B3;
+	    border: 1px solid #666;
+    	clear: both;
+    /*padding-top: 2em;*/
 }
+
 
 /* Looks like you have to specify the width of #menu
 or IE5 Mac stretches it all the way across the div, and 
