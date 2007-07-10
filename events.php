@@ -306,7 +306,7 @@ foreach($visibleFields as $field) {
 			break;
 		case 'offering':
 			$form->addElement('text',$field,$field);
-			$form->addRule($field,'must be a dollar amount (no dollar sign)','regex','^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(\.[0-9]{1,2})?$','client');
+			$form->addRule($field,'must be a dollar amount (no dollar sign)','regex','/^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(\.[0-9]{1,2})?$/','client');
 			break;
 		case 'estimated_attendance':
 			$form->addElement('text',$field,'estimated attendance');
