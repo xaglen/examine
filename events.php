@@ -234,16 +234,16 @@ echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance
 unset($event['unixdate']);
 	   
 // add a file admin/options.events.php which will allow you to set global events options
-$eventFieldsToDisplay=unserialize($a->getPreference('eventFieldsToDisplay'));
-
+$eventFieldsToDisplay=$a->getPreference('eventFieldsToDisplay');
 if (!$eventFieldsToDisplay) {
-	$eventFieldsToDisplay=unserialize(getSystemVariable('eventFieldsToDisplay'));
+	$eventFieldsToDisplay=getSystemVariable('eventFieldsToDisplay');
 }
 
 // maybe change this so that we check two things: if the field is set to display by default AND whether or not it is null
 if (!$eventFieldsToDisplay) { // if neither the user pref nor the system variable is set
 	$visibleFields=array_keys($event);
 } else {
+	$eventFieldsToDisplay=unserialize($eventFieldsToDisplay);
 	$visibleFields=array_intersect_key($event,$eventFieldsToDisplay);
 	$hiddenFields=array_diff_key($event,$eventFieldsToDisplay); // perhaps not necessary using this implementation
 }
@@ -306,7 +306,7 @@ foreach ($hiddenFields as $field) {
 }
 */
 	echo '<a href="#">view all possible fields</a></div>';
-	if ($_GET['action']=='add') {
+	if (array_key_exists('action'],$_GET) && $_GET['action']=='add') {
 		echo "<H2>Regulars Who Might Have Been There</H2>\n";
 		include('subforms/event.regulars.php');
 		echo '<INPUT TYPE="SUBMIT" NAME="action" VALUE="INSERT">';
