@@ -196,6 +196,7 @@ function outCal() {
 }
 
 YAHOO.util.Event.addListener(window, 'load', setupCal1);
+hideCal();
 </script>
 <?php include 'templates/header.php';?>
 <div id="main">
@@ -226,7 +227,7 @@ if ($event_id===NULL && $action!='add') {
 	echo '<span class="actions"><a href="#" onclick="javascript:editmode()">edit</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.' onclick="javascript:return confirm(\'Are you sure you want to delete this module?\')">delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
 
 $form = new HTML_QuickForm_DHTMLRulesTableless('add','POST',$_SERVER['PHP_SELF'],null,null,true);
-$form->addElement('header','','Event');
+$form->addElement('header','','');
 // $form->addElement('html','<div id="cal1Container"></div>'); // used later for YUI calendar
 echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
 echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
@@ -286,12 +287,27 @@ foreach($visibleFields as $field) {
 </script>
 */
 			break;
+		case 'baptisms_in_hs':
+			$form->addElement('text',$field,'spirit baptisms');
+			$form->addRule($field,'must be a number','numeric',null,'client');
+			break;
+		case 'estimated_attendance':
+			$form->addElement('text',$field,'estimated attendance');
+			$form->addRule($field,'must be a number','numeric',null,'client');
+			break;
+		case 'event_type':
+			$form->addElement('text',$field,'type of event');
+			break;
+		case 'name':
+			$form->addElement('text',$field,'type of event');
+			$form->addRule($field,'you must name your event','required',null,'client');
 		default:
 			$form->addElement('text',$field,$field);
 		}
 }
 $form->setDefaults($event);
 $form->applyFilter('__ALL__','trim');
+$form->getValidationScript();
       //$form->display();
       $renderer =& new HTML_QuickForm_Renderer_Tableless();
       $form->accept($renderer);
