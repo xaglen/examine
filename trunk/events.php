@@ -306,7 +306,7 @@ foreach ($hiddenFields as $field) {
 }
 */
 	echo '<a href="#">view all possible fields</a></div>';
-	if (array_key_exists('action'],$_GET) && $_GET['action']=='add') {
+	if (array_key_exists('action',$_GET) && $_GET['action']=='add') {
 		echo "<H2>Regulars Who Might Have Been There</H2>\n";
 		include('subforms/event.regulars.php');
 		echo '<INPUT TYPE="SUBMIT" NAME="action" VALUE="INSERT">';
