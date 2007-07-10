@@ -16,7 +16,7 @@ $thisfile=array_shift(explode('?', basename($_SERVER['PHP_SELF'])));
 		</ul>
 		-->
 		<?php
-		echo '<li><span>events</span><ul id="secondary><li></li></ul></li>';
+		echo '<li><span>events</span><ul id="secondary"><li></li></ul></li>';
 	} else {
 		echo '<li><a href="events.php">events</a></li>';
 	}
