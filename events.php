@@ -84,6 +84,7 @@ if (isset($action)) {
 	break;
 	default:
 }
+}
 
 if (isset($event_id)) {
 	$sql='SELECT *,UNIX_TIMESTAMP(begin) as unixdate FROM events WHERE event_id='.$event_id;
