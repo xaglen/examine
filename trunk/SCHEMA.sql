@@ -165,8 +165,10 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `pid` int(11) NOT NULL,
   `privileges` varchar(255) default NULL,
+  `last_login` timestamp NULL default NULL,
   PRIMARY KEY  (`user_id`),
-  UNIQUE KEY `username` (`username`,`pid`)
+  UNIQUE KEY `username` (`username`,`pid`),
+  KEY `last_login` (`last_login`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 CREATE TABLE `variables` (
   `configname` varchar(32) NOT NULL,
