@@ -22,6 +22,7 @@ if (!isset($_REQUEST['s'])) {
 Search Results
 </title>
 <link rel="stylesheet" href="examine.css" type="text/css" />
+<link rel="stylesheet" href="css/tabs.css" type="text/css">
 </head>
 <body>
 <div id="main">
