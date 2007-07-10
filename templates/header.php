@@ -1,5 +1,5 @@
 <?php
-$thisfile=basename($_SERVER['PHP_SELF']);
+$thisfile=array_shift(explode('?', basename($_SERVER['PHP_SELF'])));
 ?>
 <div id="header">
 <ul id="primary">
@@ -16,7 +16,7 @@ $thisfile=basename($_SERVER['PHP_SELF']);
 		</ul>
 		-->
 		<?php
-		echo '<li><a href="events.php">events</a></li>';
+		echo '<li><span>events</span><ul id="secondary></ul></li>';
 	} else {
 		echo '<li><a href="events.php">events</a></li>';
 	}
