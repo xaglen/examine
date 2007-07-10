@@ -19,6 +19,7 @@ $ministry_id=1; // testing @todo create API to get this
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>eXAmine: XA adMINistration</title>
 <link rel="stylesheet" href="examine.css" type="text/css">
+<link rel="stylesheet" href="css/tabs.css" type="text/css">
 <script type="text/javascript" src="forms.js"></script>
 <script type="text/javascript" src="display.js"></script>
 </head>
