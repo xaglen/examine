@@ -354,6 +354,7 @@ foreach ($hiddenFields as $field) {
 // display those present -> do this as a javascript replace to allow for dynamic updating
 if ($event_id!==NULL) {
     ?>
+		<br/>
         <div id="eventattenders" class="subform">
         </div>
         <script type="text/javascript">
