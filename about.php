@@ -12,7 +12,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>About eXAmine</title>
-<link rel="stylesheet" href="examine.css" type="text/css">
+<link rel="stylesheet" href="css/examine.css" type="text/css">
 <link rel="stylesheet" href="css/tabs.css" type="text/css">
 </head>
 <body>
