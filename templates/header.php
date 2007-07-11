@@ -3,7 +3,7 @@
 <?php 
 
 $pages['index.php']='main';
-$pages['events.php']='evets';
+$pages['events.php']='events';
 $pages['about.php']='about';
 $pages['index.php?logout=1']='logout';
 

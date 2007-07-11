@@ -233,6 +233,7 @@ if ($event_id===NULL && $action!='add') {
 	Add Event
 </a>
 	</div>
+	<br/>
 	<?php
 
 $form = new HTML_QuickForm_DHTMLRulesTableless('add','POST',$_SERVER['PHP_SELF'],null,null,true);
