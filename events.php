@@ -326,7 +326,7 @@ $form->getValidationScript();
       //$form->display();
       $renderer =& new HTML_QuickForm_Renderer_Tableless();
       $form->accept($renderer);
-      echo $renderer->toHtml();	
+      echo '<div>'.$renderer->toHtml().'</div>';	
       echo '<div id="cal1Container"></div>';
 /* @todo deal with this later
 foreach ($hiddenFields as $field) {
