@@ -211,39 +211,46 @@ YAHOO.util.Event.addListener(window, 'load', setupCal1);
 <div id="sidebar">
 <h3>Help</h3>
 </div>
+
+<p id='statusmsg'><?php echo $message;?></p>
+<script type='text/javascript'>new Effect.Highlight('statusmsg', {duration: 3.0});</script>
+	<div class="buttons">
 <?php
-
-echo "<p id='statusmsg'>$message</p><script type='text/javascript'>new Effect.Highlight('statusmsg', {duration: 3.0});</script>";
-
 if ((isset($action) && $action=='add') || $event_id!==null) {
 ?>
-	<div class="buttons">
 	<a href="events.php">
 	<img src="<?php echo $rooturl.'/graphics/icons/text_list_bullets.png';?>" height="16" width="16"/>
 	List All Events
 	</a>
-	</div>
-	<br/>
 	<?php
 }
 
 if (!isset($action) || $action!=='add') {
 	?>
-	<div class="buttons">
 	<a class="positive" href="events.php?action=add">
 	<img src="<?php echo $rooturl.'/graphics/icons/add.png';?>" height="16" width="16"/>
 	Add Event
-	</a>
-	</div>
-	<br/>
+	</a>	
 	<?php
-	if ($event_id!==null) {
+}
+
+if (isset($event_id)) {
+	?>
+	<a class="negative" href="events.php?action=delete?event_id=<?php echo $event_id;?>">
+	<img src="<?php echo $rooturl.'/graphics/icons/cancel.png';?>" height="16" width="16"/>
+	Delete Event
+	</a>	
+	<?php
+}
+?>
+</div> <!-- end of buttons -->
+<br/> 
+<?php
+if (isset($event_id)) {
 		echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
 		unset($event['unixdate']);
 		echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
 	}
-} else {
-	echo '<h3>Creating New Event</h3>';
 }
 
 if ($event_id===NULL && !isset($action)) {
