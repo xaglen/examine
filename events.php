@@ -220,7 +220,7 @@ if ($event_id===NULL && $action!='add') {
 	//echo '<span class="actions"><a href="#" onclick="javascript:editmode()">edit</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.' onclick="javascript:return confirm(\'Are you sure you want to delete this module?\')">delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
 	?>
 	<div class="buttons">
-	<a class="positive" href="ajax/edit.events.php" title="Add Event" onclick="Modalbox.show(this.title, this.href, {width: 600}); return false;">
+	<a class="positive" href="events.php?action=ADD">
 	<img src="<?php echo $rooturl.'/graphics/icons/add.png';?>" height="16" width="16"/>
 	Add Event
 </a>
