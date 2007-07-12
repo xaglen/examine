@@ -24,13 +24,15 @@ if (array_key_exists('event_id', $_REQUEST) && ctype_digit($_REQUEST['event_id']
 }
 
 // if being run on a blank database then default to add new data - maybe this should be checked later when listing all events (check if size of array is zero)...
-if (!array_key_exists('action',$_REQUEST)) {
-	$total=$db->getOne('SELECT COUNT(*) FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id'); //role_id of 1 and 2 indicate staff - higher is student or misc
-    if ($total==0) {
-        $_REQUEST['action']='add';
-    }
+if (array_key_exists('action',$_REQUEST)) {
+		$action=$_REQUEST['action'];
+	} else {
+		$total=$db->getOne('SELECT COUNT(*) FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id'); //role_id of 1 and 2 indicate staff - higher is student or misc
+		if ($total==0) {
+			$_REQUEST['action']='add';
+			$action='add';
+		}
 }
-$action=$_REQUEST['action'];
 
 if (isset($action)) {
 	switch ($action) {
