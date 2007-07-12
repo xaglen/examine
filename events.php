@@ -58,46 +58,48 @@ if (isset($action)) {
 		$message.='Event deleted.';
 		unset($event_id);
 	}
+	break;
 	case 'UPDATE': // process modifications to an event
-	unset($_POST['action']);
-	unset($_POST['_qf__add']);
-	unset($_POST['btnSave']);
-	$_POST['begin']=gmdate("Y-m-d H:i:s", strtotime($_POST['begin_date'].' '.$_POST['begin_time']));
-	$_POST['end']=gmdate("Y-m-d H:i:s", strtotime($_POST['end_date'].' '.$_POST['end_time']));
-	unset($_POST['begin_date']);
-	unset($_POST['begin_time']);
-	unset($_POST['end_date']);
-	unset($_POST['end_time']);
-	if (ownsEvent($a->getUserId(),$event_id)) {
-		$db->autoExecute('events',$_POST,MDB2_AUTOQUERY_UPDATE,"event_id='$event_id'");
-		$message.='Event updated.';
-	} else {
-		$message.='You do not have authority to modify this event.';
-	}
+		unset($_POST['action']);
+		unset($_POST['_qf__add']);
+		unset($_POST['btnSave']);
+		$_POST['begin']=gmdate("Y-m-d H:i:s", strtotime($_POST['begin_date'].' '.$_POST['begin_time']));
+		$_POST['end']=gmdate("Y-m-d H:i:s", strtotime($_POST['end_date'].' '.$_POST['end_time']));
+		unset($_POST['begin_date']);
+		unset($_POST['begin_time']);
+		unset($_POST['end_date']);
+		unset($_POST['end_time']);
+		if (ownsEvent($a->getUserId(),$event_id)) {
+			$db->autoExecute('events',$_POST,MDB2_AUTOQUERY_UPDATE,"event_id='$event_id'");
+			$message.='Event updated.';
+		} else {
+			$message.='You do not have authority to modify this event.';
+		}
 	break;
 	case 'INSERT': // this takes the results of ADD and puts it in the database
-	unset($_POST['action']);
-	unset($_POST['_qf__add']);
-	unset($_POST['btnSave']);
-	$_POST['begin']=gmdate("Y-m-d H:i:s", strtotime($_POST['begin_date'].' '.$_POST['begin_time']));
-	$_POST['end']=gmdate("Y-m-d H:i:s", strtotime($_POST['end_date'].' '.$_POST['end_time']));
-	unset($_POST['begin_date']);
-	unset($_POST['begin_time']);
-	unset($_POST['end_date']);
-	unset($_POST['end_time']);
-    $event_id=$db->nextID('events');
-    $_POST['event_id']=$event_id;
-	if (array_key_exists('pid',$_POST) && is_array($_POST['pid'])) {
-		foreach($_POST['pid'] as $pid) {
-			$sql="INSERT INTO event_attendance SET event_id='$event_id',pid='$pid'";
-			$db->exec($sql);
+		unset($_POST['action']);
+		unset($_POST['_qf__add']);
+		unset($_POST['btnSave']);
+		$_POST['begin']=gmdate("Y-m-d H:i:s", strtotime($_POST['begin_date'].' '.$_POST['begin_time']));
+		$_POST['end']=gmdate("Y-m-d H:i:s", strtotime($_POST['end_date'].' '.$_POST['end_time']));
+		unset($_POST['begin_date']);
+		unset($_POST['begin_time']);
+		unset($_POST['end_date']);
+		unset($_POST['end_time']);
+		$event_id=$db->nextID('events');
+		$_POST['event_id']=$event_id;
+		if (array_key_exists('pid',$_POST) && is_array($_POST['pid'])) {
+			foreach($_POST['pid'] as $pid) {
+				$sql="INSERT INTO event_attendance SET event_id='$event_id',pid='$pid'";
+				$db->exec($sql);
+			}
+			unset($_POST['pid']);
 		}
-		unset($_POST['pid']);
-	}
-	$db->autoExecute('events',$_POST,MDB2_AUTOQUERY_INSERT);
-	$message.='Event added.';
-	break;
+		$db->autoExecute('events',$_POST,MDB2_AUTOQUERY_INSERT);
+		$message.='Event added.';
+		break;
 	default:
+		$message.="I'm sorry - I don't understand what you want me to do.";
 }
 }
 
