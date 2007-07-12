@@ -372,7 +372,7 @@ foreach($visibleFields as $field) {
 }
 $group[]=&HTML_QuickForm::createElement('xbutton', 'btnSave', '<img src="graphics/icons/tick.png" height="16" width="16"/> Save', array('class'=>'positive','onclick'=>'this.form.submit()'));
 $form->addGroup($group, null, '', ' ');
-if ($action=='add') {
+if (isset($action) && $action=='add') {
 	$form->addElement('hidden','action','INSERT');
 	$event['salvations']=0;
 	$event['baptisms_in_hs']=0;
