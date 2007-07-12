@@ -350,6 +350,10 @@ $group[]=&HTML_QuickForm::createElement('xbutton', 'btnSave', '<img src="graphic
 $form->addGroup($group, null, '', ' ');
 if ($action=='add') {
 	$form->addElement('hidden','action','INSERT');
+	$event['salvations']=0;
+	$event['baptisms_in_hs']=0;
+	$event['offering']=0;
+	$event['estimated_attendance']=0;
 } else {
 	$form->addElement('hidden','action','UPDATE');
 }
