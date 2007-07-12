@@ -286,7 +286,7 @@ foreach($visibleFields as $field) {
 				$form->addElement('select','ministry_id','ministry',$ministries);
 			} else {
 				$form->addElement('hidden',$field,$field);
-				$event['ministry_id']=$ministries[0];
+				$event['ministry_id']=array_pop($ministries); // can't just call $ministries[0] because I manually assigned numeric keys
 			}
 			break;
 		case 'notes':
