@@ -1,3 +1,7 @@
+CREATE TABLE `_seq` (
+  `sequence` int(11) NOT NULL auto_increment,
+  PRIMARY KEY  (`sequence`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 CREATE TABLE `addresses` (
   `pid` int(11) NOT NULL,
   `label` varchar(32) NOT NULL default 'school',
