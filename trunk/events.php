@@ -215,6 +215,34 @@ YAHOO.util.Event.addListener(window, 'load', setupCal1);
 
 echo "<p id='statusmsg'>$message</p><script type='text/javascript'>new Effect.Highlight('statusmsg', {duration: 3.0});</script>";
 
+if ((isset($action) && $action=='add') || $event_id!==null) {
+?>
+	<div class="buttons">
+	<a href="events.php">
+	<img src="<?php echo $rooturl.'/graphics/icons/text_list_bullets.png';?>" height="16" width="16"/>
+	List All Events
+	</a>
+	</div>
+	<?php
+}
+
+if (!isset($action) || $action!=='add') {
+	?>
+	<div class="buttons">
+	<a class="positive" href="events.php?action=add">
+	<img src="<?php echo $rooturl.'/graphics/icons/add.png';?>" height="16" width="16"/>
+	Add Event
+	</a>
+	</div>
+	<br/>
+	<?php
+	echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
+	unset($event['unixdate']);
+	echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
+	} else {
+		echo '<h3>Creating New Event</h3>';
+}
+
 if ($event_id===NULL && !isset($action)) {
 	$sql='SELECT event_id,name,begin,UNIX_TIMESTAMP(begin) as unixdate FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id ORDER BY begin DESC';
 	$result=$db->query($sql);
@@ -233,24 +261,6 @@ if ($event_id===NULL && !isset($action)) {
 	echo "</ol></ul>";
 } else { // event_id is not equal to null or we are adding an event
 	//echo '<span class="actions"><a href="#" onclick="javascript:editmode()">edit</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.' onclick="javascript:return confirm(\'Are you sure you want to delete this module?\')">delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
-	
-	if (!isset($action) || $action!=='add') {
-	?>
-	<div class="buttons">
-	<a class="positive" href="events.php?action=add">
-	<img src="<?php echo $rooturl.'/graphics/icons/add.png';?>" height="16" width="16"/>
-	Add Event
-	</a>
-	</div>
-	<br/>
-	<?php
-	echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
-	unset($event['unixdate']);
-	echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
-	} else {
-		echo '<h3>Creating New Event</h3>';
-	}
-	
 $form = new HTML_QuickForm_DHTMLRulesTableless('add','POST',$_SERVER['PHP_SELF'],null,null,true);
 $form->addElement('header','','');
 // $form->addElement('html','<div id="cal1Container"></div>'); // used later for YUI calendar
