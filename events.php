@@ -251,8 +251,8 @@ if (!$eventFieldsToDisplay) { // if neither the user pref nor the system variabl
 	$hiddenFields=array_diff_key($event,$eventFieldsToDisplay); // perhaps not necessary using this implementation
 }
 
-$log->log($eventFieldsToDisplay);
-$log->log($visibleFields);
+//$log->log($eventFieldsToDisplay);
+//$log->log($visibleFields);
 	   
 foreach($visibleFields as $field) {
 	switch($field) {
@@ -314,6 +314,7 @@ foreach($visibleFields as $field) {
 		case 'name':
 			$form->addElement('text',$field,'name');
 			$form->addRule($field,'you must name your event','required',null,'client');
+			break;
 		default:
 			$form->addElement('text',$field,$field);
 		}
