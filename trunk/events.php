@@ -17,14 +17,6 @@ require_once 'includes/functions.time.php';
 $db=createDB();
 $message='';
 
-function cmp($a,$b) {
-	if (strcmp($a['last_name'],$b['last_name'])>0) {
-		return 1;
-	} elseif (strcmp($a['last_name'],$b['last_name'])<0) {
-		return -1;
-	}
-	return strcmp($a['first_name'],$b['first_name']);
-}
 
 // if event_id is specified in GET or POST, extract it here
 if (array_key_exists('event_id', $_REQUEST) && ctype_digit($_REQUEST['event_id'])) {
@@ -332,35 +324,6 @@ foreach($visibleFields as $field) {
 		}
 }
 
-if ($action=='add') {
-	$sql="SELECT pid,COUNT(pid) FROM event_attendance GROUP BY pid HAVING COUNT(pid)>=3";
-	$result=$db->query($sql);
-	$i=0;
-	while ($row=$result->fetchRow()) {
-		$pid=$row['pid'];
-		$sql="SELECT UNIX_TIMESTAMP(e.begin) FROM events e,event_attendance ea WHERE ea.pid=$pid AND e.event_id=ea.event_id ORDER BY e.begin DESC";
-		$lastAttended=$db->getOne($sql);
-		$threshold=180*86400;
-	//$threshold=56*86400; // 56 days = 8 weeks
-		if ((time()-$lastAttended)<$threshold) {
-			$students[$i]['name']=getName($pid);
-			$students[$i]['first_name']=getFirstName($pid);
-			$students[$i]['last_name']=getLastName($pid);
-			$students[$i]['attendance']=$row['COUNT(pid)'];
-			$students[$i]['pid']=$pid;
-			$i++;
-		}
-	}
-
-	if (isset($students)) {
-		$form->addElement('header','Students Who Might Have Been There','bxy');
-		usort($students,"cmp");
-		foreach($students as $student) {
-//			printf('<INPUT TYPE="checkbox" NAME="pid[]" VALUE="%s"><a href="view.student.php?pid=%s">%s</a> (%s times)<br/>',$student['pid'],$student['pid'],$student['Name'],$student['Attendance']);
-			$form->addElement('checkbox','pid[]',$student['name'].' ('.$student['attendance'].' times)');
-		}
-	}
-}
 $form->setDefaults($event);
 $form->applyFilter('__ALL__','trim');
 $form->getValidationScript();
