@@ -145,8 +145,12 @@ function setupCal1() {
     cal1 = new YAHOO.widget.Calendar("cal1","cal1Container");
     cal1.selectEvent.subscribe(getDate, cal1, true);
     cal1.renderEvent.subscribe(setupListeners, cal1, true);
-    YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'focus', showCal);
-    YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'blur', hideCal);
+    YAHOO.util.Event.addListener('begin_date', 'focus', showCal);
+	YAHOO.util.Event.addListener('end_date', 'focus', showCal);
+    YAHOO.util.Event.addListener('begin_date', 'blur', hideCal);
+	YAHOO.util.Event.addListener('end_date', 'blur', hideCal);
+	//YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'focus', showCal);
+    //YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'blur', hideCal);
     cal1.render();
 }
 
