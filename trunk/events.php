@@ -230,10 +230,11 @@ if ($event_id===NULL && $action!='add') {
 $form = new HTML_QuickForm_DHTMLRulesTableless('add','POST',$_SERVER['PHP_SELF'],null,null,true);
 $form->addElement('header','','');
 // $form->addElement('html','<div id="cal1Container"></div>'); // used later for YUI calendar
-echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
+if (array_key_exists('unixdate',$event)) {
+	echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
+	unset($event['unixdate']);
+}
 echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
-
-unset($event['unixdate']);
 	   
 // add a file admin/options.events.php which will allow you to set global events options
 $eventFieldsToDisplay=$a->getPreference('eventFieldsToDisplay');
@@ -311,7 +312,7 @@ foreach($visibleFields as $field) {
 			$form->addElement('text',$field,'type of event');
 			break;
 		case 'name':
-			$form->addElement('text',$field,'type of event');
+			$form->addElement('text',$field,'name');
 			$form->addRule($field,'you must name your event','required',null,'client');
 		default:
 			$form->addElement('text',$field,$field);
