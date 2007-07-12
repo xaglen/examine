@@ -223,6 +223,7 @@ if ((isset($action) && $action=='add') || $event_id!==null) {
 	List All Events
 	</a>
 	</div>
+	<br/>
 	<?php
 }
 
@@ -236,11 +237,13 @@ if (!isset($action) || $action!=='add') {
 	</div>
 	<br/>
 	<?php
-	echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
-	unset($event['unixdate']);
-	echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
-	} else {
-		echo '<h3>Creating New Event</h3>';
+	if ($event_id!==null) {
+		echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
+		unset($event['unixdate']);
+		echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
+	}
+} else {
+	echo '<h3>Creating New Event</h3>';
 }
 
 if ($event_id===NULL && !isset($action)) {
