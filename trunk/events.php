@@ -281,6 +281,7 @@ foreach($visibleFields as $field) {
             break;
 		case 'ministry_id':
 			$ministries=generateMinistryArray($a->getPid());
+			$log->log($ministries);
 			if (sizeof($ministries)>1) {
 				$form->addElement('select','ministry_id','ministry',$ministries);
 			} else {
