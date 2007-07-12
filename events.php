@@ -215,7 +215,7 @@ YAHOO.util.Event.addListener(window, 'load', setupCal1);
 
 echo "<p id='statusmsg'>$message</p><script type='text/javascript'>new Effect.Highlight('statusmsg', {duration: 3.0});</script>";
 
-if ($event_id===NULL && $action!='add') {
+if ($event_id===NULL && !isset($action)) {
 	$sql='SELECT event_id,name,begin,UNIX_TIMESTAMP(begin) as unixdate FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id ORDER BY begin DESC';
 	$result=$db->query($sql);
 	$OldTimeLabel='';
@@ -234,7 +234,7 @@ if ($event_id===NULL && $action!='add') {
 } else { // event_id is not equal to null or we are adding an event
 	//echo '<span class="actions"><a href="#" onclick="javascript:editmode()">edit</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.' onclick="javascript:return confirm(\'Are you sure you want to delete this module?\')">delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
 	
-	if ($action!=='add') {
+	if (!isset($action) || $action!=='add') {
 	?>
 	<div class="buttons">
 	<a class="positive" href="events.php?action=add">
