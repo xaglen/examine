@@ -275,11 +275,18 @@ if (!$eventFieldsToDisplay) { // if neither the user pref nor the system variabl
 	   
 foreach($visibleFields as $field) {
 	switch($field) {
-        case 'ministry_id':
         case 'event_id':
             $form->addElement('hidden',$field,$field);
             // need to add these as hidden fields - although ministry_id should be a dropdown in some cases
             break;
+		case 'ministry_id':
+			$ministries=generateMinistryArray($a->getPid());
+			if (sizeof($ministries)>1) {
+				$form->addElement('select','ministry_id','ministry',$ministries);
+			} else {
+				$form->addElement('hidden',$field,$field);
+			}
+			break;
 		case 'notes':
 			$form->addElement('textarea',$field,$field);
 			break;

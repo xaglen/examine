@@ -54,6 +54,23 @@ function generateNameArray($ministry_id=NULL) {
 	return $people;
 }
 
+/**
+ * Returns an array of ministries connected to a user (useful for dropdowns and lookups)
+ * Does not check for permissions to edit ministries - it just returns a list.
+ *
+ * @param int $pid primary key for table people
+ * @return array an array of names
+ */
+function generateMinistryArray($pid=NULL) {
+	$db=createDB();
+	$sql='select m.ministry_id,m.name FROM ministries m,ministry_people mp WHERE mp.pid='.$pid.' AND m.ministry_id=mp.ministry_id';
+	$result = $db->query($sql);
+	//testQueryResult($result,$sql);
+	while ($row=$result->fetchRow()) {
+		$ministries[$row['ministry_id']]=$row['name'];
+	}
+	return $ministries;
+}
 
 /**
  * Returns the name of a subgroup (Bible study, worship team, etc)
