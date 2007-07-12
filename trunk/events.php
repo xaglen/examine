@@ -107,7 +107,7 @@ if (isset($event_id)) {
 <!-- <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css"> -->
 </head>
 <body>
-<!-- <script type="text/javascript" src="datarequestor-1.6.js"></script> -->
+<?php //<script type="text/javascript" src="datarequestor-1.6.js"></script> ?>
 <script type="text/javascript" src="scriptaculous-js-1.7.0/lib/prototype.js"></script>
 <script type="text/javascript" src="scriptaculous-js-1.7.0/src/scriptaculous.js"></script>
 <script type="text/javascript" src="modalbox/modalbox.js"></script>
@@ -125,17 +125,6 @@ var myLogReader = new YAHOO.widget.LogReader();
 */
 ?>
 <script type="text/javascript">
-/*
-from http://blog.davglass.com/files/yui/cal2/more.php
-
-<form method="get" action="more.php">
-    Select Date 1: <input type="text" name="cal1Date" id="cal1Date" autocomplete="off" size="35" value="" /><br>
-    Select Date 2: <input type="text" name="cal1Date2" id="cal1Date2" autocomplete="off" size="35" value="" /><br>
-    Select Date 3: <input type="text" name="cal1Date3" id="cal1Date3" autocomplete="off" size="35" value="" /><br>
-    <input type="submit" value="Submit" />
-</form>
-<div id="cal1Container"></div>
-*/
 
 var cal1;
 var over_cal = false;
@@ -145,12 +134,12 @@ function setupCal1() {
     cal1 = new YAHOO.widget.Calendar("cal1","cal1Container");
     cal1.selectEvent.subscribe(getDate, cal1, true);
     cal1.renderEvent.subscribe(setupListeners, cal1, true);
-    YAHOO.util.Event.addListener('begin_date', 'focus', showCal);
-	YAHOO.util.Event.addListener('end_date', 'focus', showCal);
-    YAHOO.util.Event.addListener('begin_date', 'blur', hideCal);
-	YAHOO.util.Event.addListener('end_date', 'blur', hideCal);
-	//YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'focus', showCal);
-    //YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'blur', hideCal);
+    //YAHOO.util.Event.addListener('begin_date', 'focus', showCal);
+	//YAHOO.util.Event.addListener('end_date', 'focus', showCal);
+    //YAHOO.util.Event.addListener('begin_date', 'blur', hideCal);
+	//YAHOO.util.Event.addListener('end_date', 'blur', hideCal);
+	YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'focus', showCal);
+    YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'blur', hideCal);
     cal1.render();
 }
 
@@ -201,7 +190,6 @@ function outCal() {
 }
 
 YAHOO.util.Event.addListener(window, 'load', setupCal1);
-hideCal();
 </script>
 <?php include 'templates/header.php';?>
 <div id="main">
