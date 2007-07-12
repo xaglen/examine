@@ -40,7 +40,7 @@ if (isset($action)) {
 		$event_id=NULL;
 		// this should print out a blank form for data entry
 		$result=$db->query('DESCRIBE events');
-		while ($row=$result->nextRow()) {
+		while ($row=$result->fetchRow()) {
 			$event[$row['field']]='';
 		}
 		unset($event['event_id']); // we don't want the user to enter a value for this
