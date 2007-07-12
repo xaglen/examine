@@ -39,11 +39,7 @@ if (isset($action)) {
 	case 'add': // create a blank form for data entry
 		$event_id=NULL;
 		// this should print out a blank form for data entry
-		$sql='DESCRIBE events';
-		$result=$db->query($sql);
-		while ($row=$result->fetchRow()) {
-			$event[$row[0]]='';
-		}
+		$event=$db->getRow('DESCRIBE events);
 		unset($event['event_id']); // we don't want the user to enter a value for this
 		reset($event);
 	break;
@@ -220,7 +216,7 @@ if ($event_id===NULL && $action!='add') {
 	//echo '<span class="actions"><a href="#" onclick="javascript:editmode()">edit</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.' onclick="javascript:return confirm(\'Are you sure you want to delete this module?\')">delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
 	?>
 	<div class="buttons">
-	<a class="positive" href="events.php?action=ADD">
+	<a class="positive" href="events.php?action=add">
 	<img src="<?php echo $rooturl.'/graphics/icons/add.png';?>" height="16" width="16"/>
 	Add Event
 </a>
