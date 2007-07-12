@@ -249,6 +249,9 @@ if (!$eventFieldsToDisplay) { // if neither the user pref nor the system variabl
 	$visibleFields=array_intersect_key($event,$eventFieldsToDisplay);
 	$hiddenFields=array_diff_key($event,$eventFieldsToDisplay); // perhaps not necessary using this implementation
 }
+
+$log->log($eventFieldsToDisplay);
+$log->log($visibleFields);
 	   
 foreach($visibleFields as $field) {
 	switch($field) {
