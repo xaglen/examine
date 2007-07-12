@@ -44,6 +44,9 @@ function createDB() {
  * @return array an array of names
  */
 function generateNameArray($ministry_id=NULL) {
+	if ($ministry_id==null || !ctype_digit($ministry_id)) {
+		return null;
+	}
 	$db=createDB();
 	$sql='select p.pid,p.first_name,p.last_name FROM people p,ministry_people mp WHERE mp.ministry_id='.$ministry_id.' AND mp.pid=p.pid';
 	$result = $db->query($sql);
@@ -62,6 +65,9 @@ function generateNameArray($ministry_id=NULL) {
  * @return array an array of names
  */
 function generateMinistryArray($pid=NULL) {
+	if ($pid==null || !ctype_digit($pid)) {
+		return null;
+	}
 	$db=createDB();
 	$sql='select m.ministry_id,m.name FROM ministries m,ministry_people mp WHERE mp.pid='.$pid.' AND m.ministry_id=mp.ministry_id';
 	$result = $db->query($sql);
