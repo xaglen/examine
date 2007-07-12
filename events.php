@@ -324,6 +324,11 @@ foreach($visibleFields as $field) {
 }
 $group[]=&HTML_QuickForm::createElement('xbutton', 'btnSave', '<img src="graphics/icons/tick.png" height="16" width="16"/> Save', array('class'=>'positive','onclick'=>'this.form.submit()'));
 $form->addGroup($group, null, '', ' ');
+if ($action=='add') {
+	$form->addElement('hidden','action','INSERT');
+} else {
+	$form->addElement('hidden','action','UPDATE');
+}
 $form->setDefaults($event);
 $form->applyFilter('__ALL__','trim');
 $form->getValidationScript();
