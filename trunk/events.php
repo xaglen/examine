@@ -228,6 +228,9 @@ if ($event_id===NULL && $action!='add') {
 	</div>
 	<br/>
 	<?php
+	echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
+	unset($event['unixdate']);
+	echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
 	} else {
 		echo '<h3>Creating New Event</h3>';
 	}
@@ -235,11 +238,6 @@ if ($event_id===NULL && $action!='add') {
 $form = new HTML_QuickForm_DHTMLRulesTableless('add','POST',$_SERVER['PHP_SELF'],null,null,true);
 $form->addElement('header','','');
 // $form->addElement('html','<div id="cal1Container"></div>'); // used later for YUI calendar
-if (array_key_exists('unixdate',$event)) {
-	echo '<em>This was '.readableTimeDiff($event['unixdate'],time()).'</em><br/>';
-	unset($event['unixdate']);
-}
-echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
 	   
 // add a file admin/options.events.php which will allow you to set global events options
 $eventFieldsToDisplay=$a->getPreference('eventFieldsToDisplay');
