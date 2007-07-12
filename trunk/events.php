@@ -62,6 +62,12 @@ if (isset($action)) {
 	unset($_POST['action']);
 	unset($_POST['_qf__add']);
 	unset($_POST['btnSave']);
+	$_POST['begin']=gmdate("Y-m-d H:i:s", strtotime($_POST['begin_date'].' '.$_POST['begin_time']));
+	$_POST['end']=gmdate("Y-m-d H:i:s", strtotime($_POST['end_date'].' '.$_POST['end_time']));
+	unset($_POST['begin_date']);
+	unset($_POST['begin_time']);
+	unset($_POST['end_date']);
+	unset($_POST['end_time']);
 	if (ownsEvent($a->getUserId(),$event_id)) {
 		$db->autoExecute('events',$_POST,MDB2_AUTOQUERY_UPDATE,"event_id='$event_id'");
 		$message.='Event updated.';
@@ -73,6 +79,12 @@ if (isset($action)) {
 	unset($_POST['action']);
 	unset($_POST['_qf__add']);
 	unset($_POST['btnSave']);
+	$_POST['begin']=gmdate("Y-m-d H:i:s", strtotime($_POST['begin_date'].' '.$_POST['begin_time']));
+	$_POST['end']=gmdate("Y-m-d H:i:s", strtotime($_POST['end_date'].' '.$_POST['end_time']));
+	unset($_POST['begin_date']);
+	unset($_POST['begin_time']);
+	unset($_POST['end_date']);
+	unset($_POST['end_time']);
     $event_id=$db->nextID();
     $_POST['event_id']=$event_id;
 	if (array_key_exists('pid',$_POST) && is_array($_POST['pid'])) {
