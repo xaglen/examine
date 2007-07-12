@@ -266,10 +266,10 @@ foreach($visibleFields as $field) {
 			break;
 		case 'begin':
 		case 'end':
-            $group=null;
             $group[] =& HTML_QuickForm::createElement('text', $field.'_date', $field,array('autocomplete'=>'off','id'=>$field.'_date','size'=>10));
             $group[] =& HTML_QuickForm::createElement('text', $field.'_time', $field);
             $form->addGroup($group, $field, $field,'',false);
+			unset($group);
         //the order of the date is important for the javascript calendar to work properly - MUST BE d/m/YYYY
             if (!$event[$field]) {
                 $event[$field.'_date']=date('n/j/Y',time());
@@ -320,7 +320,7 @@ foreach($visibleFields as $field) {
 		}
 }
 $group[]=&HTML_QuickForm::createElement('xbutton', 'btnSave', '<img src="graphics/icons/tick.png" height="16" width="16"/> Save', array('class'=>'positive','onclick'=>'this.form.submit()'));
-$form->addGroup($group);
+$form->addGroup($group, null, '', ' ');
 $form->setDefaults($event);
 $form->applyFilter('__ALL__','trim');
 $form->getValidationScript();
