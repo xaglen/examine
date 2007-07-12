@@ -217,16 +217,21 @@ if ($event_id===NULL && $action!='add') {
 	echo "</ol></ul>";
 } else { // event_id is not equal to null or we are adding an event
 	//echo '<span class="actions"><a href="#" onclick="javascript:editmode()">edit</a> | <a href='.$_SERVER['PHP_SELF'].'?action=delete&amp;event_id='.$event_id.' onclick="javascript:return confirm(\'Are you sure you want to delete this module?\')">delete</a> | <a href='.$_SERVER['PHP_SELF'].'?action=add>add a new event</a></span><br/>';
+	
+	if ($action!=='add') {
 	?>
 	<div class="buttons">
 	<a class="positive" href="events.php?action=add">
 	<img src="<?php echo $rooturl.'/graphics/icons/add.png';?>" height="16" width="16"/>
 	Add Event
-</a>
+	</a>
 	</div>
 	<br/>
 	<?php
-
+	} else {
+		echo '<h3>Creating New Event</h3>';
+	}
+	
 $form = new HTML_QuickForm_DHTMLRulesTableless('add','POST',$_SERVER['PHP_SELF'],null,null,true);
 $form->addElement('header','','');
 // $form->addElement('html','<div id="cal1Container"></div>'); // used later for YUI calendar
