@@ -60,6 +60,8 @@ if (isset($action)) {
 	}
 	case 'UPDATE': // process modifications to an event
 	unset($_POST['action']);
+	unset($_POST['__qf_add']);
+	unset($_POST['btnSave']);
 	if (ownsEvent($a->getUserId(),$event_id)) {
 		$db->autoExecute('events',$_POST,MDB2_AUTOQUERY_UPDATE,"event_id='$event_id'");
 		$message.='Event updated.';
@@ -69,6 +71,8 @@ if (isset($action)) {
 	break;
 	case 'INSERT': // this takes the results of ADD and puts it in the database
 	unset($_POST['action']);
+	unset($_POST['__qf_add']);
+	unset($_POST['btnSave']);
     $event_id=$db->nextID();
     $_POST['event_id']=$event_id;
 	if (array_key_exists('pid',$_POST) && is_array($_POST['pid'])) {
