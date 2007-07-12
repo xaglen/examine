@@ -300,7 +300,11 @@ foreach($visibleFields as $field) {
         //the order of the date is important for the javascript calendar to work properly - MUST BE d/m/YYYY
             if (!$event[$field]) {
                 $event[$field.'_date']=date('n/j/Y',time());
-                $event[$field.'_time']='8:00pm';
+				if ($field=='begin') {
+					$event[$field.'_time']='8:00pm';
+				} else {
+					$event[$field.'_time']='10:00pm';
+				}
             } else {
                 $event[$field.'_date']=date('n/j/Y',strtotime($event[$field]));
                 $event[$field.'_time']=date('g:ia',strtotime($event[$field]));
