@@ -140,7 +140,7 @@ function setupCal1() {
 	//YAHOO.util.Event.addListener('end_date', 'blur', hideCal);
 	YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'focus', showCal);
     YAHOO.util.Event.addListener(['begin_date', 'end_date'], 'blur', hideCal);
-    cal1.render();
+ //   cal1.render();
 }
 
 function setupListeners() {
