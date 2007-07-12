@@ -251,7 +251,6 @@ if (isset($event_id)) {
 		unset($event['unixdate']);
 		echo 'Attendance: '.$event['estimated_attendance'].'&nbsp; ('.getEventAttendance($event_id).' signed in)<br/>';
 	}
-}
 
 if ($event_id===NULL && !isset($action)) {
 	$sql='SELECT event_id,name,begin,UNIX_TIMESTAMP(begin) as unixdate FROM events e, ministry_people mp WHERE mp.pid='.$a->getPid().' AND mp.role_id<=2 AND e.ministry_id=mp.ministry_id ORDER BY begin DESC';
