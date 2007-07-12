@@ -39,7 +39,7 @@ if (isset($action)) {
 	case 'add': // create a blank form for data entry
 		$event_id=NULL;
 		// this should print out a blank form for data entry
-		$event=$db->getRow('DESCRIBE events);
+		$event=$db->getRow('DESCRIBE events');
 		unset($event['event_id']); // we don't want the user to enter a value for this
 		reset($event);
 	break;
