@@ -17,6 +17,7 @@ require_once 'includes/functions.time.php';
 $db=createDB();
 $message='';
 
+$log->log($_REQUEST);
 
 // if event_id is specified in GET or POST, extract it here
 if (array_key_exists('event_id', $_REQUEST) && ctype_digit($_REQUEST['event_id'])) {
@@ -50,14 +51,14 @@ if (isset($action)) {
 		//echo "Are you sure you want to delete this event? There is NO UNDO!<br/>";
 		//echo '<FORM action="'.$_SERVER['PHP_SELF'].'"><INPUT TYPE="SUBMIT" NAME="action" VALUE="CONFIRM"><INPUT TYPE="HIDDEN" NAME="event_id" VALUE="'.$event_id.'"></FORM>';
 //	exit();
-	if (ownsEvent($a->getUserId(),$event_id)) {
-		$sql='DELETE FROM events WHERE event_id='.$event_id;
-		$db->exec($sql);
-		$sql='DELETE FROM eventattendance WHERE event_id='.$event_id;
-		$db->exec($sql);
-		$message.='Event deleted.';
-		unset($event_id);
-	}
+		if (ownsEvent($a->getUserId(),$event_id)) {
+			$sql='DELETE FROM events WHERE event_id='.$event_id;
+			$db->exec($sql);
+			$sql='DELETE FROM eventattendance WHERE event_id='.$event_id;
+			$db->exec($sql);
+			$message.='Event deleted.';
+			unset($event_id);
+		}
 	break;
 	case 'UPDATE': // process modifications to an event
 		unset($_POST['action']);
