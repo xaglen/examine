@@ -239,7 +239,7 @@ if (!isset($action) || $action!=='add') {
 
 if (isset($event_id)) {
 	?>
-	<a class="negative" href="events.php?action=delete?event_id=<?php echo $event_id;?>" onclick="javascript:return confirm('Are you sure you want to delete this event?')">
+	<a class="negative" href="events.php?action=delete&event_id=<?php echo $event_id;?>" onclick="javascript:return confirm('Are you sure you want to delete this event?')">
 	<img src="<?php echo $rooturl.'/graphics/icons/cancel.png';?>" height="16" width="16"/>
 	Delete Event
 	</a>	
