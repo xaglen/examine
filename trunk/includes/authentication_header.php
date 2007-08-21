@@ -262,7 +262,7 @@ if ($prefname===null) {
 		$form->addRule('username','both username and password are required','required',null,'client');
 		$form->addElement('password', 'password', 'Password:');
 		$form->addRule('password','both username and password are required','required',null,'client');
-		$form->addElement('checkbox','remember', 'Remember me?');
+//		$form->addElement('checkbox','remember', 'Remember me?');
 		if (isset($status)) {
 			switch ($status) {
 			case AUTH_IDLED: 
@@ -291,7 +291,7 @@ if ($prefname===null) {
 		$form->addGroup($group, null, '', ' ');
 		$form->setRequiredNote(' ');
 		$form->setJsWarnings(' ',' ');
-		$form->addElement('link','forgot','','http://chialpha.com/login/wrt/examine/forgot_password.php','forgot your password?');
+		$form->addElement('link','forgot','',$rooturl.'/forgot_password.php','forgot your password?');
 		$renderer =& new HTML_QuickForm_Renderer_Tableless();
 		$form->accept($renderer);
 		?>
